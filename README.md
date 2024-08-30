@@ -1,0 +1,2 @@
+# noticiasd-plataforma
+plataforma-noticiasd
