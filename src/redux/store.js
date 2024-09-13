@@ -3,7 +3,7 @@ import  usersReducer  from "./usersSlice"
 import  productsReducers  from "./productsSlice"
 import authReducers from "./authSlice";
 import productsSlice from "./productsSlice";
-import Formulario from "../components/Formulario";
+import Formulario from "../components/login/Formulario";
 import formularioSlice from "./formularioSlice";
 
 
@@ -14,7 +14,6 @@ const store= configureStore({
             auth : authReducers,
             formulario : formularioSlice
         },
-
     }
 )
 

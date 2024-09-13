@@ -68,7 +68,7 @@ h3{
   }
 
   #logo-nd{
-    width: 33%;
+    width: 33% !important;
   }
 
   #iniciar_sesion {
@@ -140,7 +140,52 @@ h3{
 
     }
 
+    .cartel {
+        position: relative;
+        width: auto; /* Ajusta el tamaño del ancho */
+        height: 70px; /* Ajusta automáticamente el alto */
+        background-color: rgb(24, 124, 24);
+        color: white;
+        text-align: left;
+        padding: 10px 40px 10px 10px; /* Espaciado interno y margen para el botón de cerrar */
+        z-index: 3;
+        top: 13px;
+        left: auto;
+        border-radius: 10px;
+    }
     
+    .cartel .actualizaste {
+        position: absolute;
+        display: block; /* Hace que los spans se muestren en bloque (uno debajo del otro) */
+        top:10px;
+        left: 50px;
+        font-size: 20px;
+    }
+    .cartel .cartel_actualizaste {
+        position: absolute;
+        display: block; /* Hace que los spans se muestren en bloque (uno debajo del otro) */
+        top: 35px;
+        left: 50px;
+        
+    }
+    
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    
+    .img-check {
+        position: absolute;
+        margin-bottom: 20px; /* Para crear un espacio entre la imagen y el texto */
+        left: 10px;
+        top:20px;
+    }
 
 
 

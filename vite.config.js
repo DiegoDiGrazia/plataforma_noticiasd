@@ -6,9 +6,16 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://panel.serviciosd.com/api',
+        target: 'https://panel.serviciosd.com/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/codigo_recuperacion': {
+        target: 'https://panel.serviciosd.com/',
+        changeOrigin: true,
+      },
+      '/cambiar_clave': {
+        target: 'https://panel.serviciosd.com/',
+        changeOrigin: true,
       },
     },
   },
