@@ -18,7 +18,7 @@
 
 /* Estado cerrado de la barra lateral (solo iconos visibles) */
 .sidebar.closed {
-    width: 70px; /* Solo mostrar los iconos */
+    width: 55px; /* Solo mostrar los iconos */
 }
 
 .descripcion_boton.closed{
@@ -64,7 +64,7 @@
 }
 
 .sidebar.closed .sidebar-toggle {
-    left: 35px; /* Ajusta la posición del botón según el ancho de la barra cerrada */
+    left: 25px; /* Ajusta la posición del botón según el ancho de la barra cerrada */
 }
 
 /* Botón cambia de color al pasar el ratón */

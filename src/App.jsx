@@ -7,7 +7,7 @@ import Formulario from './components/login/Formulario';
 import RecuperarContraseña from './components/login/RecuperarContraseña';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Link, BrowserRouter, Routes, Route } from 'react-router-dom'; 
 
 
 const inlineStyles = {
@@ -16,6 +16,7 @@ const inlineStyles = {
 
 function App() {
 
+  
   return (
     <BrowserRouter>
       <header>

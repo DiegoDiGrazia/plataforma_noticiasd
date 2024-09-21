@@ -17,6 +17,23 @@ export default defineConfig({
         target: 'https://panel.serviciosd.com/',
         changeOrigin: true,
       },
+      '/app_obtener_usuarios': {
+        target: 'https://panel.serviciosd.com/',
+        changeOrigin: true,
+      },
+      '/app_obtener_notas': {
+        target: 'https://panel.serviciosd.com/',
+        changeOrigin: true,
+      },
+      '/app_obtener_medios': {
+        target: 'https://panel.serviciosd.com/',
+        changeOrigin: true,
+      },
+      '/app_obtener_categorias': {
+        target: 'https://panel.serviciosd.com/',
+        changeOrigin: true,
+      },
+      
     },
   },
 });

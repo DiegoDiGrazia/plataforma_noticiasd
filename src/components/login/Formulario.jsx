@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Formulario.css';
-import { updateEmail, updateContraseña, updateToken } from '../../redux/formularioSlice';
+import { updateEmail, updateContraseña, updateToken, updateCliente, updateIdCliente } from '../../redux/formularioSlice';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,10 +29,12 @@ const Formulario = () => {
             console.log('Respuesta:', response.status);
 
             if (response.data.status === "true" && response.data.item.token) {
-                console.log('Token:', response.data.item.token);
+                console.log('api_login:', response.data.item);
                 dispatch(updateEmail(email));
                 dispatch(updateContraseña(contraseña));
                 dispatch(updateToken(response.data.item.token));
+                dispatch(updateCliente(response.data.item.cliente))
+                dispatch(updateIdCliente(response.data.item.id_cliente))
 
                 navigate('/dashboard'); // Redirige al Dashboard
             } else {

@@ -9,7 +9,9 @@ const formularioSlice = createSlice({
         contraseña: "",
         token: "",
         status: "",
-        codigoRecuperacion : ""
+        codigoRecuperacion : "",
+        cliente:"",
+        id_cliente :"",
 
     },
     reducers: {
@@ -28,8 +30,14 @@ const formularioSlice = createSlice({
         updateCodigoRecuperacion: (state, action) => {
             state.codigoRecuperacion = action.payload;  // Asignación directa para cadenas de texto
         },
+        updateCliente: (state, action) => {
+            state.cliente = action.payload;  // Asignación directa para cadenas de texto
+        },
+        updateIdCliente: (state, action) => {
+            state.id_cliente = action.payload;  // Asignación directa para cadenas de texto
+        },
     }
 });
 
-export const { updateEmail, updateContraseña, updateCodigoRecuperacion, updateToken } = formularioSlice.actions;
+export const { updateEmail, updateContraseña, updateCodigoRecuperacion, updateToken, updateCliente, updateIdCliente } = formularioSlice.actions;
 export default formularioSlice.reducer;

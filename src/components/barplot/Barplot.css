@@ -48,3 +48,17 @@
     font-size: 30px;
     font-weight: 800;
 }
+
+.leyenda_barplot {
+    position: relative; /* Para posicionar el tooltip */
+    display: flex; /* Alinear el texto y la imagen */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.info-icon{
+    margin-left: 10px;
+}
+
+.col-2{
+    width: 300px;
+}

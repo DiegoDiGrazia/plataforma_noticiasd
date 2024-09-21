@@ -1,18 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import  usersReducer  from "./usersSlice"
 import  productsReducers  from "./productsSlice"
-import authReducers from "./authSlice";
-import productsSlice from "./productsSlice";
-import Formulario from "../components/login/Formulario";
+import dashboardSlice from "./dashboarSlice";
 import formularioSlice from "./formularioSlice";
+import barplotSlice from "./barplotSlice";
+import interaccionesPorNotaSlice from "./interaccionesPorNotaSlice";
 
 
 const store= configureStore({
     reducer: {
-            users: usersReducer, //el userReducers vienen de 
-            products : productsReducers,
-            auth : authReducers,
-            formulario : formularioSlice
+            formulario : formularioSlice,
+            barplot : barplotSlice,
+            dashboard: dashboardSlice,
+            interaccionesPorNota : interaccionesPorNotaSlice
         },
     }
 )
