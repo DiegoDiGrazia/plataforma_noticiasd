@@ -6,6 +6,7 @@ const interaccionesPorNota = createSlice({
   initialState: {
     notasMayorInteraccion : [],
     mediosMayorInteraccion :[],
+    categoriasMayorInteraccion :[],
   },
   reducers: {
     setNotasMayorInteraccion: (state, action) => {
@@ -14,9 +15,13 @@ const interaccionesPorNota = createSlice({
     setMediosMayorInteraccion: (state, action) => {
       state.mediosMayorInteraccion = action.payload;
     },
+    setCategoriasMayorInteraccion: (state, action) => {
+      state.categoriasMayorInteraccion = action.payload;
+    },
 
   },
 });
 
-export const { setNotasMayorInteraccion, setMediosMayorInteraccion } = interaccionesPorNota.actions;
+export const { setNotasMayorInteraccion, setMediosMayorInteraccion, 
+    setCategoriasMayorInteraccion } = interaccionesPorNota.actions;
 export default interaccionesPorNota.reducer;

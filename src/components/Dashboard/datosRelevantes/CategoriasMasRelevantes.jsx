@@ -6,7 +6,7 @@ import { seleccionPorFiltro } from '../../barplot/Barplot';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { setMediosMayorInteraccion, setNotasMayorInteraccion } from '../../../redux/interaccionesPorNotaSlice';
+import { setCategoriasMayorInteraccion, setMediosMayorInteraccion, setNotasMayorInteraccion } from '../../../redux/interaccionesPorNotaSlice';
 
 function formatearTextoNombre(texto) {
     // Cortar la cadena antes del punto
@@ -18,7 +18,7 @@ function formatearTextoNombre(texto) {
     return textoFormateado;
 }
 
-function reduceBykeyMedios(lista_medios){
+function reduceBykeyCategorias(lista_medios){
     let sitios = {}
     
     for(let medio of lista_medios) {
@@ -42,61 +42,52 @@ const CategoriasMasRelevantes = () => {
 
 
     ///api///
-    // const dispatch = useDispatch();
-    // const token = useSelector((state) => state.formulario.token);
-    // const fechas = useSelector((state) => state.barplot.fechas);
-    // const FiltroActual = useSelector((state) => state.dashboard.filtro);
+        const dispatch = useDispatch();
+        const token = useSelector((state) => state.formulario.token);
+        const fechas = useSelector((state) => state.barplot.fechas);
+        const FiltroActual = useSelector((state) => state.dashboard.filtro);
 
 
 
-    // console.log('antes del use efect');
-    // useEffect(() => {
-    //     // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
-    //     axios.post(
-    //         "app_obtener_categorias",
-    //         {
-    //             cliente: nombreCliente,
-    //             periodos: periodos_api,
-    //             token: token
-    //         },
-    //         {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data' // Asegúrate de que el tipo de contenido sea correcto
-    //             }
-    //         }
-    //     )
-    //     .then((response) => {
-    //         console.log('Respuesta:', response.status);
+        console.log('antes del use efect');
+        useEffect(() => {
+            // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
+            axios.post(
+                "app_obtener_categorias",
+                {
+                    cliente: nombreCliente,
+                    periodos: periodos_api,
+                    token: token
+                },
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data' // Asegúrate de que el tipo de contenido sea correcto
+                    }
+                }
+            )
+            .then((response) => {
+                console.log('Respuesta:', response.status);
 
-    //         if (response.data.status === "true") {
-    //             console.log(response.data);
-    //             let meses = response.data.item;
-    //             let todas_los_medios = []
-    //             for (let mes of meses) {  
-    //                 todas_los_medios.push(...mes.medios)
-    //             }
-    //             console.log(todas_los_medios)
-    //             console.log(reduceBykeyMedios(todas_los_medios))
-    //             const todos_los_medios_sin_repetir = Object.values(reduceBykeyMedios(todas_los_medios));
+                if (response.data.status === "true") {
+                    console.log(response.data);
+                    let mesesConCategorias = response.data.item;
+                    dispatch(setCategoriasMayorInteraccion(mesesConCategorias))
 
-    //             const topTresMedios =  todos_los_medios_sin_repetir.sort((medioA, medioB) => Number(medioB.impresiones) - Number(medioA.impresiones)).slice(0, 3);
-    //             console.log(topTresMedios)
-    //             dispatch(setMediosMayorInteraccion(topTresMedios))
-            
-    //         } else {
-    //             console.error('Error en la respuesta de la API:', response.data.message);
+                } else {
+                    console.error('Error en la respuesta de la API:', response.data.message);
 
-    //         }
+                }
 
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error al hacer la solicitud:', error);
-    //     });
-    // },[]); // Dependencias del useEffect
+            })
+            .catch((error) => {
+                console.error('Error al hacer la solicitud:', error);
+            });
+        },[]); // Dependencias del useEffect
 
 
-    // const listaTresMedios = useSelector(state => state.interaccionesPorNota.mediosMayorInteraccion || []);
-    // console.log(listaTresMedios)
+    const categoriasPorMes = useSelector(state => state.interaccionesPorNota.categoriasMayorInteraccion || []);
+    console.log(categoriasPorMes)
+
 
     
     // let medio1 = {}; 

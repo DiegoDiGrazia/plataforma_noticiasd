@@ -20,21 +20,25 @@ function formatearTextoNombre(texto) {
     return textoFormateado;
 }
 
-function reduceBykeyMedios(lista_medios){
+function reduceBykeyMedios(lista_medios) {
+    let sitios = {};
 
-
-    let sitios = {}
-    
-    for(let medio of lista_medios) {
-        if (sitios.hasOwnProperty(medio.sitio) == false){ // si en sitios, no esta agregado el sitio
-            sitios[medio.sitio] = medio
-        }else{
-            sitios[medio.sitio].impresiones = Number(sitios[medio.sitio].impresiones);
+    for (let medio of lista_medios) {
+        if (!sitios[medio.sitio]) { // Si el sitio no existe aún
+            // Inicializar el objeto del sitio
+            sitios[medio.sitio] = {
+                ...medio, // Copiar todas las propiedades de 'medio'
+                impresiones: Number(medio.impresiones) // Asegurar que impresiones sea un número
+            };
+        } else {
+            // Sumar las impresiones
             sitios[medio.sitio].impresiones += Number(medio.impresiones);
         }
-    }   
-    return sitios
+    }
+
+    return sitios; // Devuelve un objeto con los sitios como llaves
 }
+
 
 
 
@@ -49,6 +53,7 @@ const MediosMasRelevantes = () => {
     const token = useSelector((state) => state.formulario.token);
     const fechas = useSelector((state) => state.barplot.fechas);
     const FiltroActual = useSelector((state) => state.dashboard.filtro);
+    let cantidad_meses = seleccionPorFiltro(FiltroActual)
 
 
 
@@ -74,17 +79,17 @@ const MediosMasRelevantes = () => {
             if (response.data.status === "true") {
                 console.log(response.data);
                 let meses = response.data.item;
-                let todas_los_medios = []
-                for (let mes of meses) {  
-                    todas_los_medios.push(...mes.medios)
-                }
-                console.log(todas_los_medios)
-                console.log(reduceBykeyMedios(todas_los_medios))
-                const todos_los_medios_sin_repetir = Object.values(reduceBykeyMedios(todas_los_medios));
+                dispatch(setMediosMayorInteraccion(response.data.item))
+                // let todas_los_medios = []
+                // for (let mes of meses) {  
+                //     todas_los_medios.push(...mes.medios)
+                // }
+                // console.log(todas_los_medios)
+                // console.log(reduceBykeyMedios(todas_los_medios))
+                // const todos_los_medios_sin_repetir = Object.values(reduceBykeyMedios(todas_los_medios));
 
-                const topTresMedios =  todos_los_medios_sin_repetir.sort((medioA, medioB) => Number(medioB.impresiones) - Number(medioA.impresiones)).slice(0, 3);
-                console.log(topTresMedios)
-                dispatch(setMediosMayorInteraccion(topTresMedios))
+                // const topTresMedios =  todos_los_medios_sin_repetir.sort((medioA, medioB) => Number(medioB.impresiones) - Number(medioA.impresiones)).slice(0, 3);
+                // console.log(topTresMedios)
             
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
@@ -97,7 +102,20 @@ const MediosMasRelevantes = () => {
     },[]); // Dependencias del useEffect
 
 
-    const listaTresMedios = useSelector(state => state.interaccionesPorNota.mediosMayorInteraccion || []);
+
+    const meses = useSelector(state => state.interaccionesPorNota.mediosMayorInteraccion || []).slice(cantidad_meses);
+    console.log(meses)
+    let todas_los_medios = []
+    for (let mes of meses) {  
+        todas_los_medios.push(...mes.medios)
+    }
+    console.log(todas_los_medios)
+    console.log(reduceBykeyMedios(todas_los_medios))
+    const todos_los_medios_sin_repetir = Object.values(reduceBykeyMedios(todas_los_medios));
+
+    const listaTresMedios =  todos_los_medios_sin_repetir.sort((medioA, medioB) => Number(medioB.impresiones) - Number(medioA.impresiones)).slice(0, 3);
+
+
     console.log(listaTresMedios)
 
     

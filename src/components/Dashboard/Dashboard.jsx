@@ -75,15 +75,15 @@ const Dashboard = () => {
                         {/* aca van los datos relevantes */}
                        <div className='row g-1'>
                             <div className='col m-2 p-3 back-white'>
-                                <InteraccionPorNota/>
+                                {/* <InteraccionPorNota/> */}
                             </div>
                             <div className='col m-2 p-3 back-white'>
-                                <PlataformaMasImpresiones/>
+                                {/* <PlataformaMasImpresiones/> */}
                             </div>
                         </div> 
                         <div className='row g-1'>
                             <div className='col m-2 p-3 back-white'>
-                                 <MediosMasRelevantes/> 
+                                 {/* <MediosMasRelevantes/>  */}
                             </div>
                             <div className='col m-2 p-3 back-white'>
                                 <CategoriasMasRelevantes/>

@@ -45,9 +45,6 @@ function estaPublicada(fecha_vencimiento){
 }
 
 
-console.log(formatearTitulo("ASDASDASDASDASDASDASDASDADASDlñghklñghñlkghkjñlgkhjñlghjkñghklghj"))
-
-
 const InteraccionPorNota = () => {
     const periodos_api = useSelector((state) => state.dashboard.periodos_api)
     const nombreCliente = useSelector((state) => state.formulario.cliente);
@@ -59,6 +56,7 @@ const InteraccionPorNota = () => {
     const token = useSelector((state) => state.formulario.token);
     const fechas = useSelector((state) => state.barplot.fechas);
     const FiltroActual = useSelector((state) => state.dashboard.filtro);
+    let cantidad_meses = seleccionPorFiltro(FiltroActual)
 
 
 
@@ -83,15 +81,7 @@ const InteraccionPorNota = () => {
 
             if (response.data.status === "true") {
                 console.log(response.data);
-                let meses = response.data.item;
-                let todas_las_notas = []
-                for (let mes of meses) {  
-                    todas_las_notas.push(...mes.notas)
-                }
-                console.log(todas_las_notas)
-                const topTresNotas = todas_las_notas.sort((notaA, notaB) => Number(notaB.total) - Number(notaA.total)).slice(0, 3);
-                console.log(topTresNotas)
-                dispatch(setNotasMayorInteraccion(topTresNotas))
+                dispatch(setNotasMayorInteraccion(response.data.item))
             
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
@@ -101,10 +91,22 @@ const InteraccionPorNota = () => {
         .catch((error) => {
             console.error('Error al hacer la solicitud:', error);
         });
-    },[]); // Dependencias del useEffect
+    },[FiltroActual]); // Dependencias del useEffect
 
 
-    const listaTresNotas = useSelector(state => state.interaccionesPorNota.notasMayorInteraccion)
+
+    const meses = useSelector(state => state.interaccionesPorNota.notasMayorInteraccion).slice(cantidad_meses);
+    console.log(meses)
+
+    console.log(meses)
+    let todas_las_notas = []
+    for (let mes of meses) {  
+        todas_las_notas.push(...mes.notas)
+    }
+    console.log(todas_las_notas)
+    const listaTresNotas = todas_las_notas.sort((notaA, notaB) => Number(notaB.total) - Number(notaA.total)).slice(0, 3);
+
+    // const  = useSelector(state => state.interaccionesPorNota.notasMayorInteraccion)
     let nota1 = {};
     let nota2 = {};
     let nota3 = {};
