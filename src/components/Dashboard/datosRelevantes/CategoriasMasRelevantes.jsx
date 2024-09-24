@@ -7,29 +7,24 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { setCategoriasMayorInteraccion, setMediosMayorInteraccion, setNotasMayorInteraccion } from '../../../redux/interaccionesPorNotaSlice';
+import { formatNumberMiles } from '../Dashboard';
+function reduceBykeyCategorias(lista_medios) {
+    let sitios = {};
 
-function formatearTextoNombre(texto) {
-    // Cortar la cadena antes del punto
-    let textoCortado = texto.split('.')[0];
-
-    // Convertir la primera letra a mayúscula y el resto a minúsculas
-    let textoFormateado = textoCortado.charAt(0).toUpperCase() + textoCortado.slice(1).toLowerCase();
-
-    return textoFormateado;
-}
-
-function reduceBykeyCategorias(lista_medios){
-    let sitios = {}
-    
-    for(let medio of lista_medios) {
-        if (sitios.hasOwnProperty(medio.sitio) == false){ // si en sitios, no esta agregado el sitio
-            sitios[medio.sitio] = medio
-        }else{
-            sitios[medio.sitio].impresiones = Number(sitios[medio.sitio].impresiones);
-            sitios[medio.sitio].impresiones += Number(medio.impresiones);
+    for (let medio of lista_medios) {
+        if (!sitios[medio.categoria]) { // Si el sitio no existe aún
+            // Inicializar el objeto del sitio
+            sitios[medio.categoria] = {
+                ...medio, // Copiar todas las propiedades de 'medio'
+                impresiones: Number(medio.impresiones) // Asegurar que impresiones sea un número
+            };
+        } else {
+            // Sumar las impresiones
+            sitios[medio.categoria].impresiones += Number(medio.impresiones);
         }
-    }   
-    return sitios
+    }
+
+    return sitios; // Devuelve un objeto con los sitios como llaves
 }
 
 
@@ -86,43 +81,36 @@ const CategoriasMasRelevantes = () => {
 
 
     const categoriasPorMes = useSelector(state => state.interaccionesPorNota.categoriasMayorInteraccion || []);
+    console.log("categoriasPorMes: ")
     console.log(categoriasPorMes)
+    let todasLasCategorias =[]
+    for (let mes of categoriasPorMes) {  
+        todasLasCategorias.push(...mes.categoria)
+    }
+    console.log(todasLasCategorias)
+    const categoriasSinRepetir = Object.values(reduceBykeyCategorias(todasLasCategorias))
+    const listaTresCategorias =  categoriasSinRepetir.sort((categoriaA, categoriaB) => Number(categoriaB.impresiones) - Number(categoriaA.impresiones)).slice(0, 3);
+    console.log(listaTresCategorias)
 
 
+    let categoria1 = {};
+    let categoria2 = {};
+    let categoria3 = {};
     
-    // let medio1 = {}; 
-    // let medio2 = {};
-    // let medio3 = {};
+    function asignarCategoria(categoria, item) {
+        if (item && item.impresiones != 0) {
+            return {
+                nombre: item.categoria,
+                impresiones: item.impresiones,
+            };
+        }
+        return categoria; // Devuelve el objeto original si no cumple la condición
+    }
     
-    // if (listaTresMedios[0]) {
-    //     let primero = listaTresMedios[0];
-    //     medio1 = {
-    //         imagen: "https://panel.serviciosd.com" + primero.imagen,
-    //         nombre: formatearTextoNombre(primero.sitio),
-    //         sitio: primero.sitio,
-    //         impresiones: primero.impresiones,
-    //     };
-    // }
+    categoria1 = asignarCategoria(categoria1, listaTresCategorias[0]);
+    categoria2 = asignarCategoria(categoria2, listaTresCategorias[1]);
+    categoria3 = asignarCategoria(categoria3, listaTresCategorias[2]);
     
-    // if (listaTresMedios[1]) {
-    //     let primero = listaTresMedios[1];
-    //     medio2 = {
-    //         imagen: "https://panel.serviciosd.com" + primero.imagen,
-    //         nombre: formatearTextoNombre(primero.sitio),
-    //         sitio: primero.sitio,
-    //         impresiones: primero.impresiones,
-    //     };
-    // }
-    
-    // if (listaTresMedios[2]) {
-    //     let primero = listaTresMedios[2];
-    //     medio3 = {
-    //         imagen: "https://panel.serviciosd.com" + primero.imagen,
-    //         nombre: formatearTextoNombre(primero.sitio),
-    //         sitio: primero.sitio,
-    //         impresiones: primero.impresiones,
-    //     };
-    // }
 
     return (
         <div className="container-fluid">
@@ -132,41 +120,41 @@ const CategoriasMasRelevantes = () => {
                 </p>
             </div>
             {/* categoria*/}
-            {true && //si existe la nota
+            {categoria1 && //si existe la nota
             <div className='row pt-1'>
                 <div className='col-8 pt-1'>
-                    <div className='row p-0 nombre_plataforma'> 
-                        Politica
+                    <div className='row p-0 nombre_plataforma nombre_categoria'> 
+                        {categoria1.nombre}
                     </div>
                 </div>
                 <div className='col totales_widget'>
-                    <p>123459</p>
+                    <p>{formatNumberMiles(categoria1?.impresiones || "")}</p>
                 </div>
             </div>
             }
             {/* categoria*/}
-            {true && //si existe la nota
+            {categoria2 && //si existe la nota
             <div className='row pt-1'>
                 <div className='col-4 pt-1'>
-                    <div className='row p-0 nombre_plataforma'> 
-                        Politica
+                    <div className='row p-0 nombre_plataforma nombre_categoria'> 
+                        {categoria2.nombre}
                     </div>
                 </div>
                 <div className='col totales_widget'>
-                    <p>123459</p>
+                    <p>{formatNumberMiles(categoria2?.impresiones || "")}</p>
                 </div>
             </div>
             }
             {/* categoria*/}
-            {true && //si existe la nota
+            {categoria3 && //si existe la nota
             <div className='row pt-1'>
                 <div className='col-4 pt-1'>
-                    <div className='row p-0 nombre_plataforma'> 
-                        Politica
+                    <div className='row p-0 nombre_plataforma nombre_categoria'> 
+                        {categoria3.nombre}
                     </div>
                 </div>
                 <div className='col totales_widget'>
-                    <p>123459</p>
+                    <p>{formatNumberMiles(categoria3?.impresiones || "")}</p>
                 </div>
             </div>
             }

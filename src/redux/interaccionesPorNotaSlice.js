@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { periodoUltimoAño } from '../components/barplot/Barplot';
 
 const interaccionesPorNota = createSlice({
   name: 'interaccionesPorNota',

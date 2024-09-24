@@ -2,10 +2,12 @@
     border-bottom: 1px solid black;
     font-size: 20px;
     font-weight: 600;
+    color: #292929;
 }
 
 .nombre_plataforma{
-    font-weight: 800;
+    font-weight: 550;
+    font-size: 14px;
 }
 
 .linkPlataforma{
@@ -27,13 +29,23 @@
     border-radius: 10px;
 }
 
+.imagenWidwetInteracciones2{
+    width: 50px;
+    height: 50px;
+    border-radius: 10px; /* Ajustar a 10px para que el radio sea el 20% de la altura/ancho */
+    object-fit: cover; /* Asegura que la imagen se ajuste bien */
+    display: block; /* Para evitar posibles problemas de alineación */
+
+}
+
 .totales_widget{
     float: right;
     text-align: end;
     padding-right: 20px;
     padding-top: 15px;
-    color: rgb(29, 28, 28);
-    font-weight: 700;
+    color: #667085;
+    font-weight: 600;
+    font-size: 18px;
     
 }
 
@@ -41,3 +53,9 @@
     margin-left: 50px;
     width: 60px;
 } 
+.columna_interaccion{
+    padding-left: 30px;
+}
+.nombre_categoria{
+    font-size: 18px !important;
+}

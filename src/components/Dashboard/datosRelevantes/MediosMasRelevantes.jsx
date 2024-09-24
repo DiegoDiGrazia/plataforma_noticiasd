@@ -167,7 +167,7 @@ const MediosMasRelevantes = () => {
                 <div className='col-1'>
                     <img src={medio1.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>
-                <div className='col-4 pt-1'>
+                <div className='col-4 pt-1 columna_interaccion'>
                     <div className='row p-0 nombre_plataforma'> 
                         {medio1.nombre}
                     </div>
@@ -186,7 +186,7 @@ const MediosMasRelevantes = () => {
                 <div className='col-1'>
                     <img src={medio2.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>
-                <div className='col-4 pt-1'>
+                <div className='col-4 pt-1 columna_interaccion'>
                     <div className='row p-0 nombre_plataforma'> 
                         {medio2.nombre}
                     </div>
@@ -205,7 +205,7 @@ const MediosMasRelevantes = () => {
                 <div className='col-1'>
                     <img src={medio3.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>
-                <div className='col-4 pt-1'>
+                <div className='col-4 pt-1 columna_interaccion'>
                     <div className='row p-0 nombre_plataforma'> 
                         {medio3.nombre}
                     </div>

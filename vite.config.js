@@ -33,6 +33,10 @@ export default defineConfig({
         target: 'https://panel.serviciosd.com/',
         changeOrigin: true,
       },
+      '/reporte_descargarpdfwa': {
+        target: 'https://dashboard.serviciosd.com/',
+        changeOrigin: true,
+      },
       
     },
   },

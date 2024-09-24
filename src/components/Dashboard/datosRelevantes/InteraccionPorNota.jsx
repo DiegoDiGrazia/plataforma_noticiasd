@@ -7,12 +7,12 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { setNotasMayorInteraccion } from '../../../redux/interaccionesPorNotaSlice';
-import { formatNumberMiles } from '../Dashboard';
+import { formatNumberMiles } from '../Dashboard.jsx';
 
 
 function formatearTitulo(titulo) {
-    if (titulo.length > 25) {
-        return titulo.slice(0, 25) + "...";
+    if (titulo.length > 30) {
+        return titulo.slice(0, 30) + "...";
     }
     return titulo;
 }
@@ -160,9 +160,9 @@ const InteraccionPorNota = () => {
             {listaTresNotas[0] && //si existe la nota
             <div className='row pt-1'>
                 <div className='col-1'>
-                    <img src={nota1.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
+                    <img src={nota1.imagen} alt="Icono 1" className='imagenWidwetInteracciones2' />
                 </div>
-                <div className='col-4 pt-1'>
+                <div className='col-8 pt-1 columna_interaccion'>
                     <div className='row p-0 nombre_plataforma'> 
                         {nota1.titulo}
                     </div>
@@ -170,10 +170,10 @@ const InteraccionPorNota = () => {
                         <a href="https://www.facebook.com" className='linkPlataforma'>{nota1.fecha_publicacion}</a>
                     </div>
                 </div>
-                <div className='col publicada '>
+                {/* <div className='col publicada '>
                     {nota1.publicada? <img src="/images/publicada.png" alt="Icono 1" /> : 
                                         <img src="/images/finalizada.png" alt="Icono 1" />}
-                </div>
+                </div> */}
                 <div className='col totales_widget'>
                     <p>{formatNumberMiles(nota1.interacciones)}</p>
                 </div>
@@ -183,9 +183,9 @@ const InteraccionPorNota = () => {
             {listaTresNotas[1] && //si existe la nota
             <div className='row pt-1'>
                 <div className='col-1'>
-                    <img src={nota2.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
+                    <img src={nota2.imagen} alt="Icono 1" className='imagenWidwetInteracciones2' />
                 </div>
-                <div className='col-4 pt-1'>
+                <div className='col-8 pt-1 columna_interaccion'>
                     <div className='row p-0 nombre_plataforma'> 
                     {nota2.titulo}
                     </div>
@@ -193,10 +193,10 @@ const InteraccionPorNota = () => {
                         <a href="https://www.facebook.com" className='linkPlataforma'>{nota2.fecha_publicacion}</a>
                     </div>
                 </div>
-                <div className='col publicada'>
+                {/* <div className='col publicada'>
                 {nota2.publicada? <img src="/images/publicada.png" alt="Icono 1" /> : 
                                         <img src="/images/finalizada.png" alt="Icono 1" />}
-                </div>
+                </div> */}
                 <div className='col totales_widget'>
                     <p>{formatNumberMiles(nota2.interacciones)}</p>
                 </div>
@@ -206,9 +206,9 @@ const InteraccionPorNota = () => {
             {listaTresNotas[2] && //si existe la nota
             <div className='row pt-1'>
                 <div className='col-1'>
-                    <img src={nota3.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
+                    <img src={nota3.imagen} alt="Icono 1" className='imagenWidwetInteracciones2' />
                 </div>
-                <div className='col-4 pt-1'>
+                <div className='col-8 pt-1 columna_interaccion'>
                     <div className='row p-0 nombre_plataforma'> 
                     {nota3.titulo}
                     </div>
@@ -216,10 +216,10 @@ const InteraccionPorNota = () => {
                         <a href="https://www.facebook.com" className='linkPlataforma'>{nota3.fecha_publicacion}</a>
                     </div>
                 </div>
-                <div className='col publicada'>
+                {/* <div className='col publicada'>
                     {nota3.publicada? <img src="/images/publicada.png" alt="Icono 1" /> : 
                                             <img src="/images/finalizada.png" alt="Icono 1" />}
-                </div>
+                </div> */}
                 <div className='col totales_widget'>
                     <p>{formatNumberMiles(nota3.interacciones)}</p>
                 </div>

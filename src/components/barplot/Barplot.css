@@ -45,14 +45,17 @@
 }
 
 .totales{
-    font-size: 30px;
-    font-weight: 800;
+    font-size: 32px;
+    font-weight: 600;
 }
 
 .leyenda_barplot {
     position: relative; /* Para posicionar el tooltip */
     display: flex; /* Alinear el texto y la imagen */
     align-items: center; /* Centrar verticalmente */
+    font-size: 20px;
+    font-weight: 600;
+    color: #292929
 }
 
 .info-icon{

@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import  usersReducer  from "./usersSlice"
-import  productsReducers  from "./productsSlice"
-import dashboardSlice from "./dashboarSlice";
-import formularioSlice from "./formularioSlice";
-import barplotSlice from "./barplotSlice";
-import interaccionesPorNotaSlice from "./interaccionesPorNotaSlice";
+import dashboardSlice from "./dashboarSlice.js";
+import formularioSlice from "./formularioSlice.js";
+import barplotSlice from "./barplotSlice.js";
+import interaccionesPorNotaSlice from "./interaccionesPorNotaSlice.js";
 
 
 const store= configureStore({

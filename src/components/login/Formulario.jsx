@@ -26,7 +26,8 @@ const Formulario = () => {
                 }
             });
 
-            console.log('Respuesta:', response.status);
+            
+            console.log('Respuesta:', response);
 
             if (response.data.status === "true" && response.data.item.token) {
                 console.log('api_login:', response.data.item);

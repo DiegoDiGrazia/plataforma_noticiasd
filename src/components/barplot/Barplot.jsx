@@ -6,15 +6,16 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { useDispatch, useSelector } from 'react-redux';
 import "./Barplot.css";
 import { setImpresionesTotalesInstagram, setImpresionesTotalesGoogle, setImpresionesTotalesFacebook, 
-    setUsuariosTotales, setUsuariosTotalesGoogle, setUsuariosTotalesMeta, setFechas } from '../../redux/barplotSlice';
+    setUsuariosTotales, setUsuariosTotalesGoogle, setUsuariosTotalesMeta, setFechas } from '../../redux/barplotSlice.js';
 import axios from 'axios';
-import { formatNumberMiles } from '../Dashboard/Dashboard';
+import { formatNumberMiles } from '../Dashboard/Dashboard.jsx';
 
 function formatDate(dateStr) {
-    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 
+                    'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
     const [year, month] = dateStr.split('-');
     const monthName = months[parseInt(month, 10) - 1];
-    return `${monthName} ${year}`;
+    return `${monthName} ${year.slice(-2)}`;
 }
 
 export function periodoUltimoAño() {
@@ -39,7 +40,7 @@ export function seleccionPorFiltro(filtro) {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const Barplot = ({ desde, hasta }) => {
+const Barplot = () => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.formulario.token);
     const fechas = useSelector((state) => state.barplot.fechas);
@@ -94,7 +95,7 @@ const Barplot = ({ desde, hasta }) => {
         });
 
         return () => clearInterval(interval); // Limpia el intervalo si el componente se desmonta
-    }, []);
+    }, [FiltroActual]);
 
     // Función para generar datos aleatorios
     function generateRandomData() {
@@ -167,19 +168,37 @@ const Barplot = ({ desde, hasta }) => {
             legend: {
                 display: false,
             },
+            tooltip: {
+                enabled: true, // Habilita el tooltip
+                callbacks: {
+                    label: function(context) {
+                        // Devuelve solo el valor de la barra (el número)
+                        return context.raw;
+                    },
+                    title: function() {
+                        // Retorna un string vacío para no mostrar el título
+                        return '';
+                    }
+                },
+                backgroundColor: '#f5f5f5', // Cambia el color de fondo del tooltip
+                bodyColor: '#333', // Cambia el color del texto del valor
+                borderColor: '#999', // Opcional, para agregar un borde
+                borderWidth: 1, // Establece el grosor del borde (opcional)
+            },
         },
         scales: {
             x: {
-                offset: true, // Esto añade espacio a los bordes
+                offset: true,
                 grid: {
-                    offset: false, // Puedes jugar con esta opción para ajustar las líneas de la cuadrícula
-                    // Aquí puedes aplicar colores, grosor, etc.
-                    color: 'rgba(128, 128, 128, 0.1)', // Color negro con 20% de opacidad
+                    offset: false,
+                    color: 'rgba(128, 128, 128, 0.1)',
                 },
             },
             y: {
                 beginAtZero: true,
-                color: 'rgba(128, 128, 128, 0.1)', // Color negro con 20% de opacidad
+                grid: {
+                    color: 'rgba(128, 128, 128, 0.1)',
+                },
             },
         },
     };
@@ -190,18 +209,18 @@ const Barplot = ({ desde, hasta }) => {
             <div className="container-fluid sinPadding">
                 <div className="row cantidades mt-3 back-white">
                     <div className='col-2 barra_lateral'>
-                    <p className='leyenda_barplot'>
-                        <span className="blue-dot-user"></span> Cargando usuarios
-                        <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title= "aca va el texto"/>  
-                    </p>
-                        <p className='totales'><Spinner color='blue'/></p>
+                        <p className='leyenda_barplot'>
+                            <span className="blue-dot-user"></span> Cargando usuarios
+                            <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title= "aca va el texto"/>  
+                        </p>
+                        <div className='totales'><Spinner color='blue'/></div> {/* Cambiado a div */}
                     </div>
                     <div className='col' style={{ paddingLeft: '20px' }}>
                         <p className='leyenda_barplot'>
-                            <span className="blue-dot-impresiones"></span>Cargando usuarios
+                            <span className="blue-dot-impresiones"></span> Cargando usuarios
                             <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title= "aca va el texto"/>  
                         </p>
-                        <p className='totales'><Spinner color='primary'/></p>
+                        <div className='totales'><Spinner color='primary'/></div> {/* Cambiado a div */}
                     </div>
                 </div>
                 <div className="row back-white">
@@ -219,16 +238,16 @@ const Barplot = ({ desde, hasta }) => {
     return (
         <div className="container-fluid sinPadding">
             <div className="row cantidades mt-3 back-white">
-            <div className='col-2 barra_lateral'>
+            <div className='col-4 barra_lateral'>
                 <p className='leyenda_barplot'>
-                    <span className="blue-dot-user"></span> Usuarios totales Meta
+                    <span className="blue-dot-user"></span> Usuarios Redes Sociales
                     <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title= "aca va el texto"/>  
                 </p>
                 <p className='totales'>{formatNumberMiles(totalUsuariosMeta)}</p>
             </div>
                 <div className='col' style={{ paddingLeft: '20px' }}>
                     <p className='leyenda_barplot'>
-                        <span className="blue-dot-impresiones"></span>Usuarios totales Google
+                        <span className="blue-dot-impresiones"></span>Usuarios Medios
                         <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title= "aca va el texto"/>  
                     </p>
                     <p className='totales'>{formatNumberMiles(totalUsuariosGoogle)}</p>

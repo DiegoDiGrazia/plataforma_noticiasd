@@ -32,7 +32,7 @@
 .content {
     /* Permite que el contenido ocupe el espacio restante */
     flex-grow: 1;
-    background-color: #faf9f9;
+    background-color: #fbfcfc ;
      /* background-color: rgb(179, 150, 150); */
     
 }
@@ -41,13 +41,13 @@
     margin-left: 10px;
     display: inline;
     color: #0E0E0E;
-    font-size: 25px;
+    font-size: 28px;
     font-weight: bold;
 }
 
 #nombre_municipio{
     display: inline;
-    font-size: 25px;
+    font-size: 28px;
     color: #0E0E0E;
     margin: 10px 10px;
 }
@@ -59,11 +59,13 @@
 
 #subtitulo_performance{
     margin-top: 50px;
-    padding: 25px;
-    font-size: 20px;
+    margin-left: 10px;
+    padding: 20px;
+    font-size: 24px;
     font-weight:600;
     display: inline;
     height: 20px;
+    color: #292929
 
 }
 
@@ -94,4 +96,7 @@
 }
 .back-white{
     background-color: white;
+}
+.tamaño_barplot{
+    height: 341px;
 }

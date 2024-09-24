@@ -8,6 +8,7 @@ import RecuperarContraseña from './components/login/RecuperarContraseña';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, BrowserRouter, Routes, Route } from 'react-router-dom'; 
+import Nota from './components/nota/Nota';
 
 
 const inlineStyles = {
@@ -24,6 +25,7 @@ function App() {
       
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/nota" element={<Nota/>} />
         <Route path="/recuperar-contraseña" element={<RecuperarContraseña/>} />
         <Route path="/actualizar-contraseña" element={<UpdatePassword/>} />
         <Route path="/" element={<Formulario />} />
