@@ -80,7 +80,7 @@ const Dashboard = () => {
     return (
         <div className="container-fluid  sinPadding">
             <div className="d-flex h-100">
-                <Sidebar /> {/* Usa el componente Sidebar */}
+                <Sidebar estadoActual={"dashboard"}/> {/* Usa el componente Sidebar */}
                 <div className="content flex-grow-1">
                     <div className="p-3 mt-4">
                         <header id = "head_dash">
@@ -117,7 +117,7 @@ const Dashboard = () => {
                                         Compartir
                                     </button>
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                        <li><a className="dropdown-item" href="#" onClick={() => descargarReportePDF(IDCliente, FechaDesde,FechaHasta)}>Descargar PDF</a></li>
+                                        <li><a className="dropdown-item" onClick={() => descargarReportePDF(IDCliente, FechaDesde,FechaHasta)}>Descargar PDF</a></li>
                                     </ul>
                                 </div>
                             </span>

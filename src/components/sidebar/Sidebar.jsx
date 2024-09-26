@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import './Sidebar.css'; // Si tienes un archivo CSS específico para el sidebar
+import { useNavigate } from 'react-router-dom';
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [pantalla_actual, setPantallaActual] = useState("Dashboard") 
-
+const Sidebar = ({estadoActual}) => {
+    const [isOpen, setIsOpen] = useState(true);
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
+    const navigate = useNavigate();
+
+    const handleClickBotonSidebar = (url) => {
+        console.log(`/${url}`)
+        console.log("aca me redirigi")
+        navigate(`/${url}`); // Usa template literals para insertar la URL
+    };
+    
 
     return (
         <>
@@ -26,14 +33,14 @@ const Sidebar = () => {
                     </Button>
 
                         <ul className="list-group list-group-flush no-border">
-                            <li className={pantalla_actual == "Dashboard" && "boton_sidebar_clickeado"}>
-                                <Button className="" variant='none'>
+                            <li className={estadoActual == "dashboard" ? "boton_sidebar_clickeado" : ""}>
+                                <Button className="" variant='none' onClick={() => handleClickBotonSidebar("dashboard")}>
                                     <img src="/images/barchar_icon.png" alt="Icono 1" className="icon me-2" />
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Dashboard</span>
                                 </Button>
                             </li>
-                            <li className="list-group-item no-border">
-                                <Button className="">
+                            <li className={estadoActual == "notas" ? "boton_sidebar_clickeado" : ""}>
+                                <Button className="" variant='none' onClick={() => handleClickBotonSidebar("notas")}>
                                     <img src="/images/notas_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Notas</span>
                                 </Button>
