@@ -118,6 +118,27 @@ const Notas = () => {
                                         Interacciones
                                     </div>
                                 </div>
+                                {/* aca va la */}
+                                <div className='row pt-1'>
+                                    <div className='col-1'>
+                                        <img src={nota1.imagen} alt="Icono 1" className='imagenWidwetInteracciones2' />
+                                    </div>
+                                    <div className='col-8 pt-1 columna_interaccion'>
+                                        <div className='row p-0 nombre_plataforma'> 
+                                            {nota1.titulo}
+                                        </div>
+                                        <div className='row p-0'> 
+                                            <a href="https://www.facebook.com" className='linkPlataforma'>{nota1.fecha_publicacion}</a>
+                                        </div>
+                                    </div>
+                                    {/* <div className='col publicada '>
+                                        {nota1.publicada? <img src="/images/publicada.png" alt="Icono 1" /> : 
+                                                            <img src="/images/finalizada.png" alt="Icono 1" />}
+                                    </div> */}
+                                    <div className='col totales_widget'>
+                                        <p>{formatNumberMiles(nota1.interacciones)}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {/* sector notas */}

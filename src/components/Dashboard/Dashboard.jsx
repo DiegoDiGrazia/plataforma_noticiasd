@@ -7,7 +7,7 @@ import './Dashboard.css';
 import Barplot from '../barplot/Barplot.jsx';
 import InteraccionPorNota from './datosRelevantes/InteraccionPorNota.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFiltro } from '../../redux/dashboarSlice.js';
+import { setFiltro } from '../../redux/dashboardSlice.js';
 import PlataformaMasImpresiones from './datosRelevantes/PlataformaMasImpresiones.jsx';
 import MediosMasRelevantes from './datosRelevantes/MediosMasRelevantes.jsx';
 import CategoriasMasRelevantes from './datosRelevantes/CategoriasMasRelevantes.jsx';

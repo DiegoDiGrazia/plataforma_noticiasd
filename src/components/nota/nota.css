@@ -54,17 +54,17 @@
     width: 400px;
     height: 44px;
     float: right;
-    margin-right: 40px;
+    margin-right: 0px;
 }
 
 .inputBuscadorNotas {
     width: 100%; /* Asegura que el input use todo el ancho del contenedor */
     padding: 10px; /* Mantiene el padding */
     font-size: 16px;
-    border: 1px solid #667085;
+    border: 1px solid #EAECF0;
     border-radius: 10px;
     outline: none;
-    color: #667085;
+    color: #EAECF0;
     background-image: url('../../../public/images/search.png'); /* Ruta de la imagen */
     background-repeat: no-repeat;
     background-position: 10px center; /* Posiciona la imagen dentro del input */
@@ -77,7 +77,6 @@
     color: #667085 ;
     font-weight: 600;
     margin-top: 10px;
-    padding-right: 70px;
 
 }
 
@@ -88,5 +87,9 @@
 }
 
 .container-notas{
-    padding-left: 70px;
+    flex: 1;
+    margin-left: 70px;
+    margin-right: 50px;
+    border: 1px solid #EAECF0 ;
+    border-radius: 10px;
 }
