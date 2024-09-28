@@ -38,7 +38,9 @@ module.exports = {
     port: 4000, // Puerto de desarrollo
     proxy: [
       {
-        context: ['/api', '/codigo_recuperacion', '/cambiar_clave', '/app_obtener_usuarios', '/app_obtener_notas', '/app_obtener_medios', '/app_obtener_categorias', '/reporte_descargarpdfwa'],
+        context: ['/api', '/codigo_recuperacion', '/cambiar_clave', '/app_obtener_usuarios', 
+                  '/app_obtener_notas', '/app_obtener_medios', '/app_obtener_categorias', 
+                  '/reporte_descargarpdfwa', '/app_obtener_noticias'],
         target: 'https://panel.serviciosd.com/',
         changeOrigin: true,
       },

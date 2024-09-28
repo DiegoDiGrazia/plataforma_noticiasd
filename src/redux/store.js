@@ -7,13 +7,15 @@ import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { combineReducers } from 'redux'; // Para combinar reducers
+import notasSlice from "./notasSlice.js";
 
 // Combina todos los slices en un rootReducer
 const rootReducer = combineReducers({
     formulario: formularioSlice,
     barplot: barplotSlice,
     dashboard: dashboardSlice,
-    interaccionesPorNota: interaccionesPorNotaSlice
+    interaccionesPorNota: interaccionesPorNotaSlice,
+    notas: notasSlice,
 });
 
 // Configuración de Redux Persist

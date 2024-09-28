@@ -9,6 +9,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, BrowserRouter, Routes, Route } from 'react-router-dom'; 
 import Notas from './components/nota/Notas';
+import VerNota from './components/nota/verNota';
 
 
 const inlineStyles = {
@@ -24,6 +25,7 @@ function App() {
       </header>
       
       <Routes>
+        <Route path="/verNota" element={<VerNota/>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/notas" element={<Notas/>} />
         <Route path="/recuperar-contraseña" element={<RecuperarContraseña/>} />
