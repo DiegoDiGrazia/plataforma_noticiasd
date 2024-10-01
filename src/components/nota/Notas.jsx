@@ -71,8 +71,8 @@ const Notas = () => {
 
     const dispatch = useDispatch();
     ///api///
-    const DESDE = "2021-01-01"
-    const HASTA = obtenerFechaActual()
+    const DESDE = "2024-09-01"
+    const HASTA = "2024-09-29"
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
     useEffect(() => {
@@ -97,6 +97,7 @@ const Notas = () => {
             console.log('Respuesta:', response.status);
 
             if (response.data.status === "true") {
+                console.log("api que esta en notas");
                 console.log(response.data);
                 dispatch(setTodasLasNotas(response.data.item))
             
