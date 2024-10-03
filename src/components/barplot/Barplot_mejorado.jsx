@@ -44,7 +44,8 @@ export function seleccionPorFiltro(filtro) {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const Barplot = () => {
+const Barplot = (ejeX_1, ejeX_2) => {
+
     const dispatch = useDispatch();
     const token = useSelector((state) => state.formulario.token);
     const fechas = useSelector((state) => state.barplot.fechas);

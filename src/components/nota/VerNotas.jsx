@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { setTodasLasNotas } from '../../redux/notasSlice';
 import Barplot from '../barplot/Barplot';
+import Barplot_Carga from '../barplot/Barplot_mejorado_carga';
 
 const VerNota = () => {
 
@@ -25,7 +26,7 @@ const VerNota = () => {
         axios.post(
             "app_obtener_noticia",
             {
-                token: "25b8289a43392d5e2bffcf8afbc3cd67",          
+                token: "aa9a9a22a50d863fe2ef646a284bebe8",          
                 id_noti: "825061",
             },
             {
@@ -106,8 +107,9 @@ const VerNota = () => {
                                 </div>
                             </span>
                         </div>
+
                         <div className="mb-2 tamaño_barplot">
-                            { <Barplot/> }
+                            {/* { <Barplot_Carga/> } */}
                         </div>
                         
                 </div>
