@@ -35,12 +35,13 @@ module.exports = {
   devServer: {
     historyApiFallback: true, // Para rutas en SPA (Single Page Applications)
     compress: true,
+    hot: true,
     port: 4000, // Puerto de desarrollo
     proxy: [
       {
         context: ['/api', '/codigo_recuperacion', '/cambiar_clave', '/app_obtener_usuarios', 
                   '/app_obtener_notas', '/app_obtener_medios', '/app_obtener_categorias', 
-                  '/reporte_descargarpdfwa', '/app_obtener_noticias'],
+                  '/reporte_descargarpdfwa', '/app_obtener_noticias', '/app_obtener_noticia'],
         target: 'https://panel.serviciosd.com/',
         changeOrigin: true,
       },
