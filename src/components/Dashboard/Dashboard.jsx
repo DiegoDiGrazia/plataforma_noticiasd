@@ -37,6 +37,8 @@ const Dashboard = () => {
     const FiltroActual = useSelector((state) => state.dashboard.filtro);
     const IDCliente = useSelector((state) => state.formulario.id_cliente);
     const periodos = useSelector((state) => state.dashboard.periodos_api).split(",");
+    const [loading, setLoading] = useState(true); // Estado de carga
+
     console.log(periodos, IDCliente, FiltroActual, seleccionPorFiltro(FiltroActual) )
 
     const periodosActuales = periodos.slice(seleccionPorFiltro(FiltroActual))
@@ -44,6 +46,57 @@ const Dashboard = () => {
 
     const FechaDesde = formatFechaApiExportar(periodosActuales[0])
     const FechaHasta = formatFechaApiExportar(periodosActuales[periodosActuales.length - 1]);  
+
+
+    ///DATOS DEL BARPLOT
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSimulatedData(generateRandomData());
+        }, 800); // Actualiza los datos simulados cada 500 ms
+
+        axios.post(
+            "app_obtener_usuarios",
+            {
+                cliente: nombreCliente,
+                periodos: periodoUltimoAño(),
+                token: token
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        )
+        .then((response) => {
+            if (response.data.status === "true") {
+                let datos = response.data.item;
+                for (let datoMensual of datos) {
+                    if (!fechas.includes(datoMensual.periodo)) {
+                        dispatch(setFechas(formatDate(datoMensual.periodo)));
+                        dispatch(setUsuariosTotales(Number(datoMensual.usuarios_total)));
+                        dispatch(setUsuariosTotalesMeta(Number(datoMensual.usuarios_redes)));
+                        dispatch(setUsuariosTotalesGoogle(Number(datoMensual.usuarios_medios)));
+                        dispatch(setImpresionesTotalesInstagram(Number(datoMensual.impresiones_instagram)));
+                        dispatch(setImpresionesTotalesGoogle(Number(datoMensual.impresiones_busqueda)));
+                        dispatch(setImpresionesTotalesFacebook(Number(datoMensual.impresiones_facebook)));
+                    }
+                }
+            } else {
+                console.error('Error en la respuesta de la API:', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al hacer la solicitud:', error);
+        })
+        .finally(() => {
+            setLoading(false);
+        });
+    }, [FiltroActual]);
+
+
+    /// FIN DATOS BARPLOT
+
+
 
     
     
@@ -76,6 +129,8 @@ const Dashboard = () => {
         // Aquí podrías hacer lógica adicional si es necesario.
         console.log("Filtro cambiado, actualizando Barplot");
     }, [FiltroActual]); // Se ejecuta cada vez que FiltroActual cambia
+
+
     
     return (
         <div className="container-fluid  sinPadding">
