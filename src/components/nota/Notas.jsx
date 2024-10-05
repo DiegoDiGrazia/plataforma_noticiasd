@@ -8,29 +8,21 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { setTodasLasNotas } from '../../redux/notasSlice';
+import { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas } from '../../redux/notasSlice';
+import { Link } from 'react-router-dom';
 
 const CantidadDeNotasPorPagina = 6;
+
 const Notas = () => {
-
-
-    const obtenerListaDeNumerosDePaginas = (listaNotas) =>{
-        let cantidadDeNotas = listaNotas.length;
-        ///cuantas paginas tengo=
-        let cantidadDePaginas= Math.floor(cantidadDeNotas / CantidadDeNotasPorPagina) + 1
-        ///DevolverLista
-        return Array.from({ length: cantidadDePaginas }, (_, i) => i + 1);
-        
-    }
 
     const [filtroSeleccionado, setFiltroSeleccionado] = useState(1);
     const [numeroDePagina, setNumeroDePagina] = useState(1);
     
     const botones = [
         { id: 1, nombre: 'Todas las notas' },
-        { id: 2, nombre: 'Publicadas' },
-        { id: 3, nombre: 'Borradores' },
-        { id: 4, nombre: 'En revisión' },
+        { id: 2, nombre: 'En Progreso' },
+        { id: 3, nombre: 'Finalizadas' },
+        // { id: 4, nombre: 'En revisión' },
     ];
 
 
@@ -43,8 +35,7 @@ const Notas = () => {
 
     const handleBotonPaginaClick = (id) => {
         setNumeroDePagina(id);
-        console.log(`Filtro seleccionado: ${id}`);
-        // Aquí puedes agregar lógica para filtrar los datos
+
     };
     
     const [searchQuery, setSearchQuery] = useState('');
@@ -97,14 +88,77 @@ const Notas = () => {
             console.log('Respuesta:', response.status);
 
             if (response.data.status === "true") {
-                console.log("api que esta en notas");
-                console.log(response.data);
+                console.log("todas")
+                console.log(response.data.item)
                 dispatch(setTodasLasNotas(response.data.item))
             
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
             }
+        })
+        .catch((error) => {
+            console.error('Error al hacer la solicitud:', error);
+        });
+        /// EN PROGRESO
+        axios.post(
+            "app_obtener_noticias",
+            {
+                cliente: CLIENTE,
+                desde: `${DESDE}`,
+                hasta: `${HASTA}`,
+                token: TOKEN,
+                categoria: "en progreso"
+                
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data' // Asegúrate de que el tipo de contenido sea correcto
+                }
+            }
+        )
+        .then((response) => {
+            console.log('Respuesta:', response.status);
 
+            if (response.data.status === "true") {
+                console.log("En Progreso")
+                console.log(response.data.item)
+                dispatch(setNotasEnProgreso(response.data.item))
+            
+            } else {
+                console.error('Error en la respuesta de la API:', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al hacer la solicitud:', error);
+        });
+        /// FINALIZADAS
+        axios.post(
+            "app_obtener_noticias",
+            {
+                cliente: CLIENTE,
+                desde: `${DESDE}`,
+                hasta: `${HASTA}`,
+                token: TOKEN,
+                categoria: "finalizadas"
+
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data' // Asegúrate de que el tipo de contenido sea correcto
+                }
+            }
+        )
+        .then((response) => {
+            console.log('Respuesta:', response.status);
+
+            if (response.data.status === "true") {
+                console.log("Finalizadas: ")
+                console.log(response.data.item)
+                dispatch(setNotasFinalizadas(response.data.item))
+            
+            } else {
+                console.error('Error en la respuesta de la API:', response.data.message);
+            }
         })
         .catch((error) => {
             console.error('Error al hacer la solicitud:', error);
@@ -113,9 +167,26 @@ const Notas = () => {
     },[]); // Dependencias del useEffect 
 
     const TodasLasNotas = useSelector((state) => state.notas.todasLasNotas)
-    console.log(TodasLasNotas)
-    const listaBotonesPagina = obtenerListaDeNumerosDePaginas(TodasLasNotas)
-    console.log(listaBotonesPagina)
+    const notasFiltradas = TodasLasNotas.filter(nota =>
+        nota.titulo.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const totalPaginas = Math.ceil(notasFiltradas.length / CantidadDeNotasPorPagina);
+    const notasEnPaginaActual = notasFiltradas.slice(
+        (numeroDePagina - 1) * CantidadDeNotasPorPagina,
+        numeroDePagina * CantidadDeNotasPorPagina
+    );
+
+    const listaBotonesPagina = [];
+    for (let i = 1; i <= totalPaginas; i++) {
+        listaBotonesPagina.push(i);
+      }
+
+
+    
+
+    ///Chat gpt
+    
     return (
         <div className="container-fluid  sinPadding">
             <div className="d-flex h-100">
@@ -194,54 +265,54 @@ const Notas = () => {
                                     </div>
                                 </div>
                                 {/* aca va la nota */}
-                                {TodasLasNotas.slice(0, CantidadDeNotasPorPagina).map((nota, index) => (
-                                <div key={index} className='row pt-1 borderNotas'>
+
+                                {notasEnPaginaActual.map((nota) => (
+                                    <div key={nota.id_noti} className='row pt-1 borderNotas'>
                                     <div className='col-1'>
                                         <img src={nota.imagen} alt="Icono Nota" className='imagenWidwetInteracciones2' />
                                     </div>
                                     <div className='col-4 pt-1 columna_interaccion nuevoFont'>
+                                        <Link className = "link-sin-estilos" to ={`/verNota`} state={{ id: nota.id_noti }}>
                                         <div className='row p-0 nombre_plataforma'>
                                             {nota.titulo}
                                         </div>
+                                        </Link>
                                         <div className='row p-0'>
-                                            <span className='FechaPubNota'>{nota.f_pub}</span>
+                                        <span className='FechaPubNota'>{nota.f_pub}</span>
                                         </div>
                                     </div>
-
                                     <div className='col-2'>
-                                        {true ? 
-                                            <img src="/images/publicada.png" alt="Publicada" /> : 
-                                            <img src="/images/finalizada.png" alt="Finalizada" />}
+                                        <img src="/images/publicada.png" alt="Publicada" />
                                     </div>
-
                                     <div className='col'>
                                         {nota.categorias}
                                     </div>
-
                                     <div className='col totales_widget'>
                                         <p>{nota.interacciones ? nota.interacciones : "Sin interacciones"}</p>
                                     </div>
-                                </div>
-                            ))}
+                                    </div>
+                                ))}
 
-                            </div>
-                        </div>
-                        {/* botonera inferior pagina de notas */}
-                        <div className='row'>
-                            <div className="container">
+                            {/* Botonera de paginación */}
+                            <div className='row'>
+                                <div className="container">
                                 <div className="row justify-content-center">
-                                    {listaBotonesPagina.map((boton) => (
-                                    <div key={listaBotonesPagina} className="col-auto">
+                                    {listaBotonesPagina.map((boton, index) => (
+                                    <div key={index} className="col-auto">
+                                        {boton === '...' ? (
+                                        <span className="puntos">...</span>
+                                        ) : (
                                         <button
-                                        className={`boton_filtro_notas ${
-                                            numeroDePagina === boton ? 'active' : ''
-                                        }`}
-                                        onClick={() => handleBotonPaginaClick(boton)}
+                                            className={`boton_filtro_notas ${numeroDePagina === boton ? 'active' : ''}`}
+                                            onClick={() => handleBotonPaginaClick(boton)}
                                         >
-                                        {boton}
-                                        </button> 
+                                            {boton}
+                                        </button>
+                                        )}
                                     </div>
                                     ))}
+                                </div> 
+                                </div> 
                                 </div>
                             </div>
                         </div>   

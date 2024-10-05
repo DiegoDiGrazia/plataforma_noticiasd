@@ -14,6 +14,7 @@ import CategoriasMasRelevantes from './datosRelevantes/CategoriasMasRelevantes.j
 import { seleccionPorFiltro } from '../barplot/Barplot.jsx';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 export function formatNumberMiles(num) {
@@ -48,58 +49,7 @@ const Dashboard = () => {
     const FechaHasta = formatFechaApiExportar(periodosActuales[periodosActuales.length - 1]);  
 
 
-    ///DATOS DEL BARPLOT
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setSimulatedData(generateRandomData());
-        }, 800); // Actualiza los datos simulados cada 500 ms
 
-        axios.post(
-            "app_obtener_usuarios",
-            {
-                cliente: nombreCliente,
-                periodos: periodoUltimoAño(),
-                token: token
-            },
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-        )
-        .then((response) => {
-            if (response.data.status === "true") {
-                let datos = response.data.item;
-                for (let datoMensual of datos) {
-                    if (!fechas.includes(datoMensual.periodo)) {
-                        dispatch(setFechas(formatDate(datoMensual.periodo)));
-                        dispatch(setUsuariosTotales(Number(datoMensual.usuarios_total)));
-                        dispatch(setUsuariosTotalesMeta(Number(datoMensual.usuarios_redes)));
-                        dispatch(setUsuariosTotalesGoogle(Number(datoMensual.usuarios_medios)));
-                        dispatch(setImpresionesTotalesInstagram(Number(datoMensual.impresiones_instagram)));
-                        dispatch(setImpresionesTotalesGoogle(Number(datoMensual.impresiones_busqueda)));
-                        dispatch(setImpresionesTotalesFacebook(Number(datoMensual.impresiones_facebook)));
-                    }
-                }
-            } else {
-                console.error('Error en la respuesta de la API:', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('Error al hacer la solicitud:', error);
-        })
-        .finally(() => {
-            setLoading(false);
-        });
-    }, [FiltroActual]);
-
-
-    /// FIN DATOS BARPLOT
-
-
-
-    
-    
     const handleClickFiltro = (nuevoFiltro)=>{
         console.log(nuevoFiltro)
         dispatch(setFiltro(nuevoFiltro))

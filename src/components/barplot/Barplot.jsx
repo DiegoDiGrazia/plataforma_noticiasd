@@ -12,7 +12,7 @@ import { formatNumberMiles } from '../Dashboard/Dashboard.jsx';
 
 
 ///Recibe una fecha del tipo "2024-08" y te devuelve  "jun 24"
-function formatDate(dateStr) {
+export function formatDate(dateStr) {
     const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 
                     'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
     const [year, month] = dateStr.split('-');

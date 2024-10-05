@@ -8,12 +8,15 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { setTodasLasNotas } from '../../redux/notasSlice';
-import Barplot from '../barplot/Barplot';
-import Barplot_Carga from '../barplot/Barplot_mejorado_carga';
+import BarplotNota from '../barplot/BarplotNota';
+import { useLocation } from 'react-router-dom';
+import PlataformaMasImpresionesNotas from '../Dashboard/datosRelevantes/PlataformaMasImpresionesNota';
+import MediosMasRelevantesNotas from '../Dashboard/datosRelevantes/MediosMasRelevantesNotas';
 
 const VerNota = () => {
 
+    const location = useLocation();
+    const { id } = location.state || {};
     const FiltroActual = useSelector((state) => state.dashboard.filtro);
 
     const [Nota, setNota] = useState({});
@@ -21,13 +24,14 @@ const VerNota = () => {
     const dispatch = useDispatch();
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
+
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
             "app_obtener_noticia",
             {
-                token: "aa9a9a22a50d863fe2ef646a284bebe8",          
-                id_noti: "825061",
+                token: TOKEN,          
+                id_noti: id,
             },
             {
                 headers: {
@@ -88,30 +92,18 @@ const VerNota = () => {
                         </header>
                         <div className="subtitulo">
                             <h5 id= "subtitulo_performance">Performance de la cuenta</h5>
-                            <span className='botones_subtitulo'>
-                                <div className="dropdown">
-                                    <button className="btn custom-dropdown-button dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/images/calendarIcon.png" alt="Icono 1" className="icon me-2" /> {FiltroActual}
-                                    </button>
-                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li key="opcion1a">
-                                            <button className="dropdown-item" onClick={() => handleClickFiltro("Ultimos 3 meses")}>Últimos 3 meses</button>
-                                        </li>
-                                        <li key="opcion2b">
-                                            <button className="dropdown-item" onClick={() => handleClickFiltro("Ultimos 6 meses")}>Últimos 6 meses</button>
-                                        </li>
-                                        <li key="opcion3c">
-                                            <button className="dropdown-item" onClick={() => handleClickFiltro("Ultimo año")}>Último año</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>
                         </div>
-
                         <div className="mb-2 tamaño_barplot">
-                            {/* { <Barplot_Carga/> } */}
+                            {/* { <BarplotNota/> } */}
                         </div>
-                        
+                        <div className='row g-1'>
+                            <div className='col m-2 p-3 back-white'>
+                               { <PlataformaMasImpresionesNotas/>}
+                            </div>
+                            <div className='col m-2 p-3 back-white'>
+                                  {/* {<MediosMasRelevantesNotas/>}   */}
+                            </div>
+                        </div> 
                 </div>
             </div>
         </div>

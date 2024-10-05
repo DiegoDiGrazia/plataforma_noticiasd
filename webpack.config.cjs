@@ -41,7 +41,8 @@ module.exports = {
       {
         context: ['/api', '/codigo_recuperacion', '/cambiar_clave', '/app_obtener_usuarios', 
                   '/app_obtener_notas', '/app_obtener_medios', '/app_obtener_categorias', 
-                  '/reporte_descargarpdfwa', '/app_obtener_noticias', '/app_obtener_noticia'],
+                  '/reporte_descargarpdfwa', '/app_obtener_noticias', '/app_obtener_noticia', '/app_obtener_medios_noticia',
+                  '/app_obtener_impresiones_plataforma_noticia'],
         target: 'https://panel.serviciosd.com/',
         changeOrigin: true,
       },

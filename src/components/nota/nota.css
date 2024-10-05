@@ -64,12 +64,20 @@
     border: 1px solid #EAECF0;
     border-radius: 10px;
     outline: none;
-    color: #EAECF0;
+    color: #050505;
     background-image: url('../../../public/images/search.png'); /* Ruta de la imagen */
     background-repeat: no-repeat;
     background-position: 10px center; /* Posiciona la imagen dentro del input */
     background-size: 20px 20px; /* Tamaño de la imagen */
     box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho total */
+}
+.inputBuscadorNotas:focus:not(:placeholder-shown) {
+    background-color: transparent; /* Hace el fondo transparente al escribir */
+    background-image:none;
+}
+.inputBuscadorNotas:focus() {
+    background-color: transparent; /* Hace el fondo transparente al escribir */
+    background-image:none;
 }
 
 .categoriasNotas{
@@ -172,4 +180,10 @@
     border: none;
     margin: 0px !important;
     top: 30px
+}
+
+.link-sin-estilos {
+    color: inherit;      /* Usa el color del texto del contenedor */
+    text-decoration: none; /* Elimina el subrayado */
+    cursor: pointer;       /* Muestra el cursor de pointer para indicar que es clickeable */
 }
