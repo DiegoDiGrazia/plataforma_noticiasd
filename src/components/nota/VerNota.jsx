@@ -94,14 +94,14 @@ const VerNota = () => {
                             <h5 id= "subtitulo_performance">Performance de la cuenta</h5>
                         </div>
                         <div className="mb-2 tamaño_barplot">
-                            {/* { <BarplotNota/> } */}
+                             { <BarplotNota/> } 
                         </div>
                         <div className='row g-1'>
                             <div className='col m-2 p-3 back-white'>
-                               { <PlataformaMasImpresionesNotas/>}
+                                { <PlataformaMasImpresionesNotas/> }
                             </div>
                             <div className='col m-2 p-3 back-white'>
-                                  {/* {<MediosMasRelevantesNotas/>}   */}
+                                   {<MediosMasRelevantesNotas/>}   
                             </div>
                         </div> 
                 </div>

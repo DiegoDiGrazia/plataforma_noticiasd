@@ -15,8 +15,8 @@ const CantidadDeNotasPorPagina = 6;
 
 const Notas = () => {
 
-    const [filtroSeleccionado, setFiltroSeleccionado] = useState(1);
-    const [numeroDePagina, setNumeroDePagina] = useState(1);
+    const [filtroSeleccionado, setFiltroSeleccionado] = useState(1); /// botones TODAS LAS NOTAS; EN PROGRESO; FINALIZADAS
+    const [numeroDePagina, setNumeroDePagina] = useState(1); /// para los botones de la paginacion
     
     const botones = [
         { id: 1, nombre: 'Todas las notas' },
@@ -42,6 +42,7 @@ const Notas = () => {
     
     const handleInputChange = (e) => {
         setSearchQuery(e.target.value);
+        setNumeroDePagina(1);
     };
 
     const handleSearch = (e) => {
@@ -62,7 +63,7 @@ const Notas = () => {
 
     const dispatch = useDispatch();
     ///api///
-    const DESDE = "2024-09-01"
+    const DESDE = "2024-03-01"
     const HASTA = "2024-09-29"
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
@@ -166,7 +167,18 @@ const Notas = () => {
 
     },[]); // Dependencias del useEffect 
 
-    const TodasLasNotas = useSelector((state) => state.notas.todasLasNotas)
+    const todasLasNotas = useSelector((state) => state.notas.todasLasNotas);
+    const notasEnProgreso = useSelector((state) => state.notas.notasEnProgreso);
+    const notasFinalizadas = useSelector((state) => state.notas.notasFinalizadas);
+    
+    let TodasLasNotas = todasLasNotas;
+    if (filtroSeleccionado === 2) {
+        TodasLasNotas = notasEnProgreso;
+    } else if (filtroSeleccionado === 3) {
+        TodasLasNotas = notasFinalizadas;
+    }
+
+        
     const notasFiltradas = TodasLasNotas.filter(nota =>
         nota.titulo.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -288,7 +300,7 @@ const Notas = () => {
                                         {nota.categorias}
                                     </div>
                                     <div className='col totales_widget'>
-                                        <p>{nota.interacciones ? nota.interacciones : "Sin interacciones"}</p>
+                                        <p>{nota.total ? nota.total : "Sin interacciones"}</p>
                                     </div>
                                     </div>
                                 ))}

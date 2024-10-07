@@ -66,8 +66,6 @@ const BarplotNota = () => {
         .finally(() => {
             setLoading(false);
         });
-
-        return () => clearInterval(interval); // Limpia el intervalo si el componente se desmonta
     }, []);
 
 
