@@ -25,7 +25,7 @@
 
 .boton_filtro_notas {
     border: none;
-    background-color: white;
+    background-color:#fbfcfc;
     font-size: 16px;
     color: #667085 !important;
     font-weight: 700;
@@ -186,4 +186,41 @@
     color: inherit;      /* Usa el color del texto del contenedor */
     text-decoration: none; /* Elimina el subrayado */
     cursor: pointer;       /* Muestra el cursor de pointer para indicar que es clickeable */
+}
+
+.categoria_notas{
+    display:inline-block;
+    background-color: #c4d4f4;  
+    color: #2164d5;
+    border-radius: 15px;
+    justify-content: center;
+    margin-top: 10px;
+    font-size: 12px;
+
+    padding: 5px 10px;
+}
+.colImgNota{
+    width: 45px;
+    justify-content: center;
+
+}
+
+.publicada {
+    font-size: 12px;
+    display: flex; /* Cambia a flexbox */
+    background-color: #bce4d0;  
+    color: #108951;
+    border-radius: 15px;
+    margin-top: 10px;
+    padding: 5px 40px; /* Ajusta el padding como desees */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+.vn_categoria {
+    background-color: #FB6514;
+    color: #EAECF0;
+    padding: 5px 10px; /* Ajusta el padding a tu gusto */
+    display: inline-block; /* Cambiar a inline-block */
+    border-radius: 5px; /* Opcional: para bordes redondeados */
 }

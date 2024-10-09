@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas } from '../../redux/notasSlice';
 import { Link } from 'react-router-dom';
+import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
+import { formatearTitulo } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 
 const CantidadDeNotasPorPagina = 6;
 
@@ -63,7 +65,7 @@ const Notas = () => {
 
     const dispatch = useDispatch();
     ///api///
-    const DESDE = "2024-03-01"
+    const DESDE = "2024-09-01"
     const HASTA = "2024-09-29"
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
@@ -280,24 +282,24 @@ const Notas = () => {
 
                                 {notasEnPaginaActual.map((nota) => (
                                     <div key={nota.id_noti} className='row pt-1 borderNotas'>
-                                    <div className='col-1'>
+                                    <div className='col-1 colImgNota'>
                                         <img src={nota.imagen} alt="Icono Nota" className='imagenWidwetInteracciones2' />
                                     </div>
                                     <div className='col-4 pt-1 columna_interaccion nuevoFont'>
                                         <Link className = "link-sin-estilos" to ={`/verNota`} state={{ id: nota.id_noti }}>
                                         <div className='row p-0 nombre_plataforma'>
-                                            {nota.titulo}
+                                            {formatearTitulo(nota.titulo,45)}
                                         </div>
                                         </Link>
                                         <div className='row p-0'>
-                                        <span className='FechaPubNota'>{nota.f_pub}</span>
+                                        <span className='FechaPubNota'>{formatearFecha(nota.f_pub)}</span>
                                         </div>
                                     </div>
                                     <div className='col-2'>
-                                        <img src="/images/publicada.png" alt="Publicada" />
+                                    <span className="publicada">Publicada</span>
                                     </div>
-                                    <div className='col'>
-                                        {nota.categorias}
+                                    <div className='col '>
+                                        <span className="categoria_notas">{nota.categorias}</span>
                                     </div>
                                     <div className='col totales_widget'>
                                         <p>{nota.total ? nota.total : "Sin interacciones"}</p>

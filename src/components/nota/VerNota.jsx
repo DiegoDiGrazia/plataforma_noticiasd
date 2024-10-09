@@ -12,6 +12,7 @@ import BarplotNota from '../barplot/BarplotNota';
 import { useLocation } from 'react-router-dom';
 import PlataformaMasImpresionesNotas from '../Dashboard/datosRelevantes/PlataformaMasImpresionesNota';
 import MediosMasRelevantesNotas from '../Dashboard/datosRelevantes/MediosMasRelevantesNotas';
+import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 
 const VerNota = () => {
 
@@ -73,9 +74,13 @@ const VerNota = () => {
                                 </div>
                                 <div className='col-6'>
                                     <div className='row vn_titulo'>{Nota.titulo}</div>
-                                    <div className='row vn_fecha'> {Nota.f_pub} </div>
-                                    <div className='row vn_estado'> Estado de la nota  </div> 
-                                    <div className='row order-last'> Catasdeasdfasdgorsadfasdfias </div>
+                                    <div className='row vn_fecha'> Publicada el {formatearFecha(Nota.f_pub)} </div>
+                                    <div className='row vn_estado publicada'> Publicada  </div> 
+                                    <div className='row order-last'>
+                                        <div>
+                                            <span className='vn_categoria'>{Nota.categorias}</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className='col boton_nota ml-5'>
                                     <button className="btn custom-dropdown-button dropdown-toggle boton_compartir" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">

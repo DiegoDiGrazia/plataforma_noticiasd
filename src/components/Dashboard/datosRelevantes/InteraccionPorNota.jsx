@@ -10,14 +10,14 @@ import { setNotasMayorInteraccion } from '../../../redux/interaccionesPorNotaSli
 import { formatNumberMiles } from '../Dashboard.jsx';
 
 
-function formatearTitulo(titulo) {
-    if (titulo.length > 30) {
-        return titulo.slice(0, 30) + "...";
+export function formatearTitulo(titulo, corte ) {
+    if (titulo.length > corte) {
+        return titulo.slice(0, corte) + "...";
     }
     return titulo;
 }
 
-function formatearFecha(fechaStr) {
+export function formatearFecha(fechaStr) {
     // Crear un objeto Date a partir de la cadena de fecha
     const fecha = new Date(fechaStr);
 
@@ -116,7 +116,7 @@ const InteraccionPorNota = () => {
         nota1 = {
             imagen: primero.imagen,
             fecha_publicacion: formatearFecha(primero.f_pub),
-            titulo: formatearTitulo(primero.titulo),
+            titulo: formatearTitulo(primero.titulo, 30),
             f_vence: primero.f_vence,
             interacciones: primero.total,
             publicada: true
