@@ -187,3 +187,85 @@
     text-decoration: none; /* Elimina el subrayado */
     cursor: pointer;       /* Muestra el cursor de pointer para indicar que es clickeable */
 }
+
+#botonPublicar{
+    background-color: #FF653B;
+    color: #EAECF0;
+    font-size: 16px;
+    float: right;
+    margin-right: 30px;
+    width: 128px;
+    height: 48px;
+    font-weight: 600;
+}
+.headerCrearNota{
+    font-size: 28px;
+    font-weight:200;
+    margin-top: 0px;
+}
+#nota{
+    font-size: 18px;
+}
+
+
+.upload-block {
+    width: 613px;
+    height: 182px;
+    border: 2px dashed black;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fcfffc    ;
+    margin-left: 50px;
+    
+}
+.crearNotaGlobal{
+    background-color: white !important;
+}
+
+.notaTutorial{
+padding-top: 0px !important;
+}
+
+.upload-block {
+    border: 2px dashed black;
+    padding: 20px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.upload-block.dragover {
+    background-color: #f0f0f0;
+}
+
+.custom-file-upload {
+    color: orangered;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: none;
+    transition: background-color 0.3s ease;
+    width: auto;
+    font-weight: 600;
+}
+
+.custom-file-upload:hover {
+    color: rgb(146, 42, 5);
+}
+.displayFlex{
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+}
+.fontGrisImagen{
+    font-size: 14px;
+    color: #667085;
+}
+
+.custom-modal{
+    width: 500px;
+
+}
