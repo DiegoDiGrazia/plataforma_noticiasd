@@ -6,7 +6,8 @@ import Sidebar from '../sidebar/Sidebar';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
 import "./nota.css";
-import ContenidoNota from './componetesNota/ContenidoNotas';
+import SubtituloNota from './componetesNota/SubtituloNota';
+import ParrafoNota from './componetesNota/ParrafoNota';
 
 const CrearNota = () => {
     const [image, setImage] = useState(null);
@@ -22,8 +23,10 @@ const CrearNota = () => {
       setShowButtons(!showButtons);
     };
     const agregarSubtitulo = () => {
-        const nuevo = ContenidoNota();
-        setComponentesNota([...componentesNota, nuevo]);
+        setComponentesNota([...componentesNota, "subtitulo"]);
+      };
+      const agregarParrafo = () => {
+        setComponentesNota([...componentesNota, "parrafo"]);
       };
 
     const handleDragOver = (event) => {
@@ -146,9 +149,15 @@ const CrearNota = () => {
                         {/* SECCION ESCRIBIR NOTA */}
                         <div className='col-8'>
                             <textarea  className="inputTituloNota" type="text" placeholder="Escribí un titulo para la nota"></textarea >
-                            {componentesNota && componentesNota.map(contenido =>
-                                <contenido/>
-                            )}
+                            {componentesNota && componentesNota.map((contenido, index) => {
+                            if (contenido === "subtitulo") {
+                                return <SubtituloNota key={index} />;
+                            } else if(contenido === "parrafo") {
+                                return <ParrafoNota key={index} />;}
+                            else if(contenido === "imagen") {
+                                return <SubtituloNota key={index} />;}
+                            return null; // Esto te permite agregar otros tipos de contenido en el futuro
+                            })}
 
                             {/* BOTONERA AGREGAR CONTENIDO */}
                             <div className="containerButton">
@@ -160,7 +169,7 @@ const CrearNota = () => {
                                 {showButtons && (
                                     <div className="buttons-container">
                                     <button onClick={agregarSubtitulo} className="botones-nota" title='Subtítulo'><img src="images/t-botton.png" alt="" /></button>
-                                    <button className="botones-nota" title='Párrafo'><img src="images/Aa-botton.png" alt="" /></button>
+                                    <button onClick={agregarParrafo} className="botones-nota" title='Párrafo'><img src="images/Aa-botton.png" alt="" /></button>
                                     <button className="botones-nota"><img src="images/image-icon-botton.png" alt="" /></button>
                                     <button className="botones-nota"><img src="images/video-botton.png" alt="" /></button>
                                     </div>
