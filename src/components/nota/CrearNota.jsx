@@ -3,9 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Button, Modal } from 'react-bootstrap';
 import Sidebar from '../sidebar/Sidebar';
-import "./nota.css";
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
+import "./nota.css";
+import ContenidoNota from './componetesNota/ContenidoNotas';
 
 const CrearNota = () => {
     const [image, setImage] = useState(null);
@@ -14,6 +15,16 @@ const CrearNota = () => {
     const [showModal, setShowModal] = useState(false);
     const imageRef = useRef(null);
     const fileInputRef = useRef(null);
+    const [componentesNota, setComponentesNota] = useState([]);
+    const [showButtons, setShowButtons] = useState(false);
+
+    const toggleButtons = () => {
+      setShowButtons(!showButtons);
+    };
+    const agregarSubtitulo = () => {
+        const nuevo = ContenidoNota();
+        setComponentesNota([...componentesNota, nuevo]);
+      };
 
     const handleDragOver = (event) => {
         event.preventDefault(); // Previene el comportamiento por defecto
@@ -46,7 +57,7 @@ const CrearNota = () => {
                 cropper.destroy();
             }
             const newCropper = new Cropper(imageRef.current, {
-                aspectRatio: NaN, // Permite cualquier proporción
+                aspectRatio: NaN,
                 viewMode: 3,
             });
             setCropper(newCropper);
@@ -119,44 +130,81 @@ const CrearNota = () => {
                             }
                         {/* Muestra la imagen recortada */}
                         {croppedImage && (
-                        <   div className='col-8'>
-                                <div className="mt-3">
+                        <  div className='col-8'>
+                                <div className="imagenRecortada">
                                     <img
                                         src={croppedImage}
                                         alt="Imagen recortada"
-                                        style={{ display: 'block', maxWidth: '100%' }}
+                                        className='imagenRecortada'
                                     />
                                 </div>
                             </div>
                         )}
-                        <div className='col'>
+                        <div className='col-2'>
                             <img src="/images/tutorialvideo.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
                         </div>
+                        {/* SECCION ESCRIBIR NOTA */}
+                        <div className='col-8'>
+                            <textarea  className="inputTituloNota" type="text" placeholder="Escribí un titulo para la nota"></textarea >
+                            {componentesNota && componentesNota.map(contenido =>
+                                <contenido/>
+                            )}
+
+                            {/* BOTONERA AGREGAR CONTENIDO */}
+                            <div className="containerButton">
+                                <button onClick={toggleButtons} className={`botones-nota ${showButtons ? 'boton-plus' : ''}`}>
+                                    {showButtons ?  <img src="images/plus-circle-x.png" alt="" />:  <img src="images/plus-circle-+.png" alt="" /> }
+                                </button>
+
+
+                                {showButtons && (
+                                    <div className="buttons-container">
+                                    <button onClick={agregarSubtitulo} className="botones-nota" title='Subtítulo'><img src="images/t-botton.png" alt="" /></button>
+                                    <button className="botones-nota" title='Párrafo'><img src="images/Aa-botton.png" alt="" /></button>
+                                    <button className="botones-nota"><img src="images/image-icon-botton.png" alt="" /></button>
+                                    <button className="botones-nota"><img src="images/video-botton.png" alt="" /></button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                     </div>
-                    
+
+
+
                     {/* Modal para la imagen */}
                     <Modal show={showModal} onHide={() => setShowModal(false)} centered backdrop="static" dialogClassName="custom-modal">
-                        <Modal.Header closeButton>
-                            <Modal.Title>Selecciona la posicion de la imagen</Modal.Title>
+                        <Modal.Header className='modalHeader'>
+                            <Modal.Title>
+                                <div className='tituloModal'>Selecciona la posicion de la imagen</div>
+                                </Modal.Title>
                         </Modal.Header>
-                        <Modal.Body>
-                            <div>123123123</div>
+                        <Modal.Body className='modalBody'>
+                            <div className='subtitulo-modal'>Selecciona el recorte que se utilizara para los canales donde la imagen deba ser adaptada</div>
+                            <div className='custom_image_modal'>
                             {image && (
                                 <img
                                     ref={imageRef}
                                     src={image}
                                     alt="Imagen seleccionada"
-                                    style={{ display: 'block', maxWidth: '100%' }}
+                                    className='custom_image_modal'
                                 />
                             )}
+                            </div>
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                Cancelar
-                            </Button>
-                            <Button variant="primary" onClick={handleCrop}>
-                                Recortar Imagen
-                            </Button>
+                        <Modal.Footer className='modalFooter'>
+                            <div className='row rowModalFooter'>
+                                <div className='col text-align-center'>
+                                <Button variant="none" onClick={() => setShowModal(false)} className='botonModalVolver'>
+                                    Volver
+                                </Button>
+                                </div>
+                                <div className='col text-align-center'>
+                                    <Button variant="none" onClick={handleCrop} className='botonModalContinuar'>
+                                        Continuar
+                                    </Button>
+                                </div>
+                            </div>
                         </Modal.Footer>
                     </Modal>
                 </div>
