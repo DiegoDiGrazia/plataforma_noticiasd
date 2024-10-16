@@ -188,6 +188,211 @@
     cursor: pointer;       /* Muestra el cursor de pointer para indicar que es clickeable */
 }
 
+#botonPublicar{
+    background-color: #FF653B;
+    color: #EAECF0;
+    font-size: 16px;
+    float: right;
+    margin-right: 30px;
+    width: 128px;
+    height: 48px;
+    font-weight: 600;
+}
+.headerCrearNota{
+    font-size: 28px;
+    font-weight:200;
+    margin-top: 0px;
+}
+#nota{
+    font-size: 18px;
+}
+
+
+.upload-block {
+    width: 613px;
+    height: 182px;
+    border: 2px dashed black;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fcfffc    ;
+    margin-left: 50px;
+    
+}
+.crearNotaGlobal{
+    background-color: white !important;
+}
+
+.notaTutorial{
+padding-top: 0px !important;
+}
+
+.upload-block {
+    border: 2px dashed black;
+    padding: 20px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.upload-block.dragover {
+    background-color: #f0f0f0;
+}
+
+.custom-file-upload {
+    color: orangered;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: none;
+    transition: background-color 0.3s ease;
+    width: auto;
+    font-weight: 600;
+}
+
+.custom-file-upload:hover {
+    color: rgb(146, 42, 5);
+}
+.displayFlex{
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+}
+.fontGrisImagen{
+    font-size: 14px;
+    color: #667085;
+}
+
+.custom-modal{
+    width: auto;
+    height: 485px;
+    color: #667085;
+
+}
+.custom_image_modal{
+    width: 463px !important;
+    height: 295px !important;
+    border-radius: 10px !important;
+    contain: content !important;
+    margin-top: 10px;
+}
+
+.subtitulo-modal{
+    color: #667085;
+    font-size: 16px;
+}
+.tituloModal{
+    color: #101828;
+    font-size: 24px;
+    font-weight: 600;
+}
+.modalBody{
+    padding-top: 5px;
+}
+
+.modalHeader{
+    border: none !important;
+    padding-bottom: 0px !important;
+}
+
+.botonModalVolver{
+    text-align: center;
+    border: 1px solid #c1c3c7;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    font-weight: 600;
+}   
+.botonModalContinuar{
+    text-align: center;
+    border: 1px solid #c1c3c7;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    background-color: #FF653B;
+    font-weight: 600;
+}
+.botonModalContinuar:hover{
+    text-align: center;
+    border: 1px solid #c1c3c7;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    background-color: #ff6236;
+    font-weight: 600;
+}
+.modalFooter{
+    border: none !important;
+    padding-top: 0px;
+}
+.rowModalFooter{
+    padding-top: 15px;
+    padding-bottom: 10px; 
+}
+
+.imagenRecortada{
+    width: 660px;
+    height: 360px;
+    border-radius: 15px !important;
+    margin-left: 28px;
+}
+
+.inputTituloNota{
+    border: none;
+    display: block;
+    width: 100%;
+    color: black;
+    font-size: 28px;
+    font-weight: 600;
+    margin-left: 38px;
+    resize: none;
+    overflow-wrap: break-word;
+    padding-right: 40px;
+
+}
+.inputTituloNota::placeholder{
+    border: none;
+    display: block;
+    width: 100%;
+    color: #D0D5DD;
+    font-size: 28px;
+    font-weight: 600;
+    margin-left: 38px;
+    
+}
+.inputTituloNota:focus{
+    display: block;
+    outline: none;
+
+}
+
+.buttons-container {
+    display: flex; /* Mostramos los botones en una fila */
+    flex-direction: row;
+  }
+  
+  .botones-nota {
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: white;
+  }
+
+  .boton-plus{
+    border-right: 3px solid rgb(31, 31, 31);
+  }
+  
+  .button:hover {
+    background-color: deepskyblue;
+  }
+.containerButton{
+    display: flex;
+    align-items: center;
+    
+}
+
 .categoria_notas{
     display:inline-block;
     background-color: #c4d4f4;  
