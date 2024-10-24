@@ -8,26 +8,52 @@ import 'cropperjs/dist/cropper.css';
 import "./nota.css";
 import SubtituloNota from './componetesNota/SubtituloNota';
 import ParrafoNota from './componetesNota/ParrafoNota';
+import TituloNota from './componetesNota/TituloNota';
+import { setTituloNota, setContenidoNota } from '../../redux/crearNotaSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
 
 const CrearNota = () => {
+    const dispatch = useDispatch();
     const [image, setImage] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
     const [cropper, setCropper] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const imageRef = useRef(null);
     const fileInputRef = useRef(null);
-    const [componentesNota, setComponentesNota] = useState([]);
     const [showButtons, setShowButtons] = useState(false);
+    const inputFileRef = useRef(null);
 
     const toggleButtons = () => {
       setShowButtons(!showButtons);
     };
+    const handleClickEnNota = () => {
+        // Simula un clic en el input de archivo
+        inputFileRef.current.click();
+      };
+
+    const handleFileChangeEnNota = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        // Aquí puedes manejar la imagen seleccionada
+        console.log("entro a agregar imagen")
+        agregarImagen(file);
+    }};
+    
     const agregarSubtitulo = () => {
-        setComponentesNota([...componentesNota, "subtitulo"]);
+        dispatch(setContenidoNota(["subtitulo", ""]))
       };
-      const agregarParrafo = () => {
-        setComponentesNota([...componentesNota, "parrafo"]);
-      };
+    const agregarParrafo = () => {
+        console.log("entra al parrafo")
+        dispatch(setContenidoNota( ["parrafo", ""]));
+    };
+    const agregarImagen = (file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            dispatch(setContenidoNota(["imagen", reader.result])); // Almacena la imagen en base64
+        };
+        reader.readAsDataURL(file); // Convierte el archivo a base64
+    };
 
     const handleDragOver = (event) => {
         event.preventDefault(); // Previene el comportamiento por defecto
@@ -76,7 +102,7 @@ const CrearNota = () => {
             cropper.destroy(); // Destruye el cropper
         }
     };
-
+    const contenidoNota = useSelector((state) => state.crearNota.contenidoNota)
     return (
         <div className="container-fluid sinPadding crearNotaGlobal">
             <div className="d-flex h-100">
@@ -99,63 +125,62 @@ const CrearNota = () => {
                             </div>
                         </div>
                     </header>
+                    {/* SECCION NOTA */}
                     <div className='row notaTutorial'>
-                        {!croppedImage &&
                         <div className='col-8 columnaNota'>
-                            <div className="upload-block"
-                                onDragOver={handleDragOver}
-                                onDrop={handleDrop}
-                            >
-                                <input
-                                    type="file"
-                                    id="fileInput"
-                                    ref={fileInputRef}
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    style={{ display: 'none' }}
-                                />
-                                <img src="/images/uploadImagen.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
-
-                                <div className='row justify-content-center pt-3'>
-                                    Imagen de portada*
-                                </div>
-                                <div className='displayFlex pt-1'>
-                                    <label htmlFor="fileInput" className="custom-file-upload">
-                                        {"Subí tu imagen "}
-                                    </label>
-                                    <div className='fontGrisImagen'>{" o arrástrala aquí"}</div>
-                                </div>
-                                <div className='fontGrisImagen'>
-                                    SVG, PNG o JPG
-                                </div>
-                            </div>
-                        </div>
-                            }
-                        {/* Muestra la imagen recortada */}
-                        {croppedImage && (
-                        <  div className='col-8'>
-                                <div className="imagenRecortada">
-                                    <img
-                                        src={croppedImage}
-                                        alt="Imagen recortada"
-                                        className='imagenRecortada'
+                        {!croppedImage && 
+                            <div className='row seccionImagen'> 
+                                <div className="upload-block"
+                                    onDragOver={handleDragOver}
+                                    onDrop={handleDrop}
+                                    >
+                                    <input
+                                        type="file"
+                                        id="fileInput"
+                                        ref={fileInputRef}
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        style={{ display: 'none' }}
                                     />
+                                    <img src="/images/uploadImagen.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
+
+                                    <div className='row justify-content-center pt-3'>
+                                        Imagen de portada*
+                                    </div>
+                                    <div className='displayFlex pt-1'>
+                                        <label htmlFor="fileInput" className="custom-file-upload">
+                                            {"Subí tu imagen "}
+                                        </label>
+                                        <div className='fontGrisImagen'>{" o arrástrala aquí"}</div>
+                                    </div>
+                                    <div className='fontGrisImagen'>
+                                        SVG, PNG o JPG
+                                    </div>
                                 </div>
                             </div>
-                        )}
-                        <div className='col-2'>
-                            <img src="/images/tutorialvideo.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
-                        </div>
-                        {/* SECCION ESCRIBIR NOTA */}
-                        <div className='col-8'>
-                            <textarea  className="inputTituloNota" type="text" placeholder="Escribí un titulo para la nota"></textarea >
-                            {componentesNota && componentesNota.map((contenido, index) => {
-                            if (contenido === "subtitulo") {
-                                return <SubtituloNota key={index} />;
-                            } else if(contenido === "parrafo") {
-                                return <ParrafoNota key={index} />;}
-                            else if(contenido === "imagen") {
-                                return <SubtituloNota key={index} />;}
+                            }
+                            {/* Muestra la imagen recortada */}
+                            {croppedImage && (
+                            <div className='row'>
+                                    <div className="imagenRecortada">
+                                        <img
+                                            src={croppedImage}
+                                            alt="Imagen recortada"
+                                            className='imagenRecortada'
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                            <div className='row'>
+                            <TituloNota/>
+
+                            {contenidoNota && contenidoNota.map((contenido, index) => {
+                            if (contenido[0] === "subtitulo") {
+                                return <SubtituloNota key={index} indice={index}/>;
+                            } else if(contenido[0] === "parrafo") {
+                                return <ParrafoNota key={index} indice={index}/>;}
+                            else if(contenido[0] === "imagen") {
+                                return <ImagenDeParrafo key={index} indice={index} />;}
                             return null; // Esto te permite agregar otros tipos de contenido en el futuro
                             })}
 
@@ -170,12 +195,32 @@ const CrearNota = () => {
                                     <div className="buttons-container">
                                     <button onClick={agregarSubtitulo} className="botones-nota" title='Subtítulo'><img src="images/t-botton.png" alt="" /></button>
                                     <button onClick={agregarParrafo} className="botones-nota" title='Párrafo'><img src="images/Aa-botton.png" alt="" /></button>
-                                    <button className="botones-nota"><img src="images/image-icon-botton.png" alt="" /></button>
+                                    <button onClick={handleClickEnNota} className="botones-nota">
+                                    <img src="images/image-icon-botton.png" alt="Subir Imagen" />
+                                    </button>
+                                    {/* Input file oculto */}
+                                    <input
+                                    type="file"
+                                    ref={inputFileRef}
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChangeEnNota}
+                                    accept="image/*"  // Acepta solo archivos de imagen
+                                    />
+
                                     <button className="botones-nota"><img src="images/video-botton.png" alt="" /></button>
                                     </div>
                                 )}
                             </div>
                         </div>
+
+
+                        </div> 
+                       
+                        {/* Seccion columna izquierda del tutorial */}
+                        <div className='col-2 columnaTutorial'>
+                            <img src="/images/tutorialvideo.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
+                        </div>
+                        {/* fin seccion columna izquierda */}
 
                     </div>
 
