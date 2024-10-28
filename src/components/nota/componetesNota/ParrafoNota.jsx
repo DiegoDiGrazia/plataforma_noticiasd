@@ -4,18 +4,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'cropperjs/dist/cropper.css';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setContenidoPorIndice, setTituloNota } from '../../../redux/crearNotaSlice';
-import { Button } from 'react-bootstrap';
-import { DeleteContenidoPorIndice } from '../../../redux/crearNotaSlice';
+import { BajarContenidoPorIndice, setContenidoPorIndice, setTituloNota, SubirContenidoPorIndice } from '../../../redux/crearNotaSlice';
+import BotoneraContenido from './botoneraContenido';
 
 const ParrafoNota= ({indice}) => {
     const tituloRef = useRef(null);
     const tituloGlobalNota= useSelector((state) => state.crearNota.contenidoNota[indice][1]);
     const dispatch = useDispatch();
     
-    const eliminarContenido = (indice) =>{
-      dispatch(DeleteContenidoPorIndice(indice))
-    }   
 
     const handleInputChange = (e) => {
       dispatch(setContenidoPorIndice([indice, e.target.value]))
@@ -28,10 +24,9 @@ const ParrafoNota= ({indice}) => {
 
     return (
 
-      <span style={{ display: 'flex', alignItems: 'center' }}>
-            <Button variant="none" onClick={() => eliminarContenido(indice)} className='botonEliminarContenido'>
-                -
-            </Button>
+      <span className = 'p-0'style={{ display: 'flex', alignItems: 'center' }}>
+          <BotoneraContenido indice = {indice}/>
+
           <textarea 
           ref={tituloRef}
           className="inputTituloNota parrafoNota"

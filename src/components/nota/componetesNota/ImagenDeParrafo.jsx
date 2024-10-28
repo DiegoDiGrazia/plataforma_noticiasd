@@ -6,6 +6,9 @@ import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { DeleteContenidoPorIndice } from '../../../redux/crearNotaSlice';
+import { SubirContenidoPorIndice, BajarContenidoPorIndice } from '../../../redux/crearNotaSlice';
+import BotoneraContenido from './botoneraContenido';
+
 
 
 const ImagenDeParrafo= ({ indice }) => {
@@ -19,21 +22,23 @@ const ImagenDeParrafo= ({ indice }) => {
     const eliminarContenido = (indice) =>{
         dispatch(DeleteContenidoPorIndice(indice))
     }   
+    const SubirUnaPosicionContenido = (indice) =>{
+        dispatch(SubirContenidoPorIndice(indice))
+      }   
+      const BajarUnaPosicionContenido = (indice) =>{
+        dispatch(BajarContenidoPorIndice(indice))
+      }   
 
     return (
-   
-        <div>
-            <span>
-            <Button variant="none" onClick={() => eliminarContenido(indice)} className='botonEliminarContenido'>
-                -
-            </Button>
-            </span>
+           <span className="spanContainer">
+             <BotoneraContenido indice = {indice} className= 'pr-2'/>
             <img
             src={imagen[1]}
             alt="Imagen de parrafo"
-            className='imagenRecortada'
+            className='imagenRecortada imagenNotaContenido'
             />
-        </div>
+            </span>
+
         )
 };
 

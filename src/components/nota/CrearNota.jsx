@@ -12,7 +12,7 @@ import TituloNota from './componetesNota/TituloNota';
 import { setTituloNota, setContenidoNota } from '../../redux/crearNotaSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
-
+import { Link } from 'react-router-dom';
 const CrearNota = () => {
     const dispatch = useDispatch();
     const [image, setImage] = useState(null);
@@ -111,7 +111,14 @@ const CrearNota = () => {
                     <header id="head_dash" className='header_dash'>
                         <div className='row'>
                             <div className='col'>
-                                <h4 id="nota">Notas / Crear Nota</h4>
+                                <h4 id="nota">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><Link to="/notas" className='breadcrumb-item'>{'< '} Notas</Link></li>
+                                        <li class="breadcrumb-item blackActive" aria-current="page">Crear Nota</li>
+                                    </ol>
+                                </nav>
+                                </h4>
                             </div>
                             <div className='col'>
                                 <Button id="botonPublicar" variant="none">

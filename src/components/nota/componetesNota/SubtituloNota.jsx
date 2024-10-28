@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { setContenidoPorIndice, setTituloNota } from '../../../redux/crearNotaSlice';
 import { Button } from 'react-bootstrap';
 import { DeleteContenidoPorIndice } from '../../../redux/crearNotaSlice';
+import { SubirContenidoPorIndice, BajarContenidoPorIndice } from '../../../redux/crearNotaSlice';
+import BotoneraContenido from './botoneraContenido';
 
 const SubtituloNota= ({indice}) => {
     const tituloRef = useRef(null);
@@ -15,6 +17,12 @@ const SubtituloNota= ({indice}) => {
     
     const eliminarContenido = (indice) =>{
       dispatch(DeleteContenidoPorIndice(indice))
+    }   
+    const SubirUnaPosicionContenido = (indice) =>{
+      dispatch(SubirContenidoPorIndice(indice))
+    }   
+    const BajarUnaPosicionContenido = (indice) =>{
+      dispatch(BajarContenidoPorIndice(indice))
     }   
 
     const handleInputChange = (e) => {
@@ -28,10 +36,8 @@ const SubtituloNota= ({indice}) => {
 
     return (
 
-      <span style={{ display: 'flex', alignItems: 'center' }}>
-            <Button variant="none" onClick={() => eliminarContenido(indice)} className='botonEliminarContenido'>
-                -
-            </Button>
+      <span  className = 'p-0' style={{ display: 'flex', alignItems: 'center' }}>
+          <BotoneraContenido indice = {indice}/>
           <textarea 
           ref={tituloRef}
           className="inputTituloNota subtituloNota"

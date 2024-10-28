@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './src/main.jsx', // Cambia según tu archivo de entrada
@@ -27,6 +28,7 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html', // Usar tu archivo HTML base
       inject: true,
@@ -42,7 +44,7 @@ module.exports = {
         context: ['/api', '/codigo_recuperacion', '/cambiar_clave', '/app_obtener_usuarios', 
                   '/app_obtener_notas', '/app_obtener_medios', '/app_obtener_categorias', 
                   '/reporte_descargarpdfwa', '/app_obtener_noticias', '/app_obtener_noticia', '/app_obtener_medios_noticia',
-                  '/app_obtener_impresiones_plataforma_noticia'],
+                  '/app_obtener_impresiones_plataforma_noticia', '/app_obtener_listado_categorias'],
         target: 'https://panel.serviciosd.com/',
         changeOrigin: true,
       },

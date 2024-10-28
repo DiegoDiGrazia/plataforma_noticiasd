@@ -11,6 +11,7 @@ import { Link, BrowserRouter, Routes, Route } from 'react-router-dom';
 import Notas from './components/nota/Notas';
 import VerNota from './components/nota/VerNota';
 import CrearNota from './components/nota/CrearNota';
+import PublicarNota from './components/nota/PublicarNota';
 
 const inlineStyles = {
   marginRight: '10px'
@@ -26,6 +27,8 @@ function App() {
       
       <Routes>
         <Route path="/crearNota/" element={<CrearNota/>} />
+        <Route path="/publicarNota/" element={<PublicarNota/>} />
+
         <Route path="/verNota/" element={<VerNota/>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/notas" element={<Notas/>} />
