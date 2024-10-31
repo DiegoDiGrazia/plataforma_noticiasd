@@ -9,14 +9,17 @@ import "./nota.css";
 import SubtituloNota from './componetesNota/SubtituloNota';
 import ParrafoNota from './componetesNota/ParrafoNota';
 import TituloNota from './componetesNota/TituloNota';
-import { setTituloNota, setContenidoNota } from '../../redux/crearNotaSlice';
+import { setTituloNota, setContenidoNota, setImagenPrincipal } from '../../redux/crearNotaSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const CrearNota = () => {
     const dispatch = useDispatch();
     const [image, setImage] = useState(null);
-    const [croppedImage, setCroppedImage] = useState(null);
+    const croppedImage = useSelector((state) => state.crearNota.imagenPrincipal);
+    const navigate = useNavigate();
+
     const [cropper, setCropper] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const imageRef = useRef(null);
@@ -35,8 +38,6 @@ const CrearNota = () => {
     const handleFileChangeEnNota = (event) => {
     const file = event.target.files[0];
     if (file) {
-        // Aquí puedes manejar la imagen seleccionada
-        console.log("entro a agregar imagen")
         agregarImagen(file);
     }};
     
@@ -96,11 +97,14 @@ const CrearNota = () => {
     const handleCrop = () => {
         if (cropper) {
             const canvas = cropper.getCroppedCanvas();
-            setCroppedImage(canvas.toDataURL()); // Guarda la imagen recortada
+            dispatch(setImagenPrincipal(canvas.toDataURL()))
             setShowModal(false); // Cierra el modal después de recortar
             setImage(null); // Oculta la imagen original
             cropper.destroy(); // Destruye el cropper
         }
+    };
+    const eliminarImagenPrincipal = () => {
+        dispatch(setImagenPrincipal(null))
     };
     const contenidoNota = useSelector((state) => state.crearNota.contenidoNota)
     return (
@@ -121,8 +125,8 @@ const CrearNota = () => {
                                 </h4>
                             </div>
                             <div className='col'>
-                                <Button id="botonPublicar" variant="none">
-                                    <img src="/images/send.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />{" Publicar"}
+                                <Button onClick = {()=> navigate('/publicarNota') } id="botonPublicar" variant="none">
+                                     <img src="/images/send.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />{" Publicar"}
                                 </Button>
                             </div>
                         </div>
@@ -169,14 +173,17 @@ const CrearNota = () => {
                             {/* Muestra la imagen recortada */}
                             {croppedImage && (
                             <div className='row'>
-                                    <div className="imagenRecortada">
-                                        <img
-                                            src={croppedImage}
-                                            alt="Imagen recortada"
-                                            className='imagenRecortada'
-                                        />
+                                <div className="imagenRecortadaContenedor">
+                                    <button onClick = {() => eliminarImagenPrincipal()} className="boton-superior-izquierda">
+                                        <img src="/images/botonBorrarImagen.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
+                                    </button>
+                                    <img
+                                        src={croppedImage}
+                                        alt="Imagen recortada"
+                                        className='imagenRecortada'
+                                    />
                                     </div>
-                                </div>
+                            </div>
                             )}
                             <div className='row'>
                             <TituloNota/>

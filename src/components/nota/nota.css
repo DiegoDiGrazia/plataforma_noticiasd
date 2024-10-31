@@ -332,11 +332,32 @@ padding-top: 0px !important;
     padding-bottom: 10px; 
 }
 
-.imagenRecortada{
-    width: 660px;
-    height: 360px;
+.imagenRecortadaContenedor {
+    position: relative; /* Permite posicionar elementos dentro de este contenedor */
+    display: inline-block; /* Para ajustar el tamaño al de la imagen */
+    width: auto;
+    height: auto;
     border-radius: 15px !important;
-    margin-left: 0px;
+    margin-left: 30px;
+}
+
+.imagenRecortada {
+    width: 100%; /* Asegura que la imagen ocupe todo el espacio del contenedor */
+    height: auto; /* Mantiene la relación de aspecto de la imagen */
+    border-radius: 15px !important;
+
+}
+
+.boton-superior-izquierda {
+    position: absolute;
+    top: 10px; /* Ajusta este valor para controlar la distancia desde el borde superior */
+    right: 10px; /* Ajusta este valor para controlar la distancia desde el borde izquierdo */
+    z-index: 10; /* Asegura que el botón esté por encima de la imagen */
+    border: none; /* Sin bordes */
+    padding: 0px; /* Espaciado interno del botón */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    background-color: transparent;
+    padding: 10px 10px;
 }
 
 .inputTituloNota{
@@ -456,10 +477,10 @@ padding-top: 0px !important;
     font-size: 20px;
     font-weight: 500;
     margin-left: 15px;
-
     margin-bottom: 10px;
     margin-top: 10px;
 }
+
 .columnaTutorial{
     padding-left: 60px;
 }
@@ -469,9 +490,11 @@ padding-top: 0px !important;
     border:none;
     text-decoration: none;
 }
+
 .blackActive{
     color: #050505;
 }
+
 .botonEliminarContenido{
     padding: 0px;
 }
@@ -492,9 +515,59 @@ padding-top: 0px !important;
 
 }
 .headerPublicarNota{
-    font: 24px;
+    font-size: 24px;
     color: #101828;
     font-weight: 500;
+}
+.categorias {
+    background-color: #F2F4F7;
+    margin:10px 5px;
+    font-size: 16px;
+    color: #344054;
+    padding: 10px;
+    border-radius: 27px;
+    display: inline-block ;
+    border: none;
+    font-weight: bold;
+}
+.categorias:hover {
+    background-color: #153f7d62;
+    margin:10px 5px;
+    font-size: 16px;
+    color: #344054;
+    padding: 10px;
+    border-radius: 27px;
+    display: inline-block ;
+    border: none;
+}
+.categoriaActiva{
+    background-color: #FFF6ED;
+    margin:10px 5px;
+    font-size: 16px;
+    color: #FB6514;
+    padding: 10px;
+    border-radius: 27px;
+    display: inline-block ;
+    border: none;
+    font-weight: bold;
 
-    
+}
+
+.categoriaActiva:hover{
+    background-color: #fed3a7;
+
+}
+  
+.filaCategorias{
+    margin: 0px 40px;
+
+}
+
+.imagenParaRRSSHeader{
+    font-size: 24px;
+    margin-left: 55px;
+
+}
+.mlRRSS{
+    margin-left: 55px;
 }

@@ -5,10 +5,22 @@ const crearNotaSlice = createSlice({
   initialState: {
     tituloNota : "",
     contenidoNota :[],
+    categorias: [],
+    imagenPrincipal: null,
+    imagenRRSS: null,
   },
   reducers: {
     setTituloNota: (state, action) => {
       state.tituloNota = action.payload;
+    },  
+    setImagenPrincipal: (state, action) => {
+      state.imagenPrincipal = action.payload;
+    },  
+    setImagenRRSS: (state, action) => {
+      state.imagenRRSS = action.payload;
+    },
+    setImagenRRSS: (state, action) => {
+      state.imagenPrincipal = action.payload;
     },  
     setContenidoNota: (state, action) => { /// aca guardo las imagenes, subtitulos y parrafos
         state.contenidoNota.push(action.payload)
@@ -40,11 +52,14 @@ const crearNotaSlice = createSlice({
       const indice = action.payload[0];
       const contenido = action.payload[1];
       state.contenidoNota[indice][1] = contenido;
+    },
+    setCategorias: (state, action) =>{
+      state.categorias = action.payload;
     }
     }
 });
 
 export const { setTituloNota, setContenidoNota, DeleteContenidoPorIndice, setContenidoPorIndice,
-                SubirContenidoPorIndice, BajarContenidoPorIndice
+                SubirContenidoPorIndice, BajarContenidoPorIndice, setCategorias, setImagenPrincipal, setImagenRRSS,
  } = crearNotaSlice.actions;
 export default crearNotaSlice.reducer;
