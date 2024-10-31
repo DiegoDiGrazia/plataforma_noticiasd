@@ -71,7 +71,7 @@ const PublicarNota = () => {
         }
     };
     
-    const categorias = useSelector((state) => state.crearNota.categorias);
+    const categorias = useSelector((state) => state.crearNota.categorias) || [];
     const [categoriasActivas, setCategoriasActivas] = useState([]);
 
     const actualizarCategoriasActivas = (categoria) => {
