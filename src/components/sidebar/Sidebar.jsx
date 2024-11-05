@@ -33,8 +33,13 @@ const Sidebar = ({estadoActual}) => {
                     </Button>
 
                         <ul className="list-group list-group-flush no-border">
-                            <li className={estadoActual == "dashboard" ? "boton_sidebar_clickeado" : ""}>
-                                <Button className="" variant='none' onClick={() => handleClickBotonSidebar("dashboard")}>
+                        <li className={`${
+                                            estadoActual === "dashboard" ? "boton_sidebar_clickeado" : ""
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        }`}>
+
+                                <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("dashboard")}>
                                     <img src="/images/barchar_icon.png" alt="Icono 1" className="icon me-2" />
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Dashboard</span>
                                 </Button>

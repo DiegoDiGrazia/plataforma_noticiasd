@@ -112,7 +112,6 @@ const CrearNota = () => {
             <div className="d-flex h-100">
                 <Sidebar estadoActual={"notas"} />
                 <div className="content flex-grow-1 crearNotaGlobal">
-                    <header id="head_dash" className='header_dash'>
                         <div className='row'>
                             <div className='col'>
                                 <h4 id="nota">
@@ -135,7 +134,6 @@ const CrearNota = () => {
                                 <h3 className='headerCrearNota'>Crear nota</h3>
                             </div>
                         </div>
-                    </header>
                     {/* SECCION NOTA */}
                     <div className='row notaTutorial'>
                         <div className='col-8 columnaNota'>
@@ -231,8 +229,8 @@ const CrearNota = () => {
                         </div> 
                        
                         {/* Seccion columna izquierda del tutorial */}
-                        <div className='col-2 columnaTutorial'>
-                            <img src="/images/tutorialvideo.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
+                        <div className='col-4 columnaTutorial align-self-start'>
+                            <img src="/images/tutorialvideo.png" alt="Icono 1" className="float-right" />
                         </div>
                         {/* fin seccion columna izquierda */}
 

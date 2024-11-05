@@ -206,7 +206,6 @@ const Notas = () => {
             <div className="d-flex h-100">
                 <Sidebar estadoActual={"notas"} /> {/* Usa el componente Sidebar */}
                 <div className="content flex-grow-1">
-                        <header id = "head_dash" className='header_dash'>
                             <div className='row'>
                                 <h4 id="nota">Notas</h4>
                             </div>
@@ -223,7 +222,6 @@ const Notas = () => {
                                 </Button>
                                 </div>
                             </div>
-                        </header>
 
                         <div className='row'>
                             <div className="container">

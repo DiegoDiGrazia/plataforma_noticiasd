@@ -56,7 +56,7 @@ const PublicarNota = () => {
                 cropper.destroy(); // Destruye el anterior cropper antes de crear uno nuevo
             }
             const newCropper = new Cropper(imageRef.current, {
-                aspectRatio: NaN, // Permite cualquier relación de aspecto
+                aspectRatio: 1, // Permite cualquier relación de aspecto
                 viewMode: 3,
             });
             setCropper(newCropper); // Almacena la nueva instancia de Cropper
@@ -81,10 +81,16 @@ const PublicarNota = () => {
             setCategoriasActivas([...categoriasActivas, categoria.id]);
         }
     };
+    const [selectedOption, setSelectedOption] = useState('flexRadioDefault2');
+
+    // Función para manejar el cambio de opción seleccionada
+    const handleChange = (event) => {
+      setSelectedOption(event.target.id);
+      console.log(selectedOption)
+    };
 
     return (
-        <div className="container-fluid sinPadding crearNotaGlobal">
-            <div className="d-flex h-100">
+            <div className="app-container">
                 <Sidebar estadoActual={"notas"} />
                 <div className="content flex-grow-1 crearNotaGlobal">
                     <header id="head_dash" className='header_dash'>
@@ -100,17 +106,16 @@ const PublicarNota = () => {
                                 </h4>
                             </div>
                         </div>
-                        <div className='row'>
-                            <div className='col mt-0'>
-                                <h3 className='headerPublicarNota fw-bold'>Agregar categorias a tu Nota</h3>
-                                <h3 className='abajoDeAgregarCategoria'>Selecciona las tres categorias claves para tu contenido</h3>
-                            </div>
-                        </div>
+                        
                     </header>
                     
                     {/* SECCION NOTA */}
                     <div className='row notaTutorial'>
                         <div className='col-8 columnaNota'>
+                            <div className='col mt-0'>
+                                <h3 className='headerPublicarNota fw-bold'>Agregar categorias a tu Nota</h3>
+                                <h3 className='abajoDeAgregarCategoria mb-4'>Selecciona las tres categorias claves para tu contenido</h3>
+                            </div>
                             <div className='filaCategorias'>
                                 {categorias.map((categoria, index) => (
                                     <Button onClick={() => actualizarCategoriasActivas(categoria)} key={index} className={categoriasActivas.includes(categoria.id) ? 'categoriaActiva' : 'categorias' }>
@@ -120,16 +125,17 @@ const PublicarNota = () => {
                             </div>
 
                             <div className='seccionImagenRecorteRRSS'>
-                                <h3 className='imagenParaRRSSHeader fw-bold'>Imagen para redes sociales</h3>
-                                <h3 className='abajoDeAgregarCategoria mlRRSS'>Selecciona el recorte de tu imagen de portada para que podamos ajustarlo en redes sociales</h3>
-                                
+                                <h4 className='imagenParaRRSSHeader fw-bold'>Imagen para redes sociales</h4>
+                                <h4 className='abajoDeAgregarCategoria mlRRSS'>Selecciona el recorte de tu imagen de portada para que podamos ajustarlo en redes sociales</h4>
+
                                 {image && (
-                                    <div>
+                                    <div className='imagenRRSS'>
                                         <img
+
                                             ref={imageRef}
                                             src={image}
                                             alt="Imagen seleccionada"
-                                            className='custom_image_modal'
+                                            className='imagenRRSS'
                                         />
                                         {/* ESTE HANDLE CROP LO TENGO QUE HACER AL CLICKEAR EN EL BOTON PUBLICAR */}
                                         {/* <Button onClick={handleCrop} className='botonModalContinuar'>
@@ -137,16 +143,76 @@ const PublicarNota = () => {
                                         </Button> */}
                                     </div>
                                 )}
+                                <div className='hDistribucionContenido'>Distribucion de contenido</div>
+                                <div className='abajoDeAgregarCategoria mlRRSS'>Selecciona el recorte de tu imagen</div>
+
+                                <div>
+                                    <div className= {selectedOption === 'flexRadioDefault1' ? 'containerFormCheckActive' : 'containerFormCheck'}>
+                                        <div className="form-check">
+                                            <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="flexRadioDefault"
+                                            id="flexRadioDefault1"
+                                            checked={selectedOption === 'flexRadioDefault1'}
+                                            onChange={handleChange}
+                                            />
+                                            <label className="form-check-label" htmlFor="flexRadioDefault1">
+                                                <p className='distribuirNotaP'><strong>Distribuir nota</strong> {'(Te quedan 2/4 notas en tu plan)'}</p>
+                                                <p className='abajoDeAgregarCategoria'>La distribucion de tu nota amplifica el impactoy la llegada a mas usuarios</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className={selectedOption === 'flexRadioDefault2' ? 'containerFormCheckActive' : 'containerFormCheck'}>
+                                        <div className="form-check">
+                                            <div className='inputRadioContainer'>
+                                                <input
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="flexRadioDefault"
+                                                id="flexRadioDefault2"
+                                                checked={selectedOption === 'flexRadioDefault2'}
+                                                onChange={handleChange}
+                                                />
+                                            </div>
+                                            <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                                <p className='distribuirNotaP'><strong>No distribuir nota</strong></p>
+                                                <p className='abajoDeAgregarCategoria mt-0 mb-0'>Tu contenido será amplificado de forma organica en nuestros canales</p>
+
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 className='imagenParaRRSSHeader fw-bold mt-3'>Comentarios</h4>
+                                <p className='abajoDeAgregarCategoria'>Deja comentarios para el el equipo de Noticias 'd' pueda ayudarte a potenciar tus contenidos
+                                    y entender mejor tus objetivos
+                                </p>
+                                <textarea placeholder='Escribi aqui tus comentarios' className='textAreaComentarios' maxLength={300}>
+                                </textarea>
+                                <p className='abajoDeAgregarCategoria' >Max 300 caracteres</p>
+                                <div className='mb-5'>
+                                    <Button onClick = {()=> navigate('/publicarNota') } id="botonPublicar" variant="none">
+                                        <img src="/images/send.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />{" Enviar"}
+                                    </Button>
+                                    <Button onClick = {()=> navigate('/publicarNota') } id="botonVolver" variant="none">
+                                     {" Volver"}
+                                    </Button>
+                                </div>
+
+
+
+
                             </div>
+                            
+
                         </div>
 
-                        <div className='col-2 columnaTutorial'>
-                            <img src="/images/tutorialvideo.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
+                        <div className='col-4 columnaTutorial align-self-start'>
+                            <img src="/images/tutorialvideo.png" alt="Icono 1" className="float-right" />
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     );
 };
 

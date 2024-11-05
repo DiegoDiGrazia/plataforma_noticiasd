@@ -1,3 +1,9 @@
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: auto; /* Permite el scroll solo en el contenido principal */
+  }
 .container-with-sidebar {
     position: relative; /* Asegura que los elementos posicionados absolutamente se alineen con este contenedor */
 }
@@ -150,9 +156,18 @@
 .boton_sidebar_clickeado{
     background-color: #EAECF5;
     border-radius: 10px;
+    height: 40px;
+    width: 214px;
+    text-align: center;
+    margin: 0px auto;
 }
 
 #botones_inferiories{
     margin-top: 200px;
+}
+
+.closedBoton{
+    width: 40px; 
+
 }
 

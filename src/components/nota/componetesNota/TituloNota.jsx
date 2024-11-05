@@ -32,7 +32,7 @@ const TituloNota= ({indice}) => {
       <span>
           <textarea 
           ref={tituloRef}
-          className="inputTituloNota"
+          className="inputTituloNota marginTitulo"
           type="text"
           placeholder="Escribí un Titulo para la nota"
           value={tituloGlobalNota}

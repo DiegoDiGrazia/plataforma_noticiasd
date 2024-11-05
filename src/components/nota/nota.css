@@ -1,3 +1,12 @@
+.app-container {
+    display: flex;
+}
+.content {
+    overflow-y: auto; /* Permitir scroll en el contenido */
+    height: 100vh; /* Asegurarse de que el contenido ocupe toda la altura de la vista */
+}
+
+
 #nota{
     font-size: 18px;
     font-weight: 600;
@@ -12,6 +21,7 @@
 .header_dash{
     border-bottom: none !important;
     padding-left: 20px !important;
+    height: 80px; 
 }
 .abajoDeTusNotas{
     font-size: 16px;
@@ -197,6 +207,8 @@
     width: 128px;
     height: 48px;
     font-weight: 600;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 .headerCrearNota{
     font-size: 28px;
@@ -273,10 +285,9 @@ padding-top: 0px !important;
 }
 .custom_image_modal{
     width: 463px !important;
-    height: 295px !important;
+    height: 265px !important;
     border-radius: 10px !important;
     contain: content !important;
-    margin-top: 10px;
 }
 
 .subtitulo-modal{
@@ -335,7 +346,7 @@ padding-top: 0px !important;
 .imagenRecortadaContenedor {
     position: relative; /* Permite posicionar elementos dentro de este contenedor */
     display: inline-block; /* Para ajustar el tamaño al de la imagen */
-    width: auto;
+    width: 800px;
     height: auto;
     border-radius: 15px !important;
     margin-left: 30px;
@@ -367,11 +378,14 @@ padding-top: 0px !important;
     color: black;
     font-size: 28px;
     font-weight: 600;
-    margin-left: 20px;
     resize: none;
     overflow-wrap: break-word;
     padding-right: 40px;
-
+    margin-left: 20px;
+}
+.marginTitulo{
+    margin-left: 65px;
+    margin-top: 10px;
 }
 .inputTituloNota::placeholder{
     border: none;
@@ -412,6 +426,7 @@ padding-top: 0px !important;
     align-items: center;
     margin-bottom: 40px;
     margin-top: 20px;
+    padding-left: 0px;
     
 }
 
@@ -454,24 +469,21 @@ padding-top: 0px !important;
 
 .subtituloNota{
     font-size: 24px;
-    margin-left: 15px;
     margin-bottom: 10px;
     margin-top: 10px;
 }
 .subtituloNota::placeholder{
     font-size: 24px;
     margin-left: 15px;
-
     margin-bottom: 10px;
     margin-top: 10px;
 }
 .parrafoNota{
     font-size: 20px !important;
     font-weight: 500;
-    margin-left: 15px;
-
     margin-bottom: 10px;
     margin-top: 10px;
+    font-weight:lighter;
 }
 .parrafoNota::placeholder{
     font-size: 20px;
@@ -480,9 +492,15 @@ padding-top: 0px !important;
     margin-bottom: 10px;
     margin-top: 10px;
 }
-
-.columnaTutorial{
-    padding-left: 60px;
+.columnaTutorial {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}   
+.float-right {
+    float: right !important;
+    vertical-align: top !important;
+    padding-right: 30px;
 }
 
 .breadcrumb-item{
@@ -505,7 +523,11 @@ padding-top: 0px !important;
     padding-right: 10px;
   } 
 .imagenNotaContenido{
-    padding-left: 10px;
+    margin-left: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px !important;
+
 }
 .abajoDeAgregarCategoria{
     font-size: 16px;
@@ -565,9 +587,106 @@ padding-top: 0px !important;
 
 .imagenParaRRSSHeader{
     font-size: 24px;
-    margin-left: 55px;
 
 }
-.mlRRSS{
-    margin-left: 55px;
+.seccionImagenRecorteRRSS{
+    margin-left: 35px;
 }
+
+.imagenRRSS {
+    width: 700px !important;
+    height: 400px !important;
+    border-radius: 10px !important;
+    contain: content !important;
+    margin-top: 10px; 
+  }
+  .imagenRRSS img {
+    width: 100%;              /* Imagen rellena el ancho disponible */
+    height: 100%;             /* Imagen rellena el alto disponible */
+    object-fit: cover;        /* Ajusta la imagen para rellenar sin perder proporción */
+  }
+  
+
+.cropper-wrap-box{
+    border-radius: 10px !important;
+
+}
+.hDistribucionContenido{
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.containerFormCheck{
+    border: 1px solid #EAECF0;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px 0px;
+    height: 82px;
+    
+}
+.containerFormCheckActive{
+    border: 1px solid #FFE0D8;
+    background-color: #FFF6ED;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px 0px;
+    height: 82px;
+    
+    
+}
+.distribuirNotaP{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.form-check-input {
+    accent-color: #FF653B; /* Cambia a tu color deseado */
+    margin-top: 10px;
+    padding: 10px;
+    margin-left: -15px !important;
+    margin-right: 15px;
+
+
+  }
+
+.form-check-input:checked {
+    background-color: #FF653B; /* Color de fondo al estar seleccionado */
+    border-color: #FF653B ;
+    box-shadow: none; /* Eliminar la sombra */
+}
+.textAreaComentarios {
+    width: 100%;         /* Ocupa todo el ancho del contenedor */
+    height: 150px;       /* Ajusta la altura a tu preferencia */
+    resize: none;        /* Elimina las "rayitas" de redimensionamiento */
+    padding: 10px;       /* Añade espacio interno para mejor apariencia */
+    font-size: 16px;     /* Tamaño de fuente */
+    border: 1px solid #ccc; /* Personaliza el borde */
+    border-radius: 5px;  /* Bordes redondeados */
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+    border-radius: 10px;
+    outline: none; 
+  }
+  .textAreaComentarios:focus {
+    border: 1px solid #ccc; /* Personaliza el borde */
+  }
+  .textAreaComentarios::placeholder {
+    font-size: 16px;
+    color:#667085;
+    margin-top: 10px;
+    opacity: 0.8;    /* Asegura que el color se vea bien */
+  }
+
+#botonVolver{
+    font-size: 16px;
+    float: right;
+    margin-right: 30px;
+    width: 128px;
+    height: 48px;
+    font-weight: 600;
+    margin-bottom: 50px;
+
+}
+
+
+

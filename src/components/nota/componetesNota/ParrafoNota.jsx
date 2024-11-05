@@ -21,6 +21,14 @@ const ParrafoNota= ({indice}) => {
       textarea.style.height = 'auto'; // Restablecer la altura temporalmente
       textarea.style.height = `${textarea.scrollHeight}px`; // Ajustar a la altura del contenido
     };
+    useEffect(() => {
+      // Ajusta la altura del textarea al contenido inicial
+      const textarea = tituloRef.current;
+      if (textarea) {
+          textarea.style.height = 'auto'; // Restablece la altura temporalmente
+          textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta a la altura del contenido
+      }
+  }, [tituloGlobalNota]); // Se ejecuta cuando el contenido inicial cambia
 
     return (
 
