@@ -159,7 +159,7 @@ const MediosMasRelevantesNotas = () => {
             </div>
             {/* medio Uno */}
             {listaTresMedios[0] && //si existe la nota
-            <div className='row pt-1'>
+            <div className='row pt-3'>
                 <div className='col-1'>
                     <img src={medio1.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>
@@ -178,7 +178,7 @@ const MediosMasRelevantesNotas = () => {
             }
             {/* medio2 */}
             {listaTresMedios[1] && //si existe la nota
-            <div className='row pt-1'>
+            <div className='row pt-3'>
                 <div className='col-1'>
                     <img src={medio2.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>
@@ -197,7 +197,7 @@ const MediosMasRelevantesNotas = () => {
             }
             {/* medio3 */}
             {listaTresMedios[2] && //si existe la nota
-            <div className='row pt-1'>
+            <div className='row pt-3'>
                 <div className='col-1'>
                     <img src={medio3.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>

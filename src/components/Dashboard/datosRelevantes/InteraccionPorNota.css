@@ -62,3 +62,33 @@
 .nombre_categoria{
     font-size: 18px !important;
 }
+
+
+/* Seccion acordion INTERACCION POR NOTA */
+
+.accordion-item{
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding-bottom: 0px;
+
+}
+.accordion-button {
+    background-color: transparent !important;
+    outline: none;
+    box-shadow: none !important;
+    border: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: transparent !important;
+    border-color: none;
+}
+
+
+.collapsed{
+    background-color: none;
+}
+.show{
+    background-color: none;
+}

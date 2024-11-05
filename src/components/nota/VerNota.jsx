@@ -10,9 +10,10 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import BarplotNota from '../barplot/BarplotNota';
 import { useLocation } from 'react-router-dom';
-import PlataformaMasImpresionesNotas from '../Dashboard/datosRelevantes/PlataformaMasImpresionesNota';
+import PlataformaMasImpresionesNota from '../Dashboard/datosRelevantes/PlataformaMasImpresionesNota';
 import MediosMasRelevantesNotas from '../Dashboard/datosRelevantes/MediosMasRelevantesNotas';
 import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
+import { Link } from 'react-router-dom';
 
 const VerNota = () => {
 
@@ -64,51 +65,60 @@ const VerNota = () => {
             <div className="d-flex h-100">
                 <Sidebar estadoActual={"notas"} /> {/* Usa el componente Sidebar */}
                 <div className="content flex-grow-1">
-                        <header id = "head_dasha" className='header_dasha'>
-                            <div className='row'>
-                                <h4 id="nota"> {"notas / ver nota"} </h4>
+                    <div className='row'>
+                        <div className='col'>
+                            <h4 id="nota">
+                            <nav aria-label="breadcrumb">
+                                <ol className="breadcrumb">
+                                    <li className="breadcrumb-item"><Link to="/notas" className='breadcrumb-item'>{'< '} Notas</Link></li>
+                                    <li className="breadcrumb-item blackActive" aria-current="page">Ver Nota</li>
+                                </ol>
+                            </nav>
+                            </h4>
+                        </div>
+                    </div>
+                        <div className='row margin_vn'>
+                            <div className='col imagen_col'>
+                                    <img src={Nota.imagen} alt="Icono 1" className="imagen_nota" />
                             </div>
-                            <div className='row margin_vn'>
-                                <div className='col imagen_col'>
-                                        <img src={Nota.imagen} alt="Icono 1" className="imagen_nota" />
+                            <div className='col-6 d-flex flex-column' style={{ height: "200px" }}>
+                                <div className='row vn_titulo'>{Nota.titulo}</div>
+                                <div className='row vn_fecha'> Publicada el {formatearFecha(Nota.f_pub)} </div>
+                                <div className='row publicada'> 
+                                    <img src="/images/publicada.png" alt="Icono 1" className="" /> 
                                 </div>
-                                <div className='col-6'>
-                                    <div className='row vn_titulo'>{Nota.titulo}</div>
-                                    <div className='row vn_fecha'> Publicada el {formatearFecha(Nota.f_pub)} </div>
-                                    <div className='row vn_estado publicada'> Publicada  </div> 
-                                    <div className='row order-last'>
-                                        <div>
-                                            <span className='vn_categoria'>{Nota.categorias}</span>
-                                        </div>
+                                <div className='row order-last flex-grow-1'> {/* Agregar flex-grow-1 aquí */}
+                                    <div>
+                                        <span className='vn_categoria'>{Nota.categorias}</span>
                                     </div>
                                 </div>
-                                <div className='col boton_nota ml-5'>
-                                    <button className="btn custom-dropdown-button dropdown-toggle boton_compartir" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/images/share_icon.png" alt="Icono 1" className="icon me-2" />
-                                        Compartir
-                                    </button>
-                                </div>
-                                <div className='col ver_nota_boton'>
-                                    {/* <button className='ver_nota_boton'> */}
-                                        <img src="/images/ver_nota_boton.png" alt="Icono 1" className="" />
-                                    {/* </button> */}
-                                </div>
                             </div>
-                        </header>
-                        <div className="subtitulo">
-                            <h5 id= "subtitulo_performance">Performance de la cuenta</h5>
+                            <div className='col boton_nota d-flex justify-content-end align-items-start'>
+                                <button className="btn custom-dropdown-button dropdown-toggle boton_compartir" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="/images/share_icon.png" alt="Icono 1" className="icon me-2" />
+                                    Compartir
+                                </button>
+                            </div>
+                            {/* <div className='col-2 ver_nota_boton'>
+                                    <button className='ver_nota_boton'> 
+                                    <img src="/images/ver_nota_boton.png" alt="Icono 1" className="" />
+                                    </button> 
+                            </div> */}
                         </div>
-                        <div className="mb-2 tamaño_barplot">
-                             { <BarplotNota/> } 
+                    <div className="subtitulo">
+                        <h5 id= "subtitulo_performance">Performance de la nota</h5>
+                    </div>
+                    <div className="mb-2 tamaño_barplot">
+                            { <BarplotNota/> } 
+                    </div>
+                    <div className='row g-1'>
+                        <div className='col m-2 p-3 back-white'>
+                            { <PlataformaMasImpresionesNota/> }
                         </div>
-                        <div className='row g-1'>
-                            <div className='col m-2 p-3 back-white'>
-                                { <PlataformaMasImpresionesNotas/> }
-                            </div>
-                            <div className='col m-2 p-3 back-white'>
-                                   {<MediosMasRelevantesNotas/>}   
-                            </div>
-                        </div> 
+                        <div className='col m-2 p-3 back-white'>
+                                {<MediosMasRelevantesNotas/>}   
+                        </div>
+                    </div> 
                 </div>
             </div>
         </div>

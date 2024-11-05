@@ -121,11 +121,12 @@ html, body {
 
 /* Imagen del logo */
 #logo-nd-sidebar {
-    width: 65%;
+    position: relative;
+    height: 26px;
+    width: 102px;
     transition: width 0.3s ease-in-out;
-    margin: 40px 40x 40px 40px;
-    max-width: none !important;
-    padding: 25px 20px;
+    margin: 20px 20px 10px 30px !important;
+    object-fit: contain;
 }
 
 .sidebar.closed #logo-nd {
@@ -160,14 +161,42 @@ html, body {
     width: 214px;
     text-align: center;
     margin: 0px auto;
+    
+}
+.boton_sidebar_clickeado:hover{
+    background-color: #eaecf5de;
+    
+}
+.boton_sidebar_Noclickeado{
+    background-color: none;
+    border-radius: 10px;
+    height: 40px;
+    width: 214px;
+    text-align: center;
+    margin: 0px auto;
 }
 
-#botones_inferiories{
-    margin-top: 200px;
+.boton_sidebar_Noclickeado:hover{
+    background-color: #edeef3;
+}
+
+.botones_inferiories{
+    position: absolute !important;
+    bottom: 0 !important;
+    width: 100% !important; /* Asegúrate de que la lista abarque todo el ancho del contenedor */
+
 }
 
 .closedBoton{
     width: 40px; 
-
+    background-color: none !important;
 }
+.botonSidebar{
+    display: flex;
+    text-align: start;
+    justify-content: flex-start;
+    padding-left: 8px;
+}
+
+
 

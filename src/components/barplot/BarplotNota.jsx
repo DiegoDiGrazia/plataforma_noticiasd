@@ -147,18 +147,18 @@ const BarplotNota = () => {
     
     // Mostrar el gráfico real una vez cargados los datos
     return (
-        <div className="container-fluid sinPadding">
+        <div className="container-fluid ml-5">
             <div className="row cantidades mt-3 back-white">
-            <div className='col-4 barra_lateral'>
+            <div className='col-2 barra_lateral'>
                 <p className='leyenda_barplot'>
-                    <span className="blue-dot-user"></span> Usuarios 
+                    <span className="blue-dot-user"></span> Usuarios totales
                     <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title= "aca va el texto"/>  
                 </p>
                 <p className='totales'>{formatNumberMiles(totalUsuarios)}</p>
             </div>
                 <div className='col' style={{ paddingLeft: '20px' }}>
                     <p className='leyenda_barplot'>
-                        <span className="blue-dot-impresiones"></span>Impresiones
+                        <span className="blue-dot-impresiones"></span>Impresiones totales
                         <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title= "aca va el texto"/>  
                     </p>
                     <p className='totales'>{formatNumberMiles(totalImpresiones)}</p>

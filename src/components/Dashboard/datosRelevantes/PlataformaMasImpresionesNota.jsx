@@ -6,7 +6,7 @@ import axios from 'axios';
 import { formatNumberMiles } from '../Dashboard';
 import "./InteraccionPorNota.css";
 
-const PlataformaMasImpresionesNotas = () => {
+const PlataformaMasImpresionesNota = () => {
     const [plataformas, setPlataformas] = useState([]); // Estado de carga
     const [openIndex, setOpenIndex] = useState(null); // Estado del acordeón
     const TOKEN = useSelector((state) => state.formulario.token);
@@ -55,118 +55,174 @@ const PlataformaMasImpresionesNotas = () => {
     const ImpresionesDV = Number(plataformas.busqueda);
 
     return (
-        <div className="container-fluid">
-            <div className='row'>
+        <div className="">
+            <div className='row '>
                 <p id="titulo_relevantes">Plataforma con más impresiones
                     <img src="/images/help-circle.png" alt="Descripción" className="info-icon" title="aca va el texto"/>
                 </p>
             </div>
             {/* FACEBOOK */}
-            <div className='row pt-0'>
-                <div className='col-1'>
-                    <img src="/images/logoFB.png" alt="Icono 1" className='imagenWidwet' />
-                </div>
-                <div className='col pt-1'>
-                    <div className='row p-0 nombre_plataforma'> 
-                        Facebook
-                    </div>
-                    <div className='row p-0'> 
-                        <a href="https://www.facebook.com" className='linkPlataforma'>www.facebook.com</a>
-                    </div>
-                </div>
-                <div className='col totales_widget'>
-                    <p>{formatNumberMiles(ImpresionesFB)}</p>
-                </div>
-            </div>
-            {/* INSTAGRAM */}
-            <div className='row'>
-                <div className='col-1'>
-                    <img src="/images/logo_ig.png" alt="Icono 1" className='imagenWidwet' />
-                </div>
-                <div className='col pt-1'>
-                    <div className='row p-0 nombre_plataforma'> 
-                        Instagram
-                    </div>
-                    <div className='row p-0'> 
-                        <a href="https://www.instagram.com" className='linkPlataforma'>www.instagram.com</a>
-                    </div>
-                </div>
-                <div className='col totales_widget'>
-                    <p>{formatNumberMiles(ImpresionesIG)}</p>
-                </div>
-            </div>
-            {/* GOOGLE */}
-            <div className='row'>
-                <div className='col-1'>
-                    <img src="/images/logo_google.png" alt="Icono 1" className='imagenWidwet' />
-                </div>
-                <div className='col pt-1'>
-                    <div className='row p-0 nombre_plataforma'> 
-                        Google
-                    </div>
-                    <div className='row p-0'> 
-                        <a href="https://www.google.com" className='linkPlataforma'>www.google.com</a>
-                    </div>
-                </div>
-                <div className='col totales_widget'>
-                    <p>{formatNumberMiles(ImpresionesDV)}</p>
-                </div>
-            </div>
 
             <div className="accordion">
                 {/* Accordion Item #1 */}
                 <div className="accordion-item">
-                    <h2 className="accordion-header">
+                    
                         <button
-                            className={`accordion-button ${openIndex === 0 ? '' : 'collapsed'}`}
+                            className={`accordion-button ${openIndex === 0 ? '' : 'collapsed'} `}
                             type="button"
                             onClick={() => toggle(0)}
                             aria-expanded={openIndex === 0}
                         >
-                            Accordion Item #1
+                            <div className='row pt-0 mb-2' >
+                                <div className='col-1'>
+                                    <img src="/images/logoFB.png" alt="Icono 1" className='imagenWidwet' />
+                                </div>
+                                <div className='col pt-1'>
+                                    <div className='row p-0 nombre_plataforma'> 
+                                        Facebook
+                                    </div>
+                                    <div className='row p-0'> 
+                                        <a href="https://www.facebook.com" className='linkPlataforma'>www.facebook.com</a>
+                                    </div>
+                                </div>
+                                <div className='col totales_widget'>
+                                    <p>{formatNumberMiles(ImpresionesFB)}</p>
+                                </div>
+                            </div>
                         </button>
-                    </h2>
+                 
                     <div className={`accordion-collapse collapse ${openIndex === 0 ? 'show' : ''}`}>
-                        <div className="accordion-body">
-                            <strong>This is the first item's accordion body.</strong> It is shown by default.
+                        <div className="accordion-body pt-0">
+
+                            <div className='row'>
+                                {/* Comentarios */}
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoComentarios.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Comentarios</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.facebook_comment}</span>
+                                    </div>
+                                </div>
+                                {/* Comentarios */}
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoMeGusta.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Me gusta</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.facebook_like}</span>
+                                    </div>
+                                </div>
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoClicks.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Clicks</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.facebook_clicks}</span>
+                                    </div>
+                                </div>
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoCompartir.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Compartido</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.facebook_share}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Accordion Item #2 */}
                 <div className="accordion-item">
-                    <h2 className="accordion-header">
                         <button
                             className={`accordion-button ${openIndex === 1 ? '' : 'collapsed'}`}
                             type="button"
                             onClick={() => toggle(1)}
                             aria-expanded={openIndex === 1}
                         >
-                            Accordion Item #2
+                        <div className='row pt-0 mb-2 mt-3' >
+                            <div className='col-1'>
+                                <img src="/images/logo_ig.png" alt="Icono 1" className='imagenWidwet' />
+                            </div>
+                            <div className='col pt-1'>
+                                <div className='row p-0 nombre_plataforma'> 
+                                    Instagram
+                                </div>
+                                <div className='row p-0'> 
+                                    <a href="https://www.instagram.com" className='linkPlataforma'>www.instagram.com</a>
+                                </div>
+                            </div>
+                            <div className='col totales_widget'>
+                                <p>{formatNumberMiles(ImpresionesIG)}</p>
+                            </div>
+                        </div>
                         </button>
-                    </h2>
                     <div className={`accordion-collapse collapse ${openIndex === 1 ? 'show' : ''}`}>
-                        <div className="accordion-body">
-                            <strong>This is the second item's accordion body.</strong> It is hidden by default.
+                        <div className="accordion-body pt-0">
+
+                            <div className='row'>
+                                {/* Comentarios */}
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoComentarios.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Comentarios</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.instagram_share}</span>
+                                    </div>
+                                </div>
+                                {/* Comentarios */}
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoMeGusta.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Me gusta</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.instagram_share}</span>
+                                    </div>
+                                </div>
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoClicks.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Clicks</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.instagram_share}</span>
+                                    </div>
+                                </div>
+                                <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                    <img src="/images/logoCompartir.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                    <div className='comentarios'> {/* Eliminar col innecesario */}
+                                        <span className='d-block'>Compartido</span> {/* Usar d-block para cada línea */}
+                                        <span className='d-block'>{plataformas.instagram_share}</span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
                 {/* Accordion Item #3 */}
                 <div className="accordion-item">
-                    <h2 className="accordion-header">
                         <button
                             className={`accordion-button ${openIndex === 2 ? '' : 'collapsed'}`}
                             type="button"
                             onClick={() => toggle(2)}
                             aria-expanded={openIndex === 2}
                         >
-                            Accordion Item #3
+                            <div className='row pt-0 mb-2 mt-3' >
+                                <div className='col-1'>
+                                    <img src="/images/logo_google.png" alt="Icono 1" className='imagenWidwet' />
+                                </div>
+                                <div className='col pt-1'>
+                                    <div className='row p-0 nombre_plataforma'> 
+                                        Google
+                                    </div>
+                                    <div className='row p-0'> 
+                                        <a href="https://www.google.com" className='linkPlataforma'>www.google.com</a>
+                                    </div>
+                                </div>
+                                <div className='col totales_widget'>
+                                    <p>{formatNumberMiles(ImpresionesDV)}</p>
+                                </div>
+                            </div>
                         </button>
-                    </h2>
                     <div className={`accordion-collapse collapse ${openIndex === 2 ? 'show' : ''}`}>
                         <div className="accordion-body">
-                            <strong>This is the third item's accordion body.</strong> It is hidden by default.
+
                         </div>
                     </div>
                 </div>
@@ -175,4 +231,4 @@ const PlataformaMasImpresionesNotas = () => {
     );
 };
 
-export default PlataformaMasImpresionesNotas;
+export default PlataformaMasImpresionesNota;

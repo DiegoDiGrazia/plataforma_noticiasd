@@ -32,60 +32,104 @@ const Sidebar = ({estadoActual}) => {
                         <img src="/images/sidebar_right_bot.png" alt="Imagen de ejemplo" className="img-fluid" />} 
                     </Button>
 
-                        <ul className="list-group list-group-flush no-border">
+                        <ul className="list-group list-group-flush no-border list-unstyled">
                         <li className={`${
-                                            estadoActual === "dashboard" ? "boton_sidebar_clickeado" : ""
+                                            estadoActual === "dashboard" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
                                         } ${
                                             isOpen ? "openBoton" : "closedBoton"
                                         }`}>
 
                                 <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("dashboard")}>
-                                    <img src="/images/barchar_icon.png" alt="Icono 1" className="icon me-2" />
+                                    <img src="/images/barchar_icon.png" alt="Icono 1" className="iconoSidebar me-2" />
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Dashboard</span>
                                 </Button>
                             </li>
-                            <li className={estadoActual == "notas" ? "boton_sidebar_clickeado" : ""}>
-                                <Button className="" variant='none' onClick={() => handleClickBotonSidebar("notas")}>
+
+                            
+                            <li className={`${
+                                            estadoActual === "notas" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        }`}>
+                                <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("notas")}>
                                     <img src="/images/notas_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Notas</span>
                                 </Button>
                             </li>
-                            <li className="list-group-item no-border">
-                                <Button className="d-flex align-items-center p-0">
+
+                            <li className={`${
+                                            estadoActual === "reportes" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        }`}>
+                                <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("reportes")}>
                                     <img src="/images/reportes_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Reportes</span>
                                 </Button>
                             </li>
-                            <li className="list-group-item no-border">
-                                <Button className="d-flex align-items-center p-0">
+                            <li className={`${
+                                            estadoActual === "encuestas" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        }`}>
+                                <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("encuestas")}>
                                     <img src="/images/encuestas_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Encuestas</span>
                                 </Button>
                             </li>
-                            <li className="list-group-item no-border">
-                                <Button className="d-flex align-items-center p-0">
+
+                            <li className={`${
+                                            estadoActual === "autoEntrevistas" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        }`}>
+                                <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("autoEntrevistas")}>
                                     <img src="/images/auto_entrevistas_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Auto-entrevistas</span>
                                 </Button>
                             </li>
-                            <li className="list-group-item no-border mb-5">
-                                <Button className="d-flex align-items-center p-0">
+                            <li className={`${
+                                            estadoActual === "notificaciones" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        }`}>
+                                <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("notificaciones")}>
                                     <img src="/images/notificacion_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Notificaciones</span>
                                 </Button>
                             </li>
 
-                            <ul className="list-group" id= "botones_inferiories">
-                                <li className="list-group-item pb-3">
-                                    <Button variant="link" className="d-flex align-items-center p-0">
+                            <ul className="list-group list-unstyled botones_inferiories" id= "">
+                            <li className={`${
+                                            estadoActual === "notificaciones" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        }`}>
+                                    <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("notificaciones")}>
                                         <img src="/images/ayuda_icon.png" alt="Icono 1" className="icon me-2" /> 
                                         <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Ayuda y soporte</span>
                                     </Button>
                                 </li>
-                                <li className="list-group-item no-border mt-auto">
-                                    <Button variant="link" className="d-flex align-items-center p-0">
+                                <li className={`${
+                                            estadoActual === "notificaciones" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                        } ${
+                                            isOpen ? "openBoton" : "closedBoton"
+                                        } mb-4`}>
+                                    <Button className="botonSidebar mb-4" variant='none' onClick={() => handleClickBotonSidebar("notificaciones")} style={{
+                                                position: "relative",
+                                                right: "8px", /* Ajusta este valor según necesites */
+                                            }}>
                                         <img src="/images/municipio_icon.png" alt="Icono 12" className="icon me-2" />
-                                        <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}> Mun. de Villa Maria</span>
+                                        <span
+                                            style={{
+                                                position: "relative",
+                                                top: "5px", /* Ajusta este valor según necesites */
+                                            }}
+                                            className={`descripcion_boton ${isOpen ? "open" : "closed"} text-center`}
+                                        >
+                                            Mun. de Villa Maria
+                                        </span>
+
                                     </Button>
                                 </li>
                             </ul>

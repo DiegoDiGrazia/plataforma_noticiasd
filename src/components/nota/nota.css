@@ -136,6 +136,7 @@
     top: 0;
     left: 0;    
     max-width: 800px;
+    padding-left: 12px;
 }
 
 .vn_fecha{
@@ -146,9 +147,11 @@
     top: 0;
     left: 0;
     padding-top: 0px;
+    padding-left: 12px;
+    margin-top: 5px;
 }
 .margin_vn{
-    margin: 0px 20px;
+    padding: 0px 20px;
     max-height: 300px;
 }
 .vn_estado{
@@ -170,8 +173,8 @@
     border-radius: 10px;
 }
 .boton_nota{
-    float: left;
-    max-width: 150px !important;
+    position: relative;
+    float: right;
 }
 .imagen_col{
     max-width: 310px !important;
@@ -448,23 +451,27 @@ padding-top: 0px !important;
 }
 
 .publicada {
-    font-size: 12px;
-    display: flex; /* Cambia a flexbox */
-    background-color: #bce4d0;  
-    color: #108951;
-    border-radius: 15px;
+    width: 108px;
+    height: auto;
     margin-top: 10px;
-    padding: 5px 40px; /* Ajusta el padding como desees */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
+    padding-top: 0px;
 }
 
+.order-last {
+    margin-top: auto; /* No es necesario el !important a menos que haya conflictos */
+    display: flex; /* Asegúrate de que sea un contenedor flex */
+    justify-content: flex-start; /* Alinea el contenido hacia la izquierda */
+    vertical-align: bottom;
+}
 .vn_categoria {
-    background-color: #FB6514;
-    color: #EAECF0;
+    background-color: #FFF6ED;
+    color: #FB6514;
     padding: 5px 10px; /* Ajusta el padding a tu gusto */
     display: inline-block; /* Cambiar a inline-block */
     border-radius: 5px; /* Opcional: para bordes redondeados */
+    height: 40px;
+    vertical-align: bottom;
+
 }
 
 .subtituloNota{
