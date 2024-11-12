@@ -59,7 +59,7 @@ const VerNota = () => {
     },[]); // Dependencias del useEffect 
     console.log(Nota)
 
- 
+    const id_noti = Nota.id_noti
     return (
         <div className="container-fluid  sinPadding">
             <div className="d-flex h-100">
@@ -109,14 +109,14 @@ const VerNota = () => {
                         <h5 id= "subtitulo_performance">Performance de la nota</h5>
                     </div>
                     <div className="mb-2 tamaño_barplot">
-                            { <BarplotNota/> } 
+                            { <BarplotNota id_noti={id_noti}/> } 
                     </div>
                     <div className='row g-1'>
                         <div className='col m-2 p-3 back-white'>
-                            { <PlataformaMasImpresionesNota/> }
+                            { <PlataformaMasImpresionesNota id_noti={id_noti}/> }
                         </div>
                         <div className='col m-2 p-3 back-white'>
-                                {<MediosMasRelevantesNotas/>}   
+                                {<MediosMasRelevantesNotas id_noti={id_noti}/>}   
                         </div>
                     </div> 
                 </div>

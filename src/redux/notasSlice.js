@@ -7,6 +7,7 @@ const notasSlice = createSlice({
     todasLasNotas : [],
     notasEnProgreso : [],
     notasFinalizadas : [],
+    ultimaFechaCargadaNotas: "",
 
   },
   reducers: {
@@ -18,10 +19,13 @@ const notasSlice = createSlice({
   },
   setNotasFinalizadas: (state, action) => {
     state.notasFinalizadas = action.payload;
+  },
+  setultimaFechaCargadaNotas: (state, action) => {
+    state.ultimaFechaCargadaNotas = action.payload;
   }
 
   }
 });
 
-export const { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas } = notasSlice.actions;
+export const { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas, setultimaFechaCargadaNotas} = notasSlice.actions;
 export default notasSlice.reducer;

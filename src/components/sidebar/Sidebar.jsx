@@ -101,21 +101,21 @@ const Sidebar = ({estadoActual}) => {
 
                             <ul className="list-group list-unstyled botones_inferiories" id= "">
                             <li className={`${
-                                            estadoActual === "notificaciones" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                            estadoActual === "soporte-y-ayuda" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
                                         } ${
                                             isOpen ? "openBoton" : "closedBoton"
                                         }`}>
-                                    <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("notificaciones")}>
+                                    <Button className="botonSidebar" variant='none' onClick={() => handleClickBotonSidebar("soporte-y-ayuda")}>
                                         <img src="/images/ayuda_icon.png" alt="Icono 1" className="icon me-2" /> 
                                         <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Ayuda y soporte</span>
                                     </Button>
                                 </li>
                                 <li className={`${
-                                            estadoActual === "notificaciones" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
+                                            estadoActual === "mi-perfil" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
                                         } ${
                                             isOpen ? "openBoton" : "closedBoton"
                                         } mb-4`}>
-                                    <Button className="botonSidebar mb-4" variant='none' onClick={() => handleClickBotonSidebar("notificaciones")} style={{
+                                    <Button className="botonSidebar mb-4" variant='none' onClick={() => handleClickBotonSidebar("mi-perfil")} style={{
                                                 position: "relative",
                                                 right: "8px", /* Ajusta este valor según necesites */
                                             }}>

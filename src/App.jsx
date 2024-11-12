@@ -12,6 +12,9 @@ import Notas from './components/nota/Notas';
 import VerNota from './components/nota/VerNota';
 import CrearNota from './components/nota/CrearNota';
 import PublicarNota from './components/nota/PublicarNota';
+import Perfil from './components/miPerfil/miPerfil';
+import Soporte from './components/miPerfil/soporte';
+import Notificaciones from './components/miPerfil/Notificaciones';
 
 const inlineStyles = {
   marginRight: '10px'
@@ -28,6 +31,11 @@ function App() {
       <Routes>
         <Route path="/crearNota/" element={<CrearNota/>} />
         <Route path="/publicarNota/" element={<PublicarNota/>} />
+        <Route path="/mi-perfil/" element={<Perfil/>} />
+        <Route path="/soporte-y-ayuda/" element={<Soporte/>} />
+        <Route path="/notificaciones/" element={<Notificaciones/>} />
+
+
 
         <Route path="/verNota/" element={<VerNota/>} />
         <Route path="/dashboard" element={<Dashboard />} />

@@ -42,10 +42,17 @@ const CategoriasMasRelevantes = () => {
         const fechas = useSelector((state) => state.barplot.fechas);
         const FiltroActual = useSelector((state) => state.dashboard.filtro);
 
+        const ultimaFechaCargada = useSelector((state) => state.cargado.fechaActual);
+        const ultimaFechaCargadaBarplot = useSelector((state) => state.barplot.ultimaFechaCargadaBarplot);
+
 
 
         console.log('antes del use efect');
         useEffect(() => {
+
+            const fecha = new Date();
+            if(ultimaFechaCargada !== ultimaFechaCargadaBarplot){
+    
             // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
             axios.post(
                 "app_obtener_categorias",
@@ -77,6 +84,7 @@ const CategoriasMasRelevantes = () => {
             .catch((error) => {
                 console.error('Error al hacer la solicitud:', error);
             });
+        }
         },[]); // Dependencias del useEffect
 
 

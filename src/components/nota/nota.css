@@ -692,7 +692,19 @@ padding-top: 0px !important;
     height: 48px;
     font-weight: 600;
     margin-bottom: 50px;
+    padding-top: 21px;
 
+}
+
+.col-2 .publicada{
+    background-color: #ECFDF3;
+    height: 30px;
+    color: #027A48;
+    padding: 0px;
+    margin-top: 0px;
+    border-radius: 15px;
+    padding-top: 3px;
+    padding-left: 13px;
 }
 
 

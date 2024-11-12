@@ -11,8 +11,10 @@ import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { setCategorias, setImagenPrincipal, setImagenRRSS } from '../../redux/crearNotaSlice'; // Asegúrate de importar setImagenPrincipal
+import { useNavigate } from 'react-router-dom';
 
 const PublicarNota = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const TOKEN = useSelector((state) => state.formulario.token);
     const imageRef = useRef(null);
@@ -194,7 +196,7 @@ const PublicarNota = () => {
                                     <Button onClick = {()=> navigate('/publicarNota') } id="botonPublicar" variant="none">
                                         <img src="/images/send.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />{" Enviar"}
                                     </Button>
-                                    <Button onClick = {()=> navigate('/publicarNota') } id="botonVolver" variant="none">
+                                    <Button onClick = {()=> navigate('/crearNota') } id="botonVolver" variant="none">
                                      {" Volver"}
                                     </Button>
                                 </div>

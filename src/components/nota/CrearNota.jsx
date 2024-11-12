@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import YoutubeNota from './componetesNota/YoutubeNota';
 const CrearNota = () => {
     const dispatch = useDispatch();
     const [image, setImage] = useState(null);
@@ -43,6 +44,10 @@ const CrearNota = () => {
     
     const agregarSubtitulo = () => {
         dispatch(setContenidoNota(["subtitulo", ""]))
+      };
+
+      const agregarVideoYoutube = () => {
+        dispatch(setContenidoNota(["videoYoutube", ""]))
       };
     const agregarParrafo = () => {
         console.log("entra al parrafo")
@@ -193,6 +198,8 @@ const CrearNota = () => {
                                 return <ParrafoNota key={index} indice={index}/>;}
                             else if(contenido[0] === "imagen") {
                                 return <ImagenDeParrafo key={index} indice={index} />;}
+                                else if(contenido[0] === "videoYoutube") {
+                                    return <YoutubeNota key={index} indice={index} />;}
                             return null; // Esto te permite agregar otros tipos de contenido en el futuro
                             })}
 
@@ -219,7 +226,7 @@ const CrearNota = () => {
                                     accept="image/*"  // Acepta solo archivos de imagen
                                     />
 
-                                    <button className="botones-nota"><img src="images/video-botton.png" alt="" /></button>
+                                    <button onClick={agregarVideoYoutube} className="botones-nota"><img src="images/video-botton.png" alt="" /></button>
                                     </div>
                                 )}
                             </div>

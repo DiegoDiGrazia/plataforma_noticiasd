@@ -8,15 +8,16 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas } from '../../redux/notasSlice';
-import { Link } from 'react-router-dom';
+import { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas, setultimaFechaCargadaNotas } from '../../redux/notasSlice';
+import { Link, useNavigate } from 'react-router-dom';
 import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 import { formatearTitulo } from '../Dashboard/datosRelevantes/InteraccionPorNota';
+
 
 const CantidadDeNotasPorPagina = 6;
 
 const Notas = () => {
-
+    const navigate = useNavigate()
     const [filtroSeleccionado, setFiltroSeleccionado] = useState(1); /// botones TODAS LAS NOTAS; EN PROGRESO; FINALIZADAS
     const [numeroDePagina, setNumeroDePagina] = useState(1); /// para los botones de la paginacion
     
@@ -69,8 +70,13 @@ const Notas = () => {
     const HASTA = "2024-09-29"
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
+
+    const ultimaFechaCargada = useSelector((state) => state.cargado.fechaActual);
+    const ultimaFechaCargadaNotas = useSelector((state) => state.barplot.ultimaFechaCargadaNotas);
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
+        const fecha = new Date();
+        if(ultimaFechaCargada !== ultimaFechaCargadaNotas){
         axios.post(
             "app_obtener_noticias",
             {
@@ -91,9 +97,10 @@ const Notas = () => {
             console.log('Respuesta:', response.status);
 
             if (response.data.status === "true") {
-                console.log("todas")
+                console.log("cargando todas las notas denuevo")
                 console.log(response.data.item)
                 dispatch(setTodasLasNotas(response.data.item))
+                dispatch(setultimaFechaCargadaNotas(fecha.getDate()))
             
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
@@ -166,7 +173,7 @@ const Notas = () => {
         .catch((error) => {
             console.error('Error al hacer la solicitud:', error);
         });
-
+    }
     },[]); // Dependencias del useEffect 
 
     const todasLasNotas = useSelector((state) => state.notas.todasLasNotas);
@@ -217,7 +224,7 @@ const Notas = () => {
                                     <div className='abajoDeTusNotas'> Crea, gestiona y monitorea tus notas</div>
                                 </div>
                                 <div className='col boton'>
-                                <Button id="botonCrearNota" variant="none">
+                                <Button id="botonCrearNota" variant="none" onClick={() => navigate("/crearNota")}>
                                     <img src="/images/boton_crear_nota.png" alt="Icono 1" className="icon me-2" /> 
                                 </Button>
                                 </div>
@@ -293,8 +300,10 @@ const Notas = () => {
                                         <span className='FechaPubNota'>{formatearFecha(nota.f_pub)}</span>
                                         </div>
                                     </div>
-                                    <div className='col-2'>
-                                    <span className="publicada">Publicada</span>
+                                    <div className='col-2 d-flex align-items-center'>
+                                    <span className="publicada">
+                                        <img src="./images/puntoVerde.png" alt="Icono Nota" className='' />
+                                        {  "   Publicada"}</span>
                                     </div>
                                     <div className='col '>
                                         <span className="categoria_notas">{nota.categorias}</span>

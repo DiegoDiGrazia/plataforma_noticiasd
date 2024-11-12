@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from 'redux';
 import notasSlice from "./notasSlice.js";
 import crearNotaSlice from "./crearNotaSlice.js";
+import cargadoSlice from "./cargadosSlice.js"
 
 // Combina todos los slices en un rootReducer
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     dashboard: dashboardSlice,
     interaccionesPorNota: interaccionesPorNotaSlice,
     notas: notasSlice,
-    crearNota: crearNotaSlice
+    crearNota: crearNotaSlice,
+    cargado: cargadoSlice,
 });
 
 // Configuración de Redux Persist

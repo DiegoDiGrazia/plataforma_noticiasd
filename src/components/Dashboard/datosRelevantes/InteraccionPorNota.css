@@ -92,3 +92,16 @@
 .show{
     background-color: none;
 }
+
+.medioRowNota{
+    border-bottom: 1px solid #d1d5dd;
+    padding-bottom: 25px;
+    margin-bottom: 0px;
+    height: 98px;
+    padding: 16px 20px;
+}
+.medioRowNota2{
+    height: 116px;
+    justify-content: center;
+    padding-top: 30px !important;
+}

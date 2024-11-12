@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./InteraccionPorNota.css"
 import { useSelector } from 'react-redux';
@@ -42,7 +42,7 @@ function reduceBykeyMedios(lista_medios) {
 
 
 
-const MediosMasRelevantesNotas = () => {
+const MediosMasRelevantesNotas = ({id}) => {
     const nombreCliente = useSelector((state) => state.formulario.cliente);
     const periodos_api = useSelector((state) => state.dashboard.periodos_api)
     console.log(periodos_api)
@@ -62,7 +62,7 @@ const MediosMasRelevantesNotas = () => {
     const id_noti = "825061"
 
 
-
+    const [mediosNota, setMediosNota] = useState([])
     console.log('antes del use efect');
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
@@ -73,7 +73,7 @@ const MediosMasRelevantesNotas = () => {
                 desde: desde,
                 hasta: hasta,
                 token: token,
-                id_noti: id_noti,
+                id_noti: "825061",
             },
             {
                 headers: {
@@ -82,10 +82,9 @@ const MediosMasRelevantesNotas = () => {
             }
         )
         .then((response) => {
-            console.log('Respuesta:', response.status);
-
             if (response.data.status === "true") {
-                console.log(response.data);
+                setMediosNota(response.data.item)
+
 
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
@@ -97,16 +96,7 @@ const MediosMasRelevantesNotas = () => {
         });
     },[]); // Dependencias del useEffect
 
-
-
-    const meses = useSelector(state => state.interaccionesPorNota.mediosMayorInteraccion || []).slice(cantidad_meses);
-    console.log(meses)
-    let todas_los_medios = []
-    for (let mes of meses) {  
-        todas_los_medios.push(...mes.medios)
-    }
-    console.log(todas_los_medios)
-    console.log(reduceBykeyMedios(todas_los_medios))
+    let todas_los_medios = mediosNota
     const todos_los_medios_sin_repetir = Object.values(reduceBykeyMedios(todas_los_medios));
 
     const listaTresMedios =  todos_los_medios_sin_repetir.sort((medioA, medioB) => Number(medioB.impresiones) - Number(medioA.impresiones)).slice(0, 3);
@@ -159,7 +149,7 @@ const MediosMasRelevantesNotas = () => {
             </div>
             {/* medio Uno */}
             {listaTresMedios[0] && //si existe la nota
-            <div className='row pt-3'>
+            <div className='row pt-3 medioRowNota'>
                 <div className='col-1'>
                     <img src={medio1.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>
@@ -178,7 +168,7 @@ const MediosMasRelevantesNotas = () => {
             }
             {/* medio2 */}
             {listaTresMedios[1] && //si existe la nota
-            <div className='row pt-3'>
+            <div className='row pt-3 medioRowNota medioRowNota2'>
                 <div className='col-1'>
                     <img src={medio2.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>
@@ -186,7 +176,7 @@ const MediosMasRelevantesNotas = () => {
                     <div className='row p-0 nombre_plataforma'> 
                         {medio2.nombre}
                     </div>
-                    <div className='row p-0'> 
+                    <div className='row p-0 '> 
                         <a href="https://www.facebook.com" className='linkPlataforma'>{medio2.sitio}</a>
                     </div>
                 </div>
@@ -197,7 +187,7 @@ const MediosMasRelevantesNotas = () => {
             }
             {/* medio3 */}
             {listaTresMedios[2] && //si existe la nota
-            <div className='row pt-3'>
+            <div className='row pt-3 medioRowNota medioRowNota2'>
                 <div className='col-1'>
                     <img src={medio3.imagen} alt="Icono 1" className='imagenWidwetInteracciones' />
                 </div>

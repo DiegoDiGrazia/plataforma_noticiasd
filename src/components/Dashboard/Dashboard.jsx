@@ -15,6 +15,8 @@ import { seleccionPorFiltro } from '../barplot/Barplot.jsx';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { setFechaActual } from '../../redux/cargadosSlice.js';
+import { useNavigate } from 'react-router-dom';
 
 
 export function formatNumberMiles(num) {
@@ -33,12 +35,15 @@ function formatFechaApiExportar(fechaStr) {
 
 
 const Dashboard = () => {
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const nombreCliente = useSelector((state) => state.formulario.cliente);
     const FiltroActual = useSelector((state) => state.dashboard.filtro);
     const IDCliente = useSelector((state) => state.formulario.id_cliente);
     const periodos = useSelector((state) => state.dashboard.periodos_api).split(",");
     const [loading, setLoading] = useState(true); // Estado de carga
+
 
     console.log(periodos, IDCliente, FiltroActual, seleccionPorFiltro(FiltroActual) )
 
@@ -75,13 +80,14 @@ const Dashboard = () => {
             throw error;
         }
     }
+
+
     useEffect(() => {
-        // Aquí podrías hacer lógica adicional si es necesario.
-        console.log("Filtro cambiado, actualizando Barplot");
+        const fecha = new Date();
+        dispatch(setFechaActual(fecha.getDate()))
     }, [FiltroActual]); // Se ejecuta cada vez que FiltroActual cambia
 
 
-    
     return (
         <div className="container-fluid  sinPadding">
             <div className="d-flex h-100">
@@ -91,7 +97,7 @@ const Dashboard = () => {
                         <header id = "head_dash">
                             <h4 id="saludo">Hola</h4>
                             <h3 id="nombre_municipio">{nombreCliente}</h3>
-                            <Button id="botonCrearNota" variant="none">
+                            <Button id="botonCrearNota" variant="none" onClick={()=> navigate("/crearNota")}>
                                 <img src="/images/boton_crear_nota.png" alt="Icono 1" className="icon me-2" /> 
                             </Button>
                         </header>
@@ -130,7 +136,8 @@ const Dashboard = () => {
 
                         {/* aca va el barplot */}
                         <div className="mb-2 tamaño_barplot">
-                            { <Barplot/> }
+                            <Barplot/> 
+
                         </div>
                         {/* aca van los datos relevantes */}
                        <div className='row g-1'>

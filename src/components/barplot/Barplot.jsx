@@ -6,7 +6,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { useDispatch, useSelector } from 'react-redux';
 import "./Barplot.css";
 import { setImpresionesTotalesInstagram, setImpresionesTotalesGoogle, setImpresionesTotalesFacebook, 
-    setUsuariosTotales, setUsuariosTotalesGoogle, setUsuariosTotalesMeta, setFechas } from '../../redux/barplotSlice.js';
+    setUsuariosTotales, setUsuariosTotalesGoogle, setUsuariosTotalesMeta, setFechas, 
+    setultimaFechaCargadaBarplot} from '../../redux/barplotSlice.js';
 import axios from 'axios';
 import { formatNumberMiles } from '../Dashboard/Dashboard.jsx';
 
@@ -50,14 +51,22 @@ const Barplot = () => {
     const fechas = useSelector((state) => state.barplot.fechas);
     const FiltroActual = useSelector((state) => state.dashboard.filtro);
     const nombreCliente = useSelector((state) => state.formulario.cliente);
+    const ultimaFechaCargada = useSelector((state) => state.cargado.fechaActual);
+    const ultimaFechaCargadaBarplot = useSelector((state) => state.barplot.ultimaFechaCargadaBarplot);
 
+    
+    
     const [loading, setLoading] = useState(true); // Estado de carga
     const [simulatedData, setSimulatedData] = useState(generateRandomData()); // Estado para los datos animados
-
+    
+    const interval = setInterval(() => {
+        setSimulatedData(generateRandomData());
+    }, 800); // Actualiza los datos simulados cada 500 ms
     useEffect(() => {
-        const interval = setInterval(() => {
-            setSimulatedData(generateRandomData());
-        }, 800); // Actualiza los datos simulados cada 500 ms
+        const fecha = new Date();
+        if(ultimaFechaCargada !== ultimaFechaCargadaBarplot){
+
+
 
         axios.post(
             "app_obtener_usuarios",
@@ -84,6 +93,7 @@ const Barplot = () => {
                         dispatch(setImpresionesTotalesInstagram(Number(datoMensual.impresiones_instagram)));
                         dispatch(setImpresionesTotalesGoogle(Number(datoMensual.impresiones_busqueda)));
                         dispatch(setImpresionesTotalesFacebook(Number(datoMensual.impresiones_facebook)));
+                        dispatch(setultimaFechaCargadaBarplot(fecha.getDate()))
                     }
                 }
             } else {
@@ -97,9 +107,12 @@ const Barplot = () => {
             clearInterval(interval); // Detén la animación cuando los datos reales estén cargados
             setLoading(false);
         });
+    }else{
+        setLoading(false);
+    }
 
-        return () => clearInterval(interval); // Limpia el intervalo si el componente se desmonta
-    }, [FiltroActual]);
+    return () => clearInterval(interval); // Limpia el intervalo si el componente se desmonta
+    }, []);
 
     // Función para generar datos aleatorios
     function generateRandomData() {
