@@ -17,6 +17,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { setFechaActual } from '../../redux/cargadosSlice.js';
 import { useNavigate } from 'react-router-dom';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useRef } from 'react';
+import domToImage from 'dom-to-image';
+import SelectorCliente from './SelectorCliente.jsx';
+
 
 
 export function formatNumberMiles(num) {
@@ -62,24 +68,43 @@ const Dashboard = () => {
 
     } 
     
-    async function descargarReportePDF(id_cliente, fechaDesde, fechaHasta) {
+    const componenteRef = useRef(null);
+    const generarPDF = async () => {
         try {
-            const response = await axios.get("reporte_descargarpdfwa", {
-                params: {
-                    id: id_cliente,  // El ID del cliente
-                    to: "",           // Este valor está fijo en el URL que compartiste
-                    desde: fechaDesde,    // Fecha de inicio
-                    hasta: fechaHasta     // Fecha de fin
-                },
-            });
-            
-            console.log(response.data)
-            window.open('https://dashboard.serviciosd.com/img/' + response.data, '_blank');
+            // Referencia al elemento
+            const elemento = componenteRef.current;
+    
+            // Asegurarte de que el elemento existe
+            if (!elemento) {
+                console.error("El elemento no se encontró.");
+                return;
+            }
+    
+            // Convertir el contenido a imagen
+            const imgData = await domToImage.toPng(elemento);
+    
+            // Crear el PDF
+            const pdf = new jsPDF("p", "mm", "a4");
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+    
+            // Calcular dimensiones proporcionales para ajustar la imagen
+            const imgWidth = pageWidth;
+            const imgHeight = (elemento.offsetHeight * pageWidth) / elemento.offsetWidth;
+    
+            if (imgHeight > pageHeight) {
+                console.warn("El contenido excede una página de PDF y podría cortarse.");
+            }
+    
+            // Añadir la imagen al PDF
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    
+            // Descargar el archivo
+            pdf.save("documento.pdf");
         } catch (error) {
-            console.error('Error al descargar el PDF:', error);
-            throw error;
+            console.error("Error al generar el PDF:", error);
         }
-    }
+    };
 
 
     useEffect(() => {
@@ -87,16 +112,27 @@ const Dashboard = () => {
         dispatch(setFechaActual(fecha.getDate()))
     }, [FiltroActual]); // Se ejecuta cada vez que FiltroActual cambia
 
-
+    const es_editor = useSelector((state) => state.formulario.es_editor);
     return (
         <div className="container-fluid  sinPadding">
+
             <div className="d-flex h-100">
-                <Sidebar estadoActual={"dashboard"}/> {/* Usa el componente Sidebar */}
-                <div className="content flex-grow-1">
+                <Sidebar estadoActual={"dashboard"} className = 'no-print'/> {/* Usa el componente Sidebar */}
+                <div className="content flex-grow-1" ref={componenteRef}>
+                    <div id="print-header">
+                        <img src="/images/headerExports.png" alt="Encabezado para impresión" />
+                    </div>
                     <div className="p-3 mt-4">
                         <header id = "head_dash">
-                            <h4 id="saludo">Hola</h4>
-                            <h3 id="nombre_municipio">{nombreCliente}</h3>
+                        {es_editor ? (
+                            /// SELECCIONAR CLIENTE SI ES EDITOR
+                            <SelectorCliente/>
+                        ) : (
+                            <>
+                                <h4 id="saludo">Hola</h4>
+                                <h3 id="nombre_municipio">{nombreCliente}</h3>
+                            </>
+                        )}
                             <Button id="botonCrearNota" variant="none" onClick={()=> navigate("/crearNota")}>
                                 <img src="/images/boton_crear_nota.png" alt="Icono 1" className="icon me-2" /> 
                             </Button>
@@ -128,7 +164,7 @@ const Dashboard = () => {
                                         Compartir
                                     </button>
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                        <li><a className="dropdown-item" onClick={() => descargarReportePDF(IDCliente, FechaDesde,FechaHasta)}>Descargar PDF</a></li>
+                                        <li><a className="dropdown-item" onClick={() => generarPDF()}>Descargar PDF</a></li>
                                     </ul>
                                 </div>
                             </span>

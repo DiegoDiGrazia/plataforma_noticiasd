@@ -5,27 +5,36 @@ const notasSlice = createSlice({
   name: 'notas',
   initialState: {
     todasLasNotas : [],
-    notasEnProgreso : [],
-    notasFinalizadas : [],
-    ultimaFechaCargadaNotas: "",
+    notasEnRevision : [],
+    notasEnBorrador : [],
+    notasEliminadas : [],
+    notasPublicadas : [],
+    ultimaFechaCargadaNotas: {"PUBLICADAS": "", "EN REVISION": "","todas": ""},
 
   },
   reducers: {
     setTodasLasNotas: (state, action) => {
       state.todasLasNotas = action.payload;
   },
-  setNotasEnProgreso: (state, action) => {
-    state.notasEnProgreso = action.payload;
+  setNotasEnRevision: (state, action) => {
+    state.notasEnRevision = action.payload;
   },
-  setNotasFinalizadas: (state, action) => {
-    state.notasFinalizadas = action.payload;
+  setNotasPublicadas: (state, action) => {
+    state.notasPublicadas = action.payload;
+  },
+  setNotasBorrador: (state, action) => {
+    state.notasEnBorrador = action.payload;
+  },
+  setNotasEliminadas: (state, action) => {
+    state.notasEliminadas = action.payload;
   },
   setultimaFechaCargadaNotas: (state, action) => {
-    state.ultimaFechaCargadaNotas = action.payload;
+    const { categoria, dia } = action.payload;  // Desestructurar categoria y dia
+    state.ultimaFechaCargadaNotas[categoria] = dia;  // Usar categoria como clave
   }
 
   }
 });
 
-export const { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas, setultimaFechaCargadaNotas} = notasSlice.actions;
+export const { setTodasLasNotas, setNotasEliminadas, setNotasEnRevision,setNotasPublicadas, setultimaFechaCargadaNotas, setNotasBorrador} = notasSlice.actions;
 export default notasSlice.reducer;

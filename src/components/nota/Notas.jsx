@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas, setultimaFechaCargadaNotas } from '../../redux/notasSlice';
+import { setTodasLasNotas, setultimaFechaCargadaNotas, setNotasEnRevision, setNotasBorrador, setNotasPublicadas } from '../../redux/notasSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 import { formatearTitulo } from '../Dashboard/datosRelevantes/InteraccionPorNota';
@@ -20,20 +20,86 @@ const Notas = () => {
     const navigate = useNavigate()
     const [filtroSeleccionado, setFiltroSeleccionado] = useState(1); /// botones TODAS LAS NOTAS; EN PROGRESO; FINALIZADAS
     const [numeroDePagina, setNumeroDePagina] = useState(1); /// para los botones de la paginacion
+    const ultimaFechaCargadaNota = useSelector((state) => state.notas.ultimaFechaCargadaNotas);
     
     const botones = [
         { id: 1, nombre: 'Todas las notas' },
-        { id: 2, nombre: 'En Progreso' },
-        { id: 3, nombre: 'Finalizadas' },
-        // { id: 4, nombre: 'En revisión' },
+        { id: 2, nombre: 'Publicadas' },
+        { id: 4, nombre: 'Borradores' },
+        { id: 3, nombre: 'En revision' },
+        { id: 5, nombre: 'Elimidas' },
     ];
 
 
     
     const handleFiltroClick = (id) => {
-        setFiltroSeleccionado(id);
+        setFiltroSeleccionado(id); // Actualiza el filtro seleccionado
         console.log(`Filtro seleccionado: ${id}`);
-        // Aquí puedes agregar lógica para filtrar los datos
+    
+        const fecha = new Date();
+        const dia = String(fecha.getDate());
+        let categoria = "";
+        // Determina la categoría según el filtro seleccionado
+        if (id === 1) {
+            categoria = "todas";
+        } else if (id === 2) {
+            categoria = "PUBLICADO";
+        } else if (id === 3) {
+            categoria = "EN REVISION";
+        } else if (id === 4) {
+            categoria = "ELIMINADO";
+        }
+        if (false) {
+            return; // Si la fecha y categoría coinciden, no haces la solicitud
+        } else {
+            // Si no coincide, actualizas la fecha y la categoría
+            dispatch(setultimaFechaCargadaNotas({ dia, categoria }));
+        
+        // Realiza la solicitud sólo si el filtro tiene una categoría válida
+            axios.post(
+                id === 1 ? "app_obtener_noticias" : "app_obtener_noticias_abm",
+                {
+                    cliente: CLIENTE,
+                    desde: `${DESDE}`,
+                    hasta: `${HASTA}`,
+                    token: TOKEN,
+                    categoria: categoria,
+                    limite: 7,
+                    desde_limite: 0,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            )
+            .then((response) => {
+                console.log('Respuesta:', response.status);
+    
+                if (response.data.status === "true") {
+                    console.log(`Datos cargados para el filtro: ${categoria}`);
+                    console.log(response.data.item);
+    
+                    if (id === 1 ) { 
+                    
+                        dispatch(setTodasLasNotas(response.data.item));
+                    } else if (id === 2) {
+                        dispatch(setNotasPublicadas(response.data.item));
+                    } else if (id === 3) {
+                        dispatch(setNotasEnRevision(response.data.item));
+                    } else if (id === 4) {
+                        dispatch(setNotasBorrador(response.data.item));
+                    }
+    
+                    dispatch(setultimaFechaCargadaNotas(fecha.getDate()));
+                } else {
+                    console.error('Error en la respuesta de la API:', response.data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error al hacer la solicitud:', error);
+            });
+        }
     };
 
     const handleBotonPaginaClick = (id) => {
@@ -67,128 +133,43 @@ const Notas = () => {
     const dispatch = useDispatch();
     ///api///
     const DESDE = "2024-09-01"
-    const HASTA = "2024-09-29"
+    const HASTA = "2024-11-28"
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
 
     const ultimaFechaCargada = useSelector((state) => state.cargado.fechaActual);
     const ultimaFechaCargadaNotas = useSelector((state) => state.barplot.ultimaFechaCargadaNotas);
-    useEffect(() => {
-        // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
-        const fecha = new Date();
-        if(ultimaFechaCargada !== ultimaFechaCargadaNotas){
-        axios.post(
-            "app_obtener_noticias",
-            {
-                cliente: CLIENTE,
-                desde: `${DESDE}`,
-                hasta: `${HASTA}`,
-                token: TOKEN,
-                categoria: "todas"
-                
-            },
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data' // Asegúrate de que el tipo de contenido sea correcto
-                }
-            }
-        )
-        .then((response) => {
-            console.log('Respuesta:', response.status);
-
-            if (response.data.status === "true") {
-                console.log("cargando todas las notas denuevo")
-                console.log(response.data.item)
-                dispatch(setTodasLasNotas(response.data.item))
-                dispatch(setultimaFechaCargadaNotas(fecha.getDate()))
-            
-            } else {
-                console.error('Error en la respuesta de la API:', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('Error al hacer la solicitud:', error);
-        });
-        /// EN PROGRESO
-        axios.post(
-            "app_obtener_noticias",
-            {
-                cliente: CLIENTE,
-                desde: `${DESDE}`,
-                hasta: `${HASTA}`,
-                token: TOKEN,
-                categoria: "en progreso"
-                
-            },
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data' // Asegúrate de que el tipo de contenido sea correcto
-                }
-            }
-        )
-        .then((response) => {
-            console.log('Respuesta:', response.status);
-
-            if (response.data.status === "true") {
-                console.log("En Progreso")
-                console.log(response.data.item)
-                dispatch(setNotasEnProgreso(response.data.item))
-            
-            } else {
-                console.error('Error en la respuesta de la API:', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('Error al hacer la solicitud:', error);
-        });
-        /// FINALIZADAS
-        axios.post(
-            "app_obtener_noticias",
-            {
-                cliente: CLIENTE,
-                desde: `${DESDE}`,
-                hasta: `${HASTA}`,
-                token: TOKEN,
-                categoria: "finalizadas"
-
-            },
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data' // Asegúrate de que el tipo de contenido sea correcto
-                }
-            }
-        )
-        .then((response) => {
-            console.log('Respuesta:', response.status);
-
-            if (response.data.status === "true") {
-                console.log("Finalizadas: ")
-                console.log(response.data.item)
-                dispatch(setNotasFinalizadas(response.data.item))
-            
-            } else {
-                console.error('Error en la respuesta de la API:', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('Error al hacer la solicitud:', error);
-        });
-    }
-    },[]); // Dependencias del useEffect 
 
     const todasLasNotas = useSelector((state) => state.notas.todasLasNotas);
-    const notasEnProgreso = useSelector((state) => state.notas.notasEnProgreso);
-    const notasFinalizadas = useSelector((state) => state.notas.notasFinalizadas);
+    const notasPublicadas = useSelector((state) => state.notas.notasPublicadas);
+    const notasEnBorrador = useSelector((state) => state.notas.notasEnBorrador);
+    const notasEnRevision = useSelector((state) => state.notas.notasEnRevision);
+    const notasEliminadas = useSelector((state) => state.notas.notasEliminadas);
+
+
+    let TodasLasNotass = [];
+
+switch (filtroSeleccionado) {
+    case 2:
+        TodasLasNotass = notasPublicadas || [];
+        break;
+    case 3:
+        TodasLasNotass = notasEnBorrador || [];
+        break;
+    case 4:
+        TodasLasNotass = notasEnRevision || [];
+        break;
+    case 5:
+        TodasLasNotass = notasEliminadas || [];
+        break;
+    default:
+        TodasLasNotass = todasLasNotas || [];
+        break;
+}
     
-    let TodasLasNotas = todasLasNotas;
-    if (filtroSeleccionado === 2) {
-        TodasLasNotas = notasEnProgreso;
-    } else if (filtroSeleccionado === 3) {
-        TodasLasNotas = notasFinalizadas;
-    }
 
         
-    const notasFiltradas = TodasLasNotas.filter(nota =>
+    const notasFiltradas = TodasLasNotass.filter(nota =>
         nota.titulo.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -207,7 +188,10 @@ const Notas = () => {
     
 
     ///Chat gpt
-    
+    useEffect(() => {
+        handleFiltroClick(filtroSeleccionado); // Ejecuta la función con el filtro inicial
+    }, []); // Solo se ejecuta al montar el componente
+
     return (
         <div className="container-fluid  sinPadding">
             <div className="d-flex h-100">
@@ -286,18 +270,20 @@ const Notas = () => {
                                 {/* aca va la nota */}
 
                                 {notasEnPaginaActual.map((nota) => (
-                                    <div key={nota.id_noti} className='row pt-1 borderNotas'>
+                                    <div key={nota.id_noti ? nota.id_noti : nota.term_id} className='row pt-1 borderNotas'>
                                     <div className='col-1 colImgNota'>
-                                        <img src={nota.imagen} alt="Icono Nota" className='imagenWidwetInteracciones2' />
+                                        {nota.imagen ? <img src={nota.imagen} alt="Icono Nota" className='imagenWidwetInteracciones2' /> : 
+                                        <img src={ "https://panel.serviciosd.com/img/" + nota.imagen_principal} alt="Icono Nota" className='imagenWidwetInteracciones2' /> }
+                                        
                                     </div>
                                     <div className='col-4 pt-1 columna_interaccion nuevoFont'>
-                                        <Link className = "link-sin-estilos" to ={`/verNota`} state={{ id: nota.id_noti }}>
+                                        <Link className = "link-sin-estilos" to ={`/verNota`} state={{ id: nota.id_noti ? nota.id_noti : nota.term_id, notaABM: nota }}>
                                         <div className='row p-0 nombre_plataforma'>
                                             {formatearTitulo(nota.titulo,45)}
                                         </div>
                                         </Link>
                                         <div className='row p-0'>
-                                        <span className='FechaPubNota'>{formatearFecha(nota.f_pub)}</span>
+                                        <span className='FechaPubNota'>{nota.f_pub ?  formatearFecha(nota.f_pub): formatearFecha(nota.update_date) }</span>
                                         </div>
                                     </div>
                                     <div className='col-2 d-flex align-items-center'>

@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { setCategorias, setImagenPrincipal, setImagenRRSS } from '../../redux/crearNotaSlice'; // Asegúrate de importar setImagenPrincipal
+import { DeleteContenidoPorIndice, setCategorias, setContenidoNota, setImagenPrincipal, setImagenRRSS } from '../../redux/crearNotaSlice'; // Asegúrate de importar setImagenPrincipal
 import { useNavigate } from 'react-router-dom';
+import ColumnaEditorial from './Editorial/ColumnaEditorial';
 
 const PublicarNota = () => {
     const navigate = useNavigate()
@@ -20,6 +21,7 @@ const PublicarNota = () => {
     const imageRef = useRef(null);
     const [cropper, setCropper] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null); // Estado para la imagen recortada
+    const es_editor = useSelector((state) => state.formulario.es_editor);
 
     const image = useSelector((state) => state.crearNota.imagenPrincipal); // Imagen seleccionada
 
@@ -49,7 +51,65 @@ const PublicarNota = () => {
             console.error('Error al hacer la solicitud:', error);
         });
 
-    },[]); // Dependencias del useEffect 
+    },[]); // Dependencias del useEffect
+
+    const transformarContenidoAHTML = (contenidos) => {
+        if (!contenidos || !Array.isArray(contenidos)) {
+            return ''; // Si no hay contenidos, devuelve un string vacío
+        }
+    
+        // Construimos el HTML concatenando las etiquetas y el contenido
+        const contenidoEnHTML = contenidos.reduce((html, contenido) => {
+            const etiquetaAbrir = contenido[2];
+            const etiquetaCerrar = contenido[3];
+            return html + etiquetaAbrir + contenido[1] + etiquetaCerrar;
+        }, '');
+    
+        return contenidoEnHTML; // Retorna el HTML como un string
+    };
+
+    /// subir la nota !!
+    const titulo = useSelector((state) => state.crearNota.tituloNota);
+    const contenidoNota = useSelector((state) => state.crearNota.contenidoNota)
+    const clickear_en_publicar_nota = () => {
+        const contenidoHTMLSTR = transformarContenidoAHTML(contenidoNota)
+        const contenidoHTML = { __html: contenidoHTMLSTR }
+        console.log(contenidoHTML)
+        console.log(contenidoHTMLSTR)
+
+        axios.post(
+            "app_subir_nota",
+            {
+                token: TOKEN,
+                id: '879783',
+                titulo: titulo,
+                categorias: categoriasActivas,
+                copete: "",
+                parrafo: contenidoHTMLSTR,
+                estado: 'EN REVISION',
+                distribucion: 'normal', // corregí el typo en "dstribucion"
+                cliente: 'Municipio de 25 de Mayo (Buenos Aires)',
+                email: 'prensamunicipalidad25demayo@gmail.com',
+                base_principal: image,
+                base_feed: image,
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // JSON es el tipo adecuado aquí
+                },
+            }
+        )
+        .then((response) => {
+            if (response.data.status === "true") {
+                dispatch(setCategorias(response.data.item)); // Asegúrate de que dispatch esté disponible
+            } else {
+                console.error('Error en la respuesta de la API:', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al hacer la solicitud:', error);
+        });
+    };
 
     // Inicializa Cropper cuando la imagen cambia
     useEffect(() => {
@@ -119,7 +179,7 @@ const PublicarNota = () => {
                                 <h3 className='abajoDeAgregarCategoria mb-4'>Selecciona las tres categorias claves para tu contenido</h3>
                             </div>
                             <div className='filaCategorias'>
-                                {categorias.map((categoria, index) => (
+                                {Array.isArray(categorias) && categorias.map((categoria, index) => (
                                     <Button onClick={() => actualizarCategoriasActivas(categoria)} key={index} className={categoriasActivas.includes(categoria.id) ? 'categoriaActiva' : 'categorias' }>
                                         {categoria.unidad}
                                     </Button>
@@ -162,6 +222,7 @@ const PublicarNota = () => {
                                             <label className="form-check-label" htmlFor="flexRadioDefault1">
                                                 <p className='distribuirNotaP'><strong>Distribuir nota</strong> {'(Te quedan 2/4 notas en tu plan)'}</p>
                                                 <p className='abajoDeAgregarCategoria'>La distribucion de tu nota amplifica el impactoy la llegada a mas usuarios</p>
+                                                
                                             </label>
                                         </div>
                                     </div>
@@ -184,6 +245,7 @@ const PublicarNota = () => {
                                             </label>
                                         </div>
                                     </div>
+                                
                                 </div>
                                 <h4 className='imagenParaRRSSHeader fw-bold mt-3'>Comentarios</h4>
                                 <p className='abajoDeAgregarCategoria'>Deja comentarios para el el equipo de Noticias 'd' pueda ayudarte a potenciar tus contenidos
@@ -193,7 +255,7 @@ const PublicarNota = () => {
                                 </textarea>
                                 <p className='abajoDeAgregarCategoria' >Max 300 caracteres</p>
                                 <div className='mb-5'>
-                                    <Button onClick = {()=> navigate('/publicarNota') } id="botonPublicar" variant="none">
+                                    <Button onClick = {()=> clickear_en_publicar_nota() } id="botonPublicar" variant="none">
                                         <img src="/images/send.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />{" Enviar"}
                                     </Button>
                                     <Button onClick = {()=> navigate('/crearNota') } id="botonVolver" variant="none">
@@ -209,9 +271,7 @@ const PublicarNota = () => {
 
                         </div>
 
-                        <div className='col-4 columnaTutorial align-self-start'>
-                            <img src="/images/tutorialvideo.png" alt="Icono 1" className="float-right" />
-                        </div>
+                        <ColumnaEditorial/>
                     </div>
                 </div>
             </div>

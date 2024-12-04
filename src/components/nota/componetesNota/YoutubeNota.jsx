@@ -5,8 +5,7 @@ import 'cropperjs/dist/cropper.css';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { DeleteContenidoPorIndice } from '../../../redux/crearNotaSlice';
-import { SubirContenidoPorIndice, BajarContenidoPorIndice } from '../../../redux/crearNotaSlice';
+
 import BotoneraContenido from './botoneraContenido';
 
 
@@ -18,16 +17,6 @@ const YoutubeNota= ({ indice }) => {
         return null; // Manejo de casos donde no hay imagen
     }
     const dispatch = useDispatch();
-
-    const eliminarContenido = (indice) =>{
-        dispatch(DeleteContenidoPorIndice(indice))
-    }   
-    const SubirUnaPosicionContenido = (indice) =>{
-        dispatch(SubirContenidoPorIndice(indice))
-      }   
-      const BajarUnaPosicionContenido = (indice) =>{
-        dispatch(BajarContenidoPorIndice(indice))
-      }   
 
     return (
            <span className="spanContainer mt-3" style={{height: "400px", width: "750px"}}>

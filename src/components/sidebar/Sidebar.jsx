@@ -127,7 +127,7 @@ const Sidebar = ({estadoActual}) => {
                                             }}
                                             className={`descripcion_boton ${isOpen ? "open" : "closed"} text-center`}
                                         >
-                                            Mun. de Villa Maria
+                                            Mun. de Lanus
                                         </span>
 
                                     </Button>

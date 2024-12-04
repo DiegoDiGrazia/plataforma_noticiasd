@@ -8,6 +8,8 @@ const dashboardSlice = createSlice({
     periodos_api: periodoUltimoAño(),
     desde: "", 
     hasta: "",
+    todosLosClientes : [],
+    nuevoSluce : "",
   },
   reducers: {
     setFiltro: (state, action) => {
@@ -19,8 +21,11 @@ const dashboardSlice = createSlice({
     setFechaHasta: (state) => {
       state.desde = action.payload;
     },
+    setTodosLosClientes: (state, action) => {
+      state.todosLosClientes = action.payload;
+    },
   },
 });
 
-export const { setFiltro, setFechaDesde, setFechaHasta } = dashboardSlice.actions;
+export const { setFiltro, setFechaDesde, setFechaHasta, setTodosLosClientes } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

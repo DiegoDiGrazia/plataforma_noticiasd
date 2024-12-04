@@ -9,24 +9,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
 import BarplotNota from '../barplot/BarplotNota';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PlataformaMasImpresionesNota from '../Dashboard/datosRelevantes/PlataformaMasImpresionesNota';
 import MediosMasRelevantesNotas from '../Dashboard/datosRelevantes/MediosMasRelevantesNotas';
 import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 import { Link } from 'react-router-dom';
-
+import CrearNota from './CrearNota';
+import { setNotaAEditar } from '../../redux/crearNotaSlice';
 const VerNota = () => {
 
     const location = useLocation();
-    const { id } = location.state || {};
-    const FiltroActual = useSelector((state) => state.dashboard.filtro);
-
+    const { id, notaABM } = location.state || {};
+    
     const [Nota, setNota] = useState({});
+    console.log(notaABM)
     
     const dispatch = useDispatch();
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
-
+    const navigate = useNavigate();
+    
+    const editarNota = (notaABM) => {
+        dispatch(setNotaAEditar(notaABM))
+        navigate("/crearNota"); // Pasar la nota usando la propiedad `state`
+    };
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
@@ -97,6 +103,9 @@ const VerNota = () => {
                                 <button className="btn custom-dropdown-button dropdown-toggle boton_compartir" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="/images/share_icon.png" alt="Icono 1" className="icon me-2" />
                                     Compartir
+                                </button>
+                                <button className="btn custom-dropdown-button boton_compartir" type="button" onClick={() => editarNota(notaABM)}>
+                                    Editar
                                 </button>
                             </div>
                             {/* <div className='col-2 ver_nota_boton'>

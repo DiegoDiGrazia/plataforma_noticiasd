@@ -4,18 +4,19 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'cropperjs/dist/cropper.css';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setTituloNota } from '../../../redux/crearNotaSlice';
+import { setCopete, setTituloNota } from '../../../redux/crearNotaSlice';
 import { Button } from 'react-bootstrap';
 
 import { DeleteContenidoPorIndice } from '../../../redux/crearNotaSlice';
 
-const TituloNota= ({indice}) => {
+const CopeteNota= ({indice}) => {
     const tituloRef = useRef(null);
-    const tituloGlobalNota= useSelector((state) => state.crearNota.tituloNota);
+    const tituloGlobalNota= useSelector((state) => state.crearNota.copete);
     const dispatch = useDispatch();
     
     const handleInputChange = (e) => {
-      dispatch(setTituloNota(e.target.value))
+      dispatch(setCopete(e.target.value))
+
   
       // Ajustar la altura del textarea al contenido
       const textarea = tituloRef.current;
@@ -30,14 +31,14 @@ const TituloNota= ({indice}) => {
           ref={tituloRef}
           className="inputTituloNota marginTitulo"
           type="text"
-          placeholder="Escribí un Titulo para la nota"
+          placeholder="BAJADA"
           value={tituloGlobalNota}
           onChange={handleInputChange}
           rows="1" // Empieza con una sola fila
-          style={{ overflow: 'hidden' }} // Oculta la barra de desplazamiento
+          style={{ overflow: 'hidden', fontSize: "24px" }} // Oculta la barra de desplazamiento
         ></textarea>
       </span>
     );
 };
 
-export default TituloNota;
+export default CopeteNota;

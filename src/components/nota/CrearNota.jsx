@@ -15,11 +15,17 @@ import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import YoutubeNota from './componetesNota/YoutubeNota';
+import Ubicacion from './componetesNota/Ubicacion';
+import Embebido from './componetesNota/Embebidos';
+import { useLocation } from 'react-router-dom';
+import ImagenPrincipal from './componetesNota/ImagenPrincipal';
+import CopeteNota from './componetesNota/Copete';
 const CrearNota = () => {
     const dispatch = useDispatch();
     const [image, setImage] = useState(null);
     const croppedImage = useSelector((state) => state.crearNota.imagenPrincipal);
     const navigate = useNavigate();
+    const esEditorial = true;
 
     const [cropper, setCropper] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -45,13 +51,15 @@ const CrearNota = () => {
     const agregarSubtitulo = () => {
         dispatch(setContenidoNota(["subtitulo", ""]))
       };
-
-      const agregarVideoYoutube = () => {
-        dispatch(setContenidoNota(["videoYoutube", ""]))
-      };
     const agregarParrafo = () => {
         console.log("entra al parrafo")
         dispatch(setContenidoNota( ["parrafo", ""]));
+    };
+    const agregarUbicacion = () => {
+        dispatch(setContenidoNota( ["ubicacion", ""]));
+    };
+    const agregarEmbebido = () => {
+        dispatch(setContenidoNota( ["embebido", ""]));
     };
     const agregarImagen = (file) => {
         const reader = new FileReader();
@@ -111,6 +119,10 @@ const CrearNota = () => {
     const eliminarImagenPrincipal = () => {
         dispatch(setImagenPrincipal(null))
     };
+
+    
+
+
     const contenidoNota = useSelector((state) => state.crearNota.contenidoNota)
     return (
         <div className="container-fluid sinPadding crearNotaGlobal">
@@ -121,9 +133,9 @@ const CrearNota = () => {
                             <div className='col'>
                                 <h4 id="nota">
                                 <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><Link to="/notas" className='breadcrumb-item'>{'< '} Notas</Link></li>
-                                        <li class="breadcrumb-item blackActive" aria-current="page">Crear Nota</li>
+                                    <ol className="breadcrumb">
+                                        <li className="breadcrumb-item"><Link to="/notas" className='breadcrumb-item'>{'< '} Notas</Link></li>
+                                        <li className="breadcrumb-item blackActive" aria-current="page">Crear Nota</li>
                                     </ol>
                                 </nav>
                                 </h4>
@@ -142,54 +154,10 @@ const CrearNota = () => {
                     {/* SECCION NOTA */}
                     <div className='row notaTutorial'>
                         <div className='col-8 columnaNota'>
-                        {!croppedImage && 
-                            <div className='row seccionImagen'> 
-                                <div className="upload-block"
-                                    onDragOver={handleDragOver}
-                                    onDrop={handleDrop}
-                                    >
-                                    <input
-                                        type="file"
-                                        id="fileInput"
-                                        ref={fileInputRef}
-                                        accept="image/*"
-                                        onChange={handleFileChange}
-                                        style={{ display: 'none' }}
-                                    />
-                                    <img src="/images/uploadImagen.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
-
-                                    <div className='row justify-content-center pt-3'>
-                                        Imagen de portada*
-                                    </div>
-                                    <div className='displayFlex pt-1'>
-                                        <label htmlFor="fileInput" className="custom-file-upload">
-                                            {"Subí tu imagen "}
-                                        </label>
-                                        <div className='fontGrisImagen'>{" o arrástrala aquí"}</div>
-                                    </div>
-                                    <div className='fontGrisImagen'>
-                                        SVG, PNG o JPG
-                                    </div>
-                                </div>
-                            </div>
-                            }
-                            {/* Muestra la imagen recortada */}
-                            {croppedImage && (
-                            <div className='row'>
-                                <div className="imagenRecortadaContenedor">
-                                    <button onClick = {() => eliminarImagenPrincipal()} className="boton-superior-izquierda">
-                                        <img src="/images/botonBorrarImagen.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />
-                                    </button>
-                                    <img
-                                        src={croppedImage}
-                                        alt="Imagen recortada"
-                                        className='imagenRecortada'
-                                    />
-                                    </div>
-                            </div>
-                            )}
+                            <ImagenPrincipal/>
                             <div className='row'>
                             <TituloNota/>
+                            <CopeteNota/>
 
                             {contenidoNota && contenidoNota.map((contenido, index) => {
                             if (contenido[0] === "subtitulo") {
@@ -198,8 +166,12 @@ const CrearNota = () => {
                                 return <ParrafoNota key={index} indice={index}/>;}
                             else if(contenido[0] === "imagen") {
                                 return <ImagenDeParrafo key={index} indice={index} />;}
-                                else if(contenido[0] === "videoYoutube") {
-                                    return <YoutubeNota key={index} indice={index} />;}
+                            else if(contenido[0] === "videoYoutube") {
+                                return <YoutubeNota key={index} indice={index} />;}
+                            else if(contenido[0] === "ubicacion") {
+                                return <Ubicacion key={index} indice={index} />;}
+                                else if(contenido[0] === "embebido") {
+                                    return <Embebido key={index} indice={index} />;}
                             return null; // Esto te permite agregar otros tipos de contenido en el futuro
                             })}
 
@@ -225,8 +197,10 @@ const CrearNota = () => {
                                     onChange={handleFileChangeEnNota}
                                     accept="image/*"  // Acepta solo archivos de imagen
                                     />
+                                    <button onClick={agregarUbicacion} className="botones-nota"><img src="images/mapaIcon.png" alt="" /></button>
+                                    <button onClick={agregarEmbebido} className="botones-nota"><img src="images/embebidoImagen.png" alt="" /></button>
 
-                                    <button onClick={agregarVideoYoutube} className="botones-nota"><img src="images/video-botton.png" alt="" /></button>
+
                                     </div>
                                 )}
                             </div>
@@ -242,8 +216,6 @@ const CrearNota = () => {
                         {/* fin seccion columna izquierda */}
 
                     </div>
-
-
 
                     {/* Modal para la imagen */}
                     <Modal show={showModal} onHide={() => setShowModal(false)} centered backdrop="static" dialogClassName="custom-modal">

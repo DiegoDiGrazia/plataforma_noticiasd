@@ -15,18 +15,9 @@ const SubtituloNota= ({indice}) => {
     const tituloGlobalNota= useSelector((state) => state.crearNota.contenidoNota[indice][1]);
     const dispatch = useDispatch();
     
-    const eliminarContenido = (indice) =>{
-      dispatch(DeleteContenidoPorIndice(indice))
-    }   
-    const SubirUnaPosicionContenido = (indice) =>{
-      dispatch(SubirContenidoPorIndice(indice))
-    }   
-    const BajarUnaPosicionContenido = (indice) =>{
-      dispatch(BajarContenidoPorIndice(indice))
-    }   
 
     const handleInputChange = (e) => {
-      dispatch(setContenidoPorIndice([indice, e.target.value]))
+      dispatch(setContenidoPorIndice([indice, e.target.value, '<p><strong>', '<strong/><p/>']))
 
       // Ajustar la altura del textarea al contenido
       const textarea = tituloRef.current;

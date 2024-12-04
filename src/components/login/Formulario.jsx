@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Formulario.css';
-import { updateEmail, updateContraseña, updateToken, updateCliente, updateIdCliente } from '../../redux/formularioSlice';
+import { updateEmail, updateContraseña, updateToken, updateCliente, updateIdCliente, updateEsEditor } from '../../redux/formularioSlice';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,8 +10,9 @@ const Formulario = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [contraseña, setContraseña] = useState('');
-    const [recuperarContraseña, setRecuperarContraseña] = useState(false); // Estado para manejar la vista de recuperación
     const navigate = useNavigate();
+    const CLIENTE_DEFAULT = "Municipio de Lanús"
+    const ID_CLIENTE_DEFAULT = "352"
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -36,6 +37,11 @@ const Formulario = () => {
                 dispatch(updateToken(response.data.item.token));
                 dispatch(updateCliente(response.data.item.cliente))
                 dispatch(updateIdCliente(response.data.item.id_cliente))
+                if(!response.data.item.id_cliente){
+                    dispatch(updateCliente(CLIENTE_DEFAULT))
+                    dispatch(updateIdCliente(ID_CLIENTE_DEFAULT))
+                    dispatch(updateEsEditor(true))
+                }
 
                 navigate('/dashboard'); // Redirige al Dashboard
             } else {
@@ -54,11 +60,6 @@ const Formulario = () => {
         }
     };
 
-    const handleRecuperarContraseña = async (e) => {
-        e.preventDefault();
-        // Implementa la lógica para recuperar la contraseña aquí
-        console.log('Recuperar contraseña para:', email);
-    };
 
     const mostrarFormularioRecuperarContraseña = () => {
         navigate('/recuperar-contraseña'); // Redirige al Dashboard

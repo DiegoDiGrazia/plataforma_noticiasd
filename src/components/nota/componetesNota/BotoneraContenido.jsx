@@ -26,13 +26,13 @@ const BotoneraContenido= ({indice}) => {
 
       <span style={{ display: 'flex', alignItems: 'center' }}>
             <Button variant="none" onClick={() => eliminarContenido(indice)} className='botonEliminarContenido'>
-            <i class="bi bi-trash"></i>
+            <i className="bi bi-trash"></i>
             </Button>
             <Button variant="none" onClick={() => SubirUnaPosicionContenido(indice)} className='botonEliminarContenido'>
-            <i class="bi bi-arrow-down-short"></i>
+            <i className="bi bi-arrow-down-short"></i>
             </Button>
             <Button variant="none" onClick={() => BajarUnaPosicionContenido(indice)} className='botonEliminarContenido'>
-            <i class="bi bi-arrow-up-short"></i>
+            <i className="bi bi-arrow-up-short"></i>
             </Button>
       </span>
     );

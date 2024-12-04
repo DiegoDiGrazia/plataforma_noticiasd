@@ -383,7 +383,7 @@ padding-top: 0px !important;
     font-weight: 600;
     resize: none;
     overflow-wrap: break-word;
-    padding-right: 40px;
+    padding-right: 10px;
     margin-left: 20px;
 }
 .marginTitulo{
@@ -707,5 +707,85 @@ padding-top: 0px !important;
     padding-left: 13px;
 }
 
+.BotonUbicacion{
+    width: 150px !important;
+    padding: 5px !important;
+    height: 70px !important;
+    float: right !important;
+    justify-content: end;
+}
+
+.mapa{
+    width: 90%;
+}
+
+.centradoContenido{
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;    /* Centra verticalmente */
+    text-align: center;     /* Centra texto (si aplica) */
+    height: 100%;           /* Asegura el alto del contenedor */
+    width: 100% !important;
+    border-radius: 15px;
+    padding-bottom: 20px;
+  
+}
+
+.quill-editor {
+    display: flex;
+    flex-direction: column-reverse; /* Invierte el orden de los hijos */
+    width: 850px;
+  }
+
+
+  .ql-editor.ql-blank::before {
+    content: attr(data-placeholder);
+    font-weight: 600;
+
+    opacity: 0.3;
+    font-style: normal !important;
+    pointer-events: none; /* Evita que el placeholder sea seleccionable */
+  }
+  
+  .quill-editor .ql-toolbar {
+    margin-top: 0px; /* Espaciado opcional entre el editor y la barra */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width:240px !important;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    display: none;
+  }
+  
+  .quill-editor .ql-container {
+    border-top: none; /* Quita el borde superior para integrarlo mejor */
+
+  }
+  .quill-editor .ql-toolbar {
+    display: none; /* Oculto por defecto */
+  }
+  
+  .quill-editor.focused .ql-toolbar {
+    display: flex; /* Muestra el toolbar cuando está enfocado */
+  }
+
+@media print {
+    /* Ocultar ciertos componentes */
+    .no-print {
+      display: none !important;
+    }
+  
+    /* Mostrar una imagen al inicio */
+    #print-header {
+      display: block !important;
+      margin-bottom: 20px;
+    }
+  }
+  
+  /* Imagen oculta normalmente */
+  #print-header {
+    display: none;
+  }
 
 
