@@ -9,7 +9,6 @@ const notasSlice = createSlice({
     notasEnBorrador : [],
     notasEliminadas : [],
     notasPublicadas : [],
-    ultimaFechaCargadaNotas: {"PUBLICADAS": "", "EN REVISION": "","todas": ""},
 
   },
   reducers: {
@@ -28,11 +27,6 @@ const notasSlice = createSlice({
   setNotasEliminadas: (state, action) => {
     state.notasEliminadas = action.payload;
   },
-  setultimaFechaCargadaNotas: (state, action) => {
-    const { categoria, dia } = action.payload;  // Desestructurar categoria y dia
-    state.ultimaFechaCargadaNotas[categoria] = dia;  // Usar categoria como clave
-  }
-
   }
 });
 

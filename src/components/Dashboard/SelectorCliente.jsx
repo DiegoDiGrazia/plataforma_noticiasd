@@ -37,7 +37,15 @@ const SelectorCliente= () => {
         
                     if (response.data.status === "true") {
                         console.log(response.data);
-                        dispatch(setTodosLosClientes(response.data.item)); // Usa dispatch aquí
+                        let clientes  = response.data.item
+                        clientes.sort((a, b) => {
+                            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                            if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+                            return 0;
+                        });
+                        
+                        // Despachar la lista ordenada al store
+                        dispatch(setTodosLosClientes(clientes));
                     } else {
                         console.error('Error en la respuesta de la API:', response.data.message);
                     }
@@ -54,36 +62,56 @@ const SelectorCliente= () => {
         dispatch(updateIdCliente(cliente.id))
     }
 
-    return (
+    const [filtro, setFiltro] = useState(''); // Estado para almacenar el filtro de búsqueda
 
+    // Filtrar los clientes en base al texto ingresado
+    const clientesFiltrados = todosLosClientes.filter((cliente) =>
+        cliente.name.toLowerCase().includes(filtro.toLowerCase())
+    );
+
+
+    return (
         <div className="dropdown">
-    <h4 id="saludo">Hola</h4>
-            <button 
-                className="btn custom-dropdown-button dropdown-toggle boton_cliente mb-2 ml-5 " 
-                type="button" 
-                id="dropdownMenuButton1" 
-                data-bs-toggle="dropdown" 
+            <h4 id="saludo">Hola</h4>
+            <button
+                className="btn custom-dropdown-button dropdown-toggle boton_cliente mb-2 ml-5"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
             >
                 {nombreCliente}
             </button>
-    <ul className="dropdown-menu listaClientes" aria-labelledby="dropdownMenuButton1">
-
-        {/* Renderiza los clientes dinámicamente */}
-        {todosLosClientes.map((cliente) => (
-            <li key={cliente.id}>
-                <button 
-                    className="dropdown-item" 
-                    onClick={() => editarCliente(cliente)}
-                >
-                    {cliente.name}
-                </button>
-            </li>
-        ))}
-
-    </ul>
-</div>
-
+            <ul className="dropdown-menu listaClientes" aria-labelledby="dropdownMenuButton1" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                {/* Campo de búsqueda */}
+                <li>
+                    <input
+                        type="text"
+                        className="form-control dropdown-search"
+                        placeholder="Buscar cliente..."
+                        value={filtro}
+                        onChange={(e) => setFiltro(e.target.value)}
+                        style={{ margin: '0.5rem', maxHeight: "250px !important" }}
+                    
+                    />
+                </li>
+                {/* Renderizar clientes filtrados */}
+                {clientesFiltrados.map((cliente) => (
+                    <li key={cliente.id}>
+                        <button
+                            className="dropdown-item"
+                            onClick={() => editarCliente(cliente)}
+                        >
+                            {cliente.name}
+                        </button>
+                    </li>
+                ))}
+                {/* Mensaje si no hay clientes coincidentes */}
+                {clientesFiltrados.length === 0 && (
+                    <li className="text-center text-muted">No se encontraron clientes</li>
+                )}
+            </ul>
+        </div>
     );
 };
 

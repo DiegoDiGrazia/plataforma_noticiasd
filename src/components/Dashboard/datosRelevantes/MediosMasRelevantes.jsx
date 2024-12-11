@@ -12,12 +12,17 @@ import { formatNumberMiles } from '../Dashboard';
 
 function formatearTextoNombre(texto) {
     // Cortar la cadena antes del punto
+    if(texto){
     let textoCortado = texto.split('.')[0];
 
     // Convertir la primera letra a mayúscula y el resto a minúsculas
     let textoFormateado = textoCortado.charAt(0).toUpperCase() + textoCortado.slice(1).toLowerCase();
-
     return textoFormateado;
+    }
+    else{
+        return texto
+    }
+
 }
 
 function reduceBykeyMedios(lista_medios) {
@@ -63,7 +68,7 @@ const MediosMasRelevantes = () => {
     useEffect(() => {
 
         const fecha = new Date();
-        if(ultimaFechaCargada !== ultimaFechaCargadaBarplot){
+        if(true){
 
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
@@ -106,7 +111,7 @@ const MediosMasRelevantes = () => {
             console.error('Error al hacer la solicitud:', error);
         });
     }
-    },[]); // Dependencias del useEffect
+    },[nombreCliente, ultimaFechaCargadaBarplot]); // Dependencias del useEffect
 
 
 

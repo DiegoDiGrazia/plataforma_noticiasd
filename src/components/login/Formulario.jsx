@@ -18,7 +18,7 @@ const Formulario = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("api/login", {
+            const response = await axios.post("https://panel.serviciosd.com/api/login", {
                 usuario: email,
                 password: contraseña
             }, {
@@ -37,7 +37,9 @@ const Formulario = () => {
                 dispatch(updateToken(response.data.item.token));
                 dispatch(updateCliente(response.data.item.cliente))
                 dispatch(updateIdCliente(response.data.item.id_cliente))
-                if(!response.data.item.id_cliente){
+                dispatch(updateEsEditor(false))
+                if(response.data.item.cliente === ""){
+                    console.log("entre porque no tiene cliente")
                     dispatch(updateCliente(CLIENTE_DEFAULT))
                     dispatch(updateIdCliente(ID_CLIENTE_DEFAULT))
                     dispatch(updateEsEditor(true))

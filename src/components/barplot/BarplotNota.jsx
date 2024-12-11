@@ -8,6 +8,8 @@ import axios from 'axios';
 import { formatNumberMiles } from '../Dashboard/Dashboard.jsx';
 import Barplot_Carga from './Barplot_mejorado_carga.jsx';
 import { formatDate } from './Barplot.jsx';
+const RUTA = "http://localhost:4000/"
+
 function generarPeriodosDesde(f_pub, cantidadDeMesesAGenerar){
     if(f_pub){
         const months = [];
@@ -39,7 +41,7 @@ const BarplotNota = () => {
 
     useEffect(() => {
         axios.post(
-            "app_obtener_usuarios_impresiones_noticia",
+            RUTA+ "app_obtener_usuarios_impresiones_noticia",
             {
                 cliente: nombreCliente,
                 periodos: generarPeriodosDesde(f_pub, meses_a_ver),

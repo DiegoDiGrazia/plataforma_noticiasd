@@ -36,7 +36,7 @@ const formularioSlice = createSlice({
             state.id_cliente = action.payload;  // Asignación directa para cadenas de texto
         },
         updateEsEditor: (state, action) => {
-            state.es_editor = true;  // Asignación directa para cadenas de texto
+            state.es_editor = action.payload;  // Asignación directa para cadenas de texto
         },
     }
 });

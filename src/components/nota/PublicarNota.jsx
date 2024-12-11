@@ -8,7 +8,7 @@ import 'cropperjs/dist/cropper.css';
 import "./nota.css";
 import { useDispatch, useSelector } from 'react-redux';
 import ImagenDeParrafo from './componetesNota/ImagenDeParrafo';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { DeleteContenidoPorIndice, setCategorias, setContenidoNota, setImagenPrincipal, setImagenRRSS } from '../../redux/crearNotaSlice'; // Asegúrate de importar setImagenPrincipal
 import { useNavigate } from 'react-router-dom';
@@ -17,13 +17,24 @@ import ColumnaEditorial from './Editorial/ColumnaEditorial';
 const PublicarNota = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
+    const notaCargada = useSelector((state) => state.crearNota)
+
     const TOKEN = useSelector((state) => state.formulario.token);
     const imageRef = useRef(null);
     const [cropper, setCropper] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null); // Estado para la imagen recortada
     const es_editor = useSelector((state) => state.formulario.es_editor);
+    const [estadoPublicar, setEstadoPublicar]= useState('EN REVISION');
+
+    const [comentario, setComentario] = useState('');
+
+    const manejarCambioComentarios = (e) => {
+        setComentario(e.target.value);
+    };
 
     const image = useSelector((state) => state.crearNota.imagenPrincipal); // Imagen seleccionada
+    const imagefeed = useSelector((state) => state.crearNota.imagenRRSS); // Imagen seleccionada
+
 
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
@@ -41,6 +52,7 @@ const PublicarNota = () => {
         )
         .then((response) => {
             if (response.data.status === "true") {
+                console.log(response.data.item)
                 dispatch(setCategorias(response.data.item));
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
@@ -71,27 +83,39 @@ const PublicarNota = () => {
     /// subir la nota !!
     const titulo = useSelector((state) => state.crearNota.tituloNota);
     const contenidoNota = useSelector((state) => state.crearNota.contenidoNota)
+    const datosUsuario =useSelector((state) => state.formulario)
     const clickear_en_publicar_nota = () => {
         const contenidoHTMLSTR = transformarContenidoAHTML(contenidoNota)
-        const contenidoHTML = { __html: contenidoHTMLSTR }
-        console.log(contenidoHTML)
-        console.log(contenidoHTMLSTR)
-
         axios.post(
             "app_subir_nota",
             {
+                ///SECCION CLIENTE
                 token: TOKEN,
-                id: '879783',
+                id: "0",
                 titulo: titulo,
                 categorias: categoriasActivas,
-                copete: "",
+                copete: notaCargada.copete,
                 parrafo: contenidoHTMLSTR,
-                estado: 'EN REVISION',
-                distribucion: 'normal', // corregí el typo en "dstribucion"
-                cliente: 'Municipio de 25 de Mayo (Buenos Aires)',
-                email: 'prensamunicipalidad25demayo@gmail.com',
+                estado: estadoPublicar, // corregí el typo en "dstribucion"
+                cliente: datosUsuario.cliente,
+                email: datosUsuario.email,
                 base_principal: image,
                 base_feed: image,
+                comentarios: comentario,
+                autor_cliente: datosUsuario.email,
+                conDistribucion: "0",
+
+                /// SECCION EDITOR
+                es_demo : "0",
+                es_home : "0",
+                autor: "",
+                provincia: "",
+                municipio: "",
+                tipo_contenido: 'gestion',
+                fecha_vencimiento: "2024-10-10",
+                engagement: "",
+                distribucion_prioritaria: "0",
+                etiquetas: ["ninguna"]
             },
             {
                 headers: {
@@ -101,7 +125,7 @@ const PublicarNota = () => {
         )
         .then((response) => {
             if (response.data.status === "true") {
-                dispatch(setCategorias(response.data.item)); // Asegúrate de que dispatch esté disponible
+                navigate('/notas')
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
             }
@@ -135,20 +159,32 @@ const PublicarNota = () => {
     
     const categorias = useSelector((state) => state.crearNota.categorias) || [];
     const [categoriasActivas, setCategoriasActivas] = useState([]);
+    const categoriasPorNombre = useSelector((state) => state.crearNota.categoriasNombres) || [];
+
+    useEffect(() => {
+    if (categoriasPorNombre.length > 0) {
+        const cat_activas = categorias.filter((categoria) => categoriasPorNombre.includes(categoria.unidad))
+        .map((categoria) => categoria.id);
+
+        setCategoriasActivas(cat_activas); // Guarda la lista de IDs
+    }
+    }, []); // Ejecuta cuando cambian las dependencias
 
     const actualizarCategoriasActivas = (categoria) => {
+
         if (categoriasActivas.includes(categoria.id)) {
             setCategoriasActivas(categoriasActivas.filter(item => item !== categoria.id));
         } else if (categoriasActivas.length < 3) {
             setCategoriasActivas([...categoriasActivas, categoria.id]);
         }
+
     };
-    const [selectedOption, setSelectedOption] = useState('flexRadioDefault2');
+    const [selectedOption, setSelectedOption] = useState('ninguna');
 
     // Función para manejar el cambio de opción seleccionada
     const handleChange = (event) => {
       setSelectedOption(event.target.id);
-      console.log(selectedOption)
+      console.log(event.target.id)
     };
 
     return (
@@ -209,36 +245,36 @@ const PublicarNota = () => {
                                 <div className='abajoDeAgregarCategoria mlRRSS'>Selecciona el recorte de tu imagen</div>
 
                                 <div>
-                                    <div className= {selectedOption === 'flexRadioDefault1' ? 'containerFormCheckActive' : 'containerFormCheck'}>
+                                    <div className= {selectedOption === 'normal' ? 'containerFormCheckActive' : 'containerFormCheck'}>
                                         <div className="form-check">
                                             <input
                                             className="form-check-input"
                                             type="radio"
                                             name="flexRadioDefault"
-                                            id="flexRadioDefault1"
-                                            checked={selectedOption === 'flexRadioDefault1'}
+                                            id="normal"
+                                            checked={selectedOption === 'normal'}
                                             onChange={handleChange}
                                             />
-                                            <label className="form-check-label" htmlFor="flexRadioDefault1">
+                                            <label className="form-check-label" htmlFor="normal">
                                                 <p className='distribuirNotaP'><strong>Distribuir nota</strong> {'(Te quedan 2/4 notas en tu plan)'}</p>
                                                 <p className='abajoDeAgregarCategoria'>La distribucion de tu nota amplifica el impactoy la llegada a mas usuarios</p>
                                                 
                                             </label>
                                         </div>
                                     </div>
-                                    <div className={selectedOption === 'flexRadioDefault2' ? 'containerFormCheckActive' : 'containerFormCheck'}>
+                                    <div className={selectedOption === 'ninguna' ? 'containerFormCheckActive' : 'containerFormCheck'}>
                                         <div className="form-check">
                                             <div className='inputRadioContainer'>
                                                 <input
                                                 className="form-check-input"
                                                 type="radio"
                                                 name="flexRadioDefault"
-                                                id="flexRadioDefault2"
-                                                checked={selectedOption === 'flexRadioDefault2'}
+                                                id="ninguna"
+                                                checked={selectedOption === 'ninguna'}
                                                 onChange={handleChange}
                                                 />
                                             </div>
-                                            <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                            <label className="form-check-label" htmlFor="ninguna">
                                                 <p className='distribuirNotaP'><strong>No distribuir nota</strong></p>
                                                 <p className='abajoDeAgregarCategoria mt-0 mb-0'>Tu contenido será amplificado de forma organica en nuestros canales</p>
 
@@ -251,8 +287,13 @@ const PublicarNota = () => {
                                 <p className='abajoDeAgregarCategoria'>Deja comentarios para el el equipo de Noticias 'd' pueda ayudarte a potenciar tus contenidos
                                     y entender mejor tus objetivos
                                 </p>
-                                <textarea placeholder='Escribi aqui tus comentarios' className='textAreaComentarios' maxLength={300}>
-                                </textarea>
+                                <textarea
+                                    placeholder="Escribí aquí tus comentarios"
+                                    className="textAreaComentarios"
+                                    maxLength={300}
+                                    value={comentario}
+                                    onChange={manejarCambioComentarios}
+                                />
                                 <p className='abajoDeAgregarCategoria' >Max 300 caracteres</p>
                                 <div className='mb-5'>
                                     <Button onClick = {()=> clickear_en_publicar_nota() } id="botonPublicar" variant="none">
@@ -271,7 +312,7 @@ const PublicarNota = () => {
 
                         </div>
 
-                        <ColumnaEditorial/>
+                        {es_editor && <ColumnaEditorial/>}
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import { setImagenPrincipal } from '../../../redux/crearNotaSlice';
 
 const ImagenPrincipal = () => {
     const dispatch = useDispatch();
-    const croppedImage = useSelector((state) => state.crearNota.ImagenPrincipal);
+    const croppedImage = useSelector((state) => state.crearNota.imagenPrincipal);
     const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
@@ -23,6 +23,9 @@ const ImagenPrincipal = () => {
     const eliminarImagenPrincipal = () => {
         dispatch(setImagenPrincipal(null));
     };
+
+    useEffect(() => {
+    }, [croppedImage]);
 
     return (
         <>

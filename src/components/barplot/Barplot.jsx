@@ -63,8 +63,9 @@ const Barplot = () => {
         setSimulatedData(generateRandomData());
     }, 800); // Actualiza los datos simulados cada 500 ms
     useEffect(() => {
+        setLoading(true);
         const fecha = new Date();
-        if(ultimaFechaCargada !== ultimaFechaCargadaBarplot){
+        if(true){
 
 
 
@@ -112,7 +113,7 @@ const Barplot = () => {
     }
 
     return () => clearInterval(interval); // Limpia el intervalo si el componente se desmonta
-    }, []);
+    }, [nombreCliente]);
 
     // Función para generar datos aleatorios
     function generateRandomData() {

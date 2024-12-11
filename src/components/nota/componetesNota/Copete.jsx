@@ -16,14 +16,22 @@ const CopeteNota= ({indice}) => {
     
     const handleInputChange = (e) => {
       dispatch(setCopete(e.target.value))
-
-  
-      // Ajustar la altura del textarea al contenido
-      const textarea = tituloRef.current;
-      textarea.style.height = 'auto'; // Restablecer la altura temporalmente
-      textarea.style.height = `${textarea.scrollHeight}px`; // Ajustar a la altura del contenido
+        // Ajustar la altura del textarea al contenido
+        ajustarAltura();
     };
-  
+
+    const ajustarAltura = () => {
+        const textarea = tituloRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto'; // Restablecer altura para recalcular
+            textarea.style.height = `${textarea.scrollHeight}px`; // Ajustar a la altura del contenido
+        }
+    };
+
+    // Ajustar la altura al cargar contenido existente
+    useEffect(() => {
+        ajustarAltura();
+    }, [tituloGlobalNota]);
     return (
 
       <span>

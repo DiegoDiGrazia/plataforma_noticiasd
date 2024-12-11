@@ -64,7 +64,7 @@ const InteraccionPorNota = () => {
     console.log('antes del use efect');
     useEffect(() => {
         const fecha = new Date();
-        if(ultimaFechaCargada !== ultimaFechaCargadaBarplot){
+        if(true){
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
             "app_obtener_notas",
@@ -95,7 +95,7 @@ const InteraccionPorNota = () => {
             console.error('Error al hacer la solicitud:', error);
         });
     }
-    },[]); // Dependencias del useEffect
+    },[nombreCliente, ultimaFechaCargadaBarplot]); // Dependencias del useEffect
 
 
 

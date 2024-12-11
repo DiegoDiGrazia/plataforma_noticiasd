@@ -51,7 +51,7 @@ const CategoriasMasRelevantes = () => {
         useEffect(() => {
 
             const fecha = new Date();
-            if(ultimaFechaCargada !== ultimaFechaCargadaBarplot){
+            if(true){
     
             // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
             axios.post(
@@ -85,7 +85,7 @@ const CategoriasMasRelevantes = () => {
                 console.error('Error al hacer la solicitud:', error);
             });
         }
-        },[]); // Dependencias del useEffect
+        },[nombreCliente, ultimaFechaCargadaBarplot]); // Dependencias del useEffect
 
 
     const categoriasPorMes = useSelector(state => state.interaccionesPorNota.categoriasMayorInteraccion || []);

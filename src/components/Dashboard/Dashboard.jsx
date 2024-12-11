@@ -40,7 +40,12 @@ function formatFechaApiExportar(fechaStr) {
 }
 
 
+
 const Dashboard = () => {
+    function validarVolverAAcutalizar(cliente, fecha){
+        const ultimo_cliente_cargado = useSelector()
+    }
+
 
     const navigate = useNavigate();
     const dispatch = useDispatch();

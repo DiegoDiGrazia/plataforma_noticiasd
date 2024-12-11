@@ -1,15 +1,73 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+ export async function analizarHTML(html) {
+  const resultados = [];
+
+  // Crear un contenedor temporal para procesar el HTML
+  const div = document.createElement("div");
+  div.innerHTML = html;
+
+  // Manejar párrafos
+  const parrafos = div.querySelectorAll("p");
+  parrafos.forEach(parrafo => {
+    const strong = parrafo.querySelector("strong");
+    const br = strong?.nextSibling?.nodeName === "BR";
+
+    if (strong && br) {
+      const subtitulo = strong.textContent.trim();
+      resultados.push(["subtitulo", subtitulo]);
+    }
+
+    let textoParrafo = parrafo.innerHTML;
+
+    if (strong && br) {
+      textoParrafo = textoParrafo.replace(`<strong>${strong.textContent}</strong><br>`, "").trim();
+    }
+
+    if (textoParrafo) {
+      resultados.push(["parrafo", textoParrafo]);
+    }
+  });
+
+  // Manejar imágenes
+
+  return resultados;
+}
+
+// Función para convertir imágenes a Base64
+export async function convertirImagenBase64(url) {
+  const response = await fetch(url);
+  const blob = await response.blob();
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
 const crearNotaSlice = createSlice({
   name: 'crearNota',
   initialState: {
-    tituloNota : "",
-    tituloNotaHTML: '',
+    tituloNota : "", ///listo
     contenidoNota :[],
-    categorias: [],
+    categorias: [], 
+    categoriasNombres: "", ///listo
     imagenPrincipal: null,
     imagenRRSS: null,
-    copete : "",
+    copete : "", ///listo
+    comentarios: "", /// listo
+    conDistribucion: "0",/// listo
+    distribucion_prioritaria: "0",/// listo
+    engagement: "", /// listo
+    autor: "", /// listo 
+    autor_cliente: "",/// listo
+    es_demo: "0", /// listo
+    es_home: "0", /// listo
+    estado: "", /// listo
+    id_noti: "",
+
   },
   reducers: {
     setCopete: (state, action) => {
@@ -25,7 +83,7 @@ const crearNotaSlice = createSlice({
       state.imagenRRSS = action.payload;
     },
     setImagenRRSS: (state, action) => {
-      state.imagenPrincipal = action.payload;
+      state.imagenRRSS = action.payload;
     },  
     setContenidoNota: (state, action) => { /// aca guardo las imagenes, subtitulos y parrafos
         state.contenidoNota.push(action.payload)
@@ -68,13 +126,27 @@ const crearNotaSlice = createSlice({
       const nota = action.payload;
       state.tituloNota = nota.titulo;
       state.copete = nota.copete;
+      state.categoriasNombres = nota.categorias;
+      state.comentarios = nota.comentarios;
+      state.engagement = nota.engagement;
+      state.es_demo = nota.es_demo;
+      state.es_home = nota.es_home;
+      state.autor = nota.autor;
+      state.autor_cliente = nota.autor_cliente;
+      state.conDistribucion = nota.conDistribucion;
+      state.distribucion_prioritaria = nota.distribucion_prioritaria;
+      state.estado = nota.estado;
+      state.id_noti = nota.term_id;
 
-    }
+    },
+    setContenidoAEditar: (state, action) =>{
+      state.contenidoNota= action.payload;
+    },
     }
 });
 
 export const { setTituloNota, setContenidoNota, DeleteContenidoPorIndice, setContenidoPorIndice,
                 SubirContenidoPorIndice, BajarContenidoPorIndice, setCategorias, setImagenPrincipal, setImagenRRSS,
-                setCopete, setNotaAEditar
+                setCopete, setNotaAEditar, setContenidoAEditar
  } = crearNotaSlice.actions;
 export default crearNotaSlice.reducer;

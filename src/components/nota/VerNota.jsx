@@ -15,7 +15,9 @@ import MediosMasRelevantesNotas from '../Dashboard/datosRelevantes/MediosMasRele
 import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 import { Link } from 'react-router-dom';
 import CrearNota from './CrearNota';
-import { setNotaAEditar } from '../../redux/crearNotaSlice';
+import { useParams } from 'react-router-dom';
+import { analizarHTML, convertirImagenBase64, setContenidoAEditar, setContenidoNota, setImagenPrincipal, setImagenRRSS, setNotaAEditar } from '../../redux/crearNotaSlice';
+export const RUTA = "http://localhost:4000/"
 const VerNota = () => {
 
     const location = useLocation();
@@ -24,22 +26,37 @@ const VerNota = () => {
     const [Nota, setNota] = useState({});
     console.log(notaABM)
     
+
+    const { id_ruta } = useParams();
+    console.log("id_por_parametro: ", id_ruta )
+
     const dispatch = useDispatch();
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
     const navigate = useNavigate();
     
-    const editarNota = (notaABM) => {
+    const editarNota = async (notaABM) => {
         dispatch(setNotaAEditar(notaABM))
+        const contenidoNota = await(analizarHTML(notaABM.parrafo))
+        dispatch(setContenidoAEditar(contenidoNota))
+        const base64PPAL = await convertirImagenBase64("https://panel.serviciosd.com/img" + notaABM.imagen_principal);
+        dispatch(setImagenPrincipal(base64PPAL))
+        const base64RRSS = await convertirImagenBase64("https://panel.serviciosd.com/img" + notaABM.imagen_feed);
+        dispatch(setImagenRRSS(base64RRSS))
         navigate("/crearNota"); // Pasar la nota usando la propiedad `state`
     };
+
+    ///ELEGIR UN ID
+    const id_para_api= id_ruta ? id_ruta : id
+    const es_demo = id_ruta ? true : false
+
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
-            "app_obtener_noticia",
+            RUTA+"app_obtener_noticia",
             {
                 token: TOKEN,          
-                id_noti: id,
+                id_noti: id_para_api,
             },
             {
                 headers: {
@@ -65,11 +82,15 @@ const VerNota = () => {
     },[]); // Dependencias del useEffect 
     console.log(Nota)
 
-    const id_noti = Nota.id_noti
+    const id_noti_aux = Nota.id_noti ? Nota.id_noti : Nota.term_id
+    const id_noti = id_ruta ? id_ruta : id_noti_aux
+
     return (
         <div className="container-fluid  sinPadding">
             <div className="d-flex h-100">
-                <Sidebar estadoActual={"notas"} /> {/* Usa el componente Sidebar */}
+                {!es_demo &&
+                <Sidebar estadoActual={"notas"} /> 
+                }
                 <div className="content flex-grow-1">
                     <div className='row'>
                         <div className='col'>
@@ -91,7 +112,10 @@ const VerNota = () => {
                                 <div className='row vn_titulo'>{Nota.titulo}</div>
                                 <div className='row vn_fecha'> Publicada el {formatearFecha(Nota.f_pub)} </div>
                                 <div className='row publicada'> 
-                                    <img src="/images/publicada.png" alt="Icono 1" className="" /> 
+                                <span className="publicada">
+                                        <img src={RUTA+"/images/puntoVerde.png"} alt="Icono Nota" className='' />
+                                        {Nota.estado ?   "   " + Nota.estado  :   "   Publicada" }
+                                </span>
                                 </div>
                                 <div className='row order-last flex-grow-1'> {/* Agregar flex-grow-1 aquí */}
                                     <div>
@@ -100,13 +124,17 @@ const VerNota = () => {
                                 </div>
                             </div>
                             <div className='col boton_nota d-flex justify-content-end align-items-start'>
+                                {!es_demo &&
                                 <button className="btn custom-dropdown-button dropdown-toggle boton_compartir" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="/images/share_icon.png" alt="Icono 1" className="icon me-2" />
                                     Compartir
                                 </button>
+                                }
+                                {notaABM && !notaABM.id_noti && !es_demo &&
                                 <button className="btn custom-dropdown-button boton_compartir" type="button" onClick={() => editarNota(notaABM)}>
                                     Editar
                                 </button>
+                                }
                             </div>
                             {/* <div className='col-2 ver_nota_boton'>
                                     <button className='ver_nota_boton'> 

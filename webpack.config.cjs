@@ -51,5 +51,6 @@ module.exports = {
       },
     ],
   },
-  mode: 'development', // Cambiar a 'production' para generar el bundle final
+  
+  mode: 'production', // Cambiar a 'production' para generar el bundle final
 };

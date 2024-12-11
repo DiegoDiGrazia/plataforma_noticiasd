@@ -11,7 +11,7 @@ const TextareaWithCounter = () => {
         <div className='p-0'>
             <p>Engagement</p>
             <textarea
-                placeholder='11-6785-4783'
+                placeholder='Escribe aqui el engagement'
                 className='textAreaComentarios col-auto ms-auto'
                 maxLength={maxCharacters}
                 value={engagementText}
@@ -21,7 +21,7 @@ const TextareaWithCounter = () => {
 
             <p>Bajada</p>
             <textarea
-                placeholder='11-6785-4783'
+                placeholder='Escribe aqui la bajada'
                 className='textAreaComentarios col-auto ms-auto'
                 maxLength={maxCharacters}
                 value={bajadaText}

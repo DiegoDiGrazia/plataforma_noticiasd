@@ -114,3 +114,7 @@
     background-color: #888; /* Color del scroll */
     border-radius: 3px; /* Bordes redondeados */
 }
+
+.dropdown-search{
+    width: 470px !important;
+}

@@ -37,7 +37,7 @@ function App() {
 
 
 
-        <Route path="/verNota/" element={<VerNota/>} />
+        <Route path="/verNota/:id_ruta?" element={<VerNota/>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/notas" element={<Notas/>} />
         <Route path="/recuperar-contraseña" element={<RecuperarContraseña/>} />

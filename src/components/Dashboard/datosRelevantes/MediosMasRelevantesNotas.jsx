@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { setMediosMayorInteraccion, setNotasMayorInteraccion } from '../../../redux/interaccionesPorNotaSlice';
 import { formatNumberMiles } from '../Dashboard';
+export const RUTA = "http://localhost:4000/"
+
 
 
 function formatearTextoNombre(texto) {
@@ -67,7 +69,7 @@ const MediosMasRelevantesNotas = ({id}) => {
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
-            "app_obtener_medios_noticia",
+            RUTA + "app_obtener_medios_noticia",
             {
                 cliente: nombreCliente,
                 desde: desde,

@@ -7,6 +7,8 @@ const barplotSlice = createSlice({
     hasta: "",
     fechas: [],
     ultimaFechaCargadaBarplot : "",
+    ultimoClienteCargadoBarplot : "",
+
 
     usuariosTotalesMeta: [],
     usuariosTotalesGoogle: [],
@@ -48,6 +50,9 @@ const barplotSlice = createSlice({
     },
     setultimaFechaCargadaBarplot: (state,action) => {
       state.ultimaFechaCargadaBarplot = (action.payload)
+    },
+    setUltimoClienteCargadoBarplot: (state,action) => {
+      state.ultimoClienteCargadoBarplot = (action.payload)
     }
   },
 });

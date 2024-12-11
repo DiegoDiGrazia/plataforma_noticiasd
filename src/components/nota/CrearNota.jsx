@@ -68,20 +68,6 @@ const CrearNota = () => {
         };
         reader.readAsDataURL(file); // Convierte el archivo a base64
     };
-
-    const handleDragOver = (event) => {
-        event.preventDefault(); // Previene el comportamiento por defecto
-        event.dataTransfer.dropEffect = "copy"; // Cambia el icono a "copiar"
-    };
-
-    const handleDrop = (event) => {
-        event.preventDefault();
-        const file = event.dataTransfer.files[0]; // Obtiene el archivo arrastrado
-        if (file && file.type.startsWith("image/")) {
-            handleFileChange({ target: { files: [file] } }); // Llama a la función de cambio de archivo
-        }
-    };
-
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {

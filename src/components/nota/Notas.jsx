@@ -8,38 +8,51 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { setTodasLasNotas, setultimaFechaCargadaNotas, setNotasEnRevision, setNotasBorrador, setNotasPublicadas } from '../../redux/notasSlice';
+import { setTodasLasNotas, setNotasEnRevision, setNotasBorrador, setNotasPublicadas } from '../../redux/notasSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 import { formatearTitulo } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 
 
-const CantidadDeNotasPorPagina = 6;
+
 
 const Notas = () => {
+
     const navigate = useNavigate()
     const [filtroSeleccionado, setFiltroSeleccionado] = useState(1); /// botones TODAS LAS NOTAS; EN PROGRESO; FINALIZADAS
     const [numeroDePagina, setNumeroDePagina] = useState(1); /// para los botones de la paginacion
     const ultimaFechaCargadaNota = useSelector((state) => state.notas.ultimaFechaCargadaNotas);
-    
+    const [todasLasNotas2, setTodasLasNotas2] = useState([])
+    const [verMasUltimo, setVerMasUltimo] = useState(2)
+    const verMasCantidadPaginacion = 6
+    const [traerNotas, setTraerNotas] = useState(true)
+
+
+
+    let CantidadDeNotasPorPagina = 15;
+    if(filtroSeleccionado == 1){
+        CantidadDeNotasPorPagina= 1000
+
+    }else{
+        CantidadDeNotasPorPagina = 15}
+
     const botones = [
         { id: 1, nombre: 'Todas las notas' },
         { id: 2, nombre: 'Publicadas' },
-        { id: 4, nombre: 'Borradores' },
         { id: 3, nombre: 'En revision' },
+        { id: 4, nombre: 'Borradores' },
         { id: 5, nombre: 'Elimidas' },
     ];
 
 
     
-    const handleFiltroClick = (id) => {
+    const handleFiltroClick = (id, verMas = false) => {
         setFiltroSeleccionado(id); // Actualiza el filtro seleccionado
         console.log(`Filtro seleccionado: ${id}`);
-    
+        
         const fecha = new Date();
-        const dia = String(fecha.getDate());
         let categoria = "";
-        // Determina la categoría según el filtro seleccionado
+        
         if (id === 1) {
             categoria = "todas";
         } else if (id === 2) {
@@ -47,60 +60,70 @@ const Notas = () => {
         } else if (id === 3) {
             categoria = "EN REVISION";
         } else if (id === 4) {
-            categoria = "ELIMINADO";
+            categoria = "BORRADOR";
+        }else if (id === 5) {
+            categoria = "BORRADOR";
         }
-        if (false) {
-            return; // Si la fecha y categoría coinciden, no haces la solicitud
-        } else {
-            // Si no coincide, actualizas la fecha y la categoría
-            dispatch(setultimaFechaCargadaNotas({ dia, categoria }));
-        
-        // Realiza la solicitud sólo si el filtro tiene una categoría válida
-            axios.post(
-                id === 1 ? "app_obtener_noticias" : "app_obtener_noticias_abm",
-                {
-                    cliente: CLIENTE,
-                    desde: `${DESDE}`,
-                    hasta: `${HASTA}`,
-                    token: TOKEN,
-                    categoria: categoria,
-                    limite: 7,
-                    desde_limite: 0,
+    
+        // Parámetros para la paginación
+        let desdeLimite = 0;
+        let limite = verMasCantidadPaginacion;
+    
+        if (verMas) {
+            setTraerNotas(true)
+            desdeLimite = verMasUltimo * verMasCantidadPaginacion; // Actualiza el inicio para traer las siguientes notas
+            setVerMasUltimo((prev) => prev + 1); // Incrementa el contador de páginas
+        }
+    
+        // Llamado a la API con los parámetros de paginación
+        axios.post(
+            id === 1 ? "app_obtener_noticias" : "app_obtener_noticias_abm",
+            {
+                cliente: CLIENTE,
+                desde: `${DESDE}`,
+                hasta: `${HASTA}`,
+                token: TOKEN,
+                categoria: categoria,
+                limite: limite, // Número de notas a traer
+                desde_limite: desdeLimite, // Inicio de las notas a traer
+                ...(id === 1 ? { titulo: "", id: "" } : {}),
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                }
-            )
-            .then((response) => {
-                console.log('Respuesta:', response.status);
+            }
+        )
+        .then((response) => {
+            console.log('Respuesta:', response.status);
     
-                if (response.data.status === "true") {
-                    console.log(`Datos cargados para el filtro: ${categoria}`);
-                    console.log(response.data.item);
+            if (response.data.status === "true") {
+                console.log(`Datos cargados para el filtro: ${categoria}`);
+                console.log(response.data.item);
     
-                    if (id === 1 ) { 
-                    
-                        dispatch(setTodasLasNotas(response.data.item));
-                    } else if (id === 2) {
-                        dispatch(setNotasPublicadas(response.data.item));
-                    } else if (id === 3) {
-                        dispatch(setNotasEnRevision(response.data.item));
-                    } else if (id === 4) {
-                        dispatch(setNotasBorrador(response.data.item));
+                if (id === 1) {
+                    // Agrega las notas nuevas al estado existente
+                    if(traerNotas ){
+                    setTodasLasNotas2((prev) => [...prev, ...response.data.item]);
+                    setTraerNotas(false)
                     }
-    
-                    dispatch(setultimaFechaCargadaNotas(fecha.getDate()));
-                } else {
-                    console.error('Error en la respuesta de la API:', response.data.message);
+                    dispatch(setTodasLasNotas(response.data.item));
+                } else if (id === 2) {
+                    dispatch(setNotasPublicadas(response.data.item));
+                } else if (id === 3) {
+                    dispatch(setNotasEnRevision(response.data.item));
+                } else if (id === 4) {
+                    dispatch(setNotasBorrador(response.data.item));
                 }
-            })
-            .catch((error) => {
-                console.error('Error al hacer la solicitud:', error);
-            });
-        }
+            } else {
+                console.error('Error en la respuesta de la API:', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al hacer la solicitud:', error);
+        });
     };
+    
 
     const handleBotonPaginaClick = (id) => {
         setNumeroDePagina(id);
@@ -132,15 +155,12 @@ const Notas = () => {
 
     const dispatch = useDispatch();
     ///api///
-    const DESDE = "2024-09-01"
-    const HASTA = "2024-11-28"
+    const DESDE = "2023-01-01"
+    const HASTA = "2024-12-28"
     const TOKEN = useSelector((state) => state.formulario.token);
     const CLIENTE = useSelector((state) => state.formulario.cliente);
 
-    const ultimaFechaCargada = useSelector((state) => state.cargado.fechaActual);
-    const ultimaFechaCargadaNotas = useSelector((state) => state.barplot.ultimaFechaCargadaNotas);
-
-    const todasLasNotas = useSelector((state) => state.notas.todasLasNotas);
+    const todasLasNotas = todasLasNotas2;
     const notasPublicadas = useSelector((state) => state.notas.notasPublicadas);
     const notasEnBorrador = useSelector((state) => state.notas.notasEnBorrador);
     const notasEnRevision = useSelector((state) => state.notas.notasEnRevision);
@@ -153,10 +173,10 @@ switch (filtroSeleccionado) {
     case 2:
         TodasLasNotass = notasPublicadas || [];
         break;
-    case 3:
+    case 4:
         TodasLasNotass = notasEnBorrador || [];
         break;
-    case 4:
+    case 3:
         TodasLasNotass = notasEnRevision || [];
         break;
     case 5:
@@ -174,10 +194,13 @@ switch (filtroSeleccionado) {
     );
 
     const totalPaginas = Math.ceil(notasFiltradas.length / CantidadDeNotasPorPagina);
-    const notasEnPaginaActual = notasFiltradas.slice(
+    let notasEnPaginaActual = notasFiltradas.slice(
         (numeroDePagina - 1) * CantidadDeNotasPorPagina,
         numeroDePagina * CantidadDeNotasPorPagina
     );
+
+    if(filtroSeleccionado == 1)
+        notasEnPaginaActual = todasLasNotas2
 
     const listaBotonesPagina = [];
     for (let i = 1; i <= totalPaginas; i++) {
@@ -289,7 +312,8 @@ switch (filtroSeleccionado) {
                                     <div className='col-2 d-flex align-items-center'>
                                     <span className="publicada">
                                         <img src="./images/puntoVerde.png" alt="Icono Nota" className='' />
-                                        {  "   Publicada"}</span>
+                                        {nota.estado ?   "   " + nota.estado  :   "   Publicada" }
+                                    </span>
                                     </div>
                                     <div className='col '>
                                         <span className="categoria_notas">{nota.categorias}</span>
@@ -304,7 +328,7 @@ switch (filtroSeleccionado) {
                             <div className='row'>
                                 <div className="container">
                                 <div className="row justify-content-center">
-                                    {listaBotonesPagina.map((boton, index) => (
+                                    {filtroSeleccionado != 1 && listaBotonesPagina.map((boton, index) => (
                                     <div key={index} className="col-auto">
                                         {boton === '...' ? (
                                         <span className="puntos">...</span>
@@ -318,6 +342,18 @@ switch (filtroSeleccionado) {
                                         )}
                                     </div>
                                     ))}
+                                    {filtroSeleccionado == 1 &&
+                                    <div className="col-auto">
+  
+                                        <button
+                                            className={`boton_filtro_notas`}
+                                            onClick={() => handleFiltroClick(1, true)}
+                                        >
+                                            Ver mas
+                                        </button>
+
+                                    </div>
+                                    }
                                 </div> 
                                 </div> 
                                 </div>

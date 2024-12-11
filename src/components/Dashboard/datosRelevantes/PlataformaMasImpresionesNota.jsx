@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { formatNumberMiles } from '../Dashboard';
 import "./InteraccionPorNota.css";
+export const RUTA = "http://localhost:4000/"
+
 
 const PlataformaMasImpresionesNota = () => {
     const [plataformas, setPlataformas] = useState([]); // Estado de carga
@@ -25,7 +27,7 @@ const PlataformaMasImpresionesNota = () => {
 
     useEffect(() => {
         axios.post(
-            "app_obtener_impresiones_plataforma_noticia",
+            RUTA+"app_obtener_impresiones_plataforma_noticia",
             {
                 desde: desde,
                 hasta: hasta,
