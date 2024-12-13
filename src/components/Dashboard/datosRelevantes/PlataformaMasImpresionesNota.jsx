@@ -8,26 +8,27 @@ import "./InteraccionPorNota.css";
 export const RUTA = "http://localhost:4000/"
 
 
-const PlataformaMasImpresionesNota = () => {
+const PlataformaMasImpresionesNota = ({id_noti, TOKEN, cliente, fpub}) => {
     const [plataformas, setPlataformas] = useState([]); // Estado de carga
     const [openIndex, setOpenIndex] = useState(null); // Estado del acordeón
-    const TOKEN = useSelector((state) => state.formulario.token);
-    const f_pub = "2024-05-31 20:03:22";
-    const id_noti = "825061";
-
-    const fechaCompleta = new Date(f_pub);
+    const fechaCompleta = new Date(fpub);
     fechaCompleta.setDate(1);
-    const desde = fechaCompleta.toISOString().split('T')[0];
+    const desde = fpub ? fechaCompleta.toISOString().split('T')[0] : null;
     fechaCompleta.setMonth(fechaCompleta.getMonth() + 6);
-    const hasta = fechaCompleta.toISOString().split('T')[0];
+    const hasta = fpub ? fechaCompleta.toISOString().split('T')[0] : null;
 
+
+    
     const toggle = (index) => {
         setOpenIndex(openIndex === index ? null : index);
     };
 
     useEffect(() => {
+
+
+
         axios.post(
-            RUTA+"app_obtener_impresiones_plataforma_noticia",
+            "https://panel.serviciosd.com/app_obtener_impresiones_plataforma_noticia",
             {
                 desde: desde,
                 hasta: hasta,
@@ -223,7 +224,40 @@ const PlataformaMasImpresionesNota = () => {
                             </div>
                         </button>
                     <div className={`accordion-collapse collapse ${openIndex === 2 ? 'show' : ''}`}>
-                        <div className="accordion-body">
+                    <div className="accordion-body pt-0">
+
+                        <div className='row'>
+                            {/* Comentarios */}
+                            <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                <img src="/images/logoComentarios.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                <div className='comentarios'> {/* Eliminar col innecesario */}
+                                    <span className='d-block'>Comentarios</span> {/* Usar d-block para cada línea */}
+                                    <span className='d-block'>{0}</span>
+                                </div>
+                            </div>
+                            {/* Comentarios */}
+                            <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                <img src="/images/logoMeGusta.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                <div className='comentarios'> {/* Eliminar col innecesario */}
+                                    <span className='d-block'>Me gusta</span> {/* Usar d-block para cada línea */}
+                                    <span className='d-block'>{0}</span>
+                                </div>
+                            </div>
+                            <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                <img src="/images/logoClicks.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                <div className='comentarios'> {/* Eliminar col innecesario */}
+                                    <span className='d-block'>Clicks</span> {/* Usar d-block para cada línea */}
+                                    <span className='d-block'>{formatNumberMiles(ImpresionesDV)}</span>
+                                </div>
+                            </div>
+                            <div className='col d-flex align-items-center'> {/* Usar d-flex para alinearlos en una fila */}
+                                <img src="/images/logoCompartir.png" alt="Icono 1" className='img-fluid me-2' /> {/* Añadir me-2 para margen derecho */}
+                                <div className='comentarios'> {/* Eliminar col innecesario */}
+                                    <span className='d-block'>Compartido</span> {/* Usar d-block para cada línea */}
+                                    <span className='d-block'>{0}</span>
+                                </div>
+                            </div>
+                        </div>
 
                         </div>
                     </div>

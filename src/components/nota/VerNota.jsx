@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
-import BarplotNota from '../barplot/BarplotNota';
+import BarplotNota, { generarPeriodosDesde } from '../barplot/BarplotNota';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PlataformaMasImpresionesNota from '../Dashboard/datosRelevantes/PlataformaMasImpresionesNota';
 import MediosMasRelevantesNotas from '../Dashboard/datosRelevantes/MediosMasRelevantesNotas';
@@ -20,10 +20,16 @@ import { analizarHTML, convertirImagenBase64, setContenidoAEditar, setContenidoN
 export const RUTA = "http://localhost:4000/"
 const VerNota = () => {
 
+    const EMAIL_DEFAULT = "diego.digrazia@noticiasd.com"
+    const CONTRASENIA_DEFAULT = "123"
+
+
     const location = useLocation();
     const { id, notaABM } = location.state || {};
     
     const [Nota, setNota] = useState({});
+    const [FPUB, setFPUB] = useState("");
+
     console.log(notaABM)
     
 
@@ -31,8 +37,7 @@ const VerNota = () => {
     console.log("id_por_parametro: ", id_ruta )
 
     const dispatch = useDispatch();
-    const TOKEN = useSelector((state) => state.formulario.token);
-    const CLIENTE = useSelector((state) => state.formulario.cliente);
+    
     const navigate = useNavigate();
     
     const editarNota = async (notaABM) => {
@@ -45,13 +50,40 @@ const VerNota = () => {
         dispatch(setImagenRRSS(base64RRSS))
         navigate("/crearNota"); // Pasar la nota usando la propiedad `state`
     };
+    
 
     ///ELEGIR UN ID
     const id_para_api= id_ruta ? id_ruta : id
     const es_demo = id_ruta ? true : false
 
+    let TOKEN = useSelector((state) => state.formulario.token);
+    let CLIENTE = useSelector((state) => state.formulario.cliente);
+    
+
     useEffect(() => {
-        // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
+        if(es_demo){
+        axios.post("https://panel.serviciosd.com/api/login", {
+            usuario: EMAIL_DEFAULT,
+            password: CONTRASENIA_DEFAULT
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then((response) => {
+            if (response.data.status === "true") {
+                TOKEN = response.data.item.token
+                CLIENTE = response.data.item.cliente
+
+            } else {
+                console.error('Error en la respuesta de la API:', response.data.message);
+            }
+
+        })
+    
+        }
+
+        ///TRAER NOTA
         axios.post(
             RUTA+"app_obtener_noticia",
             {
@@ -70,6 +102,7 @@ const VerNota = () => {
             if (response.data.status === "true") {
                 console.log(response.data);
                 setNota(response.data.item[0])
+                setFPUB(response.data.item[0].f_pub)
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
             }
@@ -79,12 +112,13 @@ const VerNota = () => {
             console.error('Error al hacer la solicitud:', error);
         });
 
-    },[]); // Dependencias del useEffect 
+    },[CLIENTE]); // Dependencias del useEffect 
     console.log(Nota)
 
     const id_noti_aux = Nota.id_noti ? Nota.id_noti : Nota.term_id
     const id_noti = id_ruta ? id_ruta : id_noti_aux
-
+    const FECHA_PUBLICACION = Nota.f_pub
+    console.log(FECHA_PUBLICACION, "publicacion nota")
     return (
         <div className="container-fluid  sinPadding">
             <div className="d-flex h-100">
@@ -95,12 +129,14 @@ const VerNota = () => {
                     <div className='row'>
                         <div className='col'>
                             <h4 id="nota">
+                            {!es_demo &&
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb">
                                     <li className="breadcrumb-item"><Link to="/notas" className='breadcrumb-item'>{'< '} Notas</Link></li>
                                     <li className="breadcrumb-item blackActive" aria-current="page">Ver Nota</li>
                                 </ol>
                             </nav>
+                            }
                             </h4>
                         </div>
                     </div>
@@ -125,7 +161,8 @@ const VerNota = () => {
                             </div>
                             <div className='col boton_nota d-flex justify-content-end align-items-start'>
                                 {!es_demo &&
-                                <button className="btn custom-dropdown-button dropdown-toggle boton_compartir" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button className="btn custom-dropdown-button dropdown-toggle boton_compartir" onClick={() => window.open("/verNota/" + id_noti, "_blank")}
+                                type="button" id="dropdownMenuButton2">
                                     <img src="/images/share_icon.png" alt="Icono 1" className="icon me-2" />
                                     Compartir
                                 </button>
@@ -146,18 +183,18 @@ const VerNota = () => {
                         <h5 id= "subtitulo_performance">Performance de la nota</h5>
                     </div>
                     <div className="mb-2 tamaño_barplot">
-                            { <BarplotNota id_noti={id_noti}/> } 
+                            { <BarplotNota id_noti={id_noti} TOKEN={TOKEN} cliente={CLIENTE} fpub={FECHA_PUBLICACION}/> } 
                     </div>
                     <div className='row g-1'>
                         <div className='col m-2 p-3 back-white'>
-                            { <PlataformaMasImpresionesNota id_noti={id_noti}/> }
+                            { <PlataformaMasImpresionesNota id_noti={id_noti} TOKEN={TOKEN} cliente={CLIENTE} fpub={FECHA_PUBLICACION} /> }
                         </div>
                         <div className='col m-2 p-3 back-white'>
-                                {<MediosMasRelevantesNotas id_noti={id_noti}/>}   
+                                {<MediosMasRelevantesNotas id_noti={id_noti} TOKEN={TOKEN} cliente={CLIENTE} fpub={FECHA_PUBLICACION}/>}   
                         </div>
                     </div> 
                 </div>
-            </div>
+            </div> 
         </div>
 
     );

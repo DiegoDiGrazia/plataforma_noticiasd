@@ -18,6 +18,7 @@ const PublicarNota = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const notaCargada = useSelector((state) => state.crearNota)
+    const [isLoading, setIsLoading] = useState(false);
 
     const TOKEN = useSelector((state) => state.formulario.token);
     const imageRef = useRef(null);
@@ -85,18 +86,19 @@ const PublicarNota = () => {
     const contenidoNota = useSelector((state) => state.crearNota.contenidoNota)
     const datosUsuario =useSelector((state) => state.formulario)
     const clickear_en_publicar_nota = () => {
-        const contenidoHTMLSTR = transformarContenidoAHTML(contenidoNota)
+        setIsLoading(true); // Muestra el overlay
+        const contenidoHTMLSTR = transformarContenidoAHTML(contenidoNota);
+    
         axios.post(
             "app_subir_nota",
             {
-                ///SECCION CLIENTE
                 token: TOKEN,
                 id: "0",
                 titulo: titulo,
                 categorias: categoriasActivas,
                 copete: notaCargada.copete,
                 parrafo: contenidoHTMLSTR,
-                estado: estadoPublicar, // corregí el typo en "dstribucion"
+                estado: estadoPublicar,
                 cliente: datosUsuario.cliente,
                 email: datosUsuario.email,
                 base_principal: image,
@@ -104,34 +106,31 @@ const PublicarNota = () => {
                 comentarios: comentario,
                 autor_cliente: datosUsuario.email,
                 conDistribucion: "0",
-
-                /// SECCION EDITOR
-                es_demo : "0",
-                es_home : "0",
-                autor: "",
-                provincia: "",
-                municipio: "",
+                distribucion: "ninguna",
+                es_demo: "0",
+                es_home: "0",
                 tipo_contenido: 'gestion',
                 fecha_vencimiento: "2024-10-10",
-                engagement: "",
-                distribucion_prioritaria: "0",
-                etiquetas: ["ninguna"]
+                etiquetas: ["ninguna"],
             },
             {
                 headers: {
-                    'Content-Type': 'multipart/form-data', // JSON es el tipo adecuado aquí
+                    'Content-Type': 'multipart/form-data',
                 },
             }
         )
         .then((response) => {
             if (response.data.status === "true") {
-                navigate('/notas')
+                navigate('/notas');
             } else {
                 console.error('Error en la respuesta de la API:', response.data.message);
             }
         })
         .catch((error) => {
             console.error('Error al hacer la solicitud:', error);
+        })
+        .finally(() => {
+            setIsLoading(false); // Oculta el overlay al terminar
         });
     };
 
@@ -296,13 +295,32 @@ const PublicarNota = () => {
                                 />
                                 <p className='abajoDeAgregarCategoria' >Max 300 caracteres</p>
                                 <div className='mb-5'>
-                                    <Button onClick = {()=> clickear_en_publicar_nota() } id="botonPublicar" variant="none">
+                                    <Button
+                                        onClick={() => clickear_en_publicar_nota()}
+                                        id="botonPublicar"
+                                        variant="none"
+                                        disabled={isLoading} // Deshabilitar el botón mientras se carga
+                                    >
                                         <img src="/images/send.png" alt="Icono 1" className="icon me-2 icono_tusNotas" />{" Enviar"}
                                     </Button>
-                                    <Button onClick = {()=> navigate('/crearNota') } id="botonVolver" variant="none">
-                                     {" Volver"}
+                                    {!isLoading &&
+                                    <Button
+                                        onClick={() => navigate('/crearNota')}
+                                        id="botonVolver"
+                                        variant="none"
+                                        disabled={isLoading} // Deshabilitar el botón mientras se carga
+                                    >
+                                        {" Volver"}
                                     </Button>
+                                    }
                                 </div>
+                                {isLoading && (
+                                    <div className="loading-overlay">
+                                        <div className="spinner-border text-light" role="status">
+                                            <span className="visually-hidden">Cargando...</span>
+                                        </div>
+                                    </div>
+                                )}
 
 
 

@@ -21,7 +21,7 @@ const SelectorCliente= () => {
         useEffect(() => {
             if (true) { // Verifica si el arreglo está vacío
                 axios.post(
-                    "app_obtener_clientes",
+                    "https://panel.serviciosd.com/app_obtener_clientes",
                     {
                         token: TOKEN,
                         cliente: "",

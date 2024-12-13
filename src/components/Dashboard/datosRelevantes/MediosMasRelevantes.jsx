@@ -72,7 +72,7 @@ const MediosMasRelevantes = () => {
 
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
-            "app_obtener_medios",
+            "https://panel.serviciosd.com/app_obtener_medios",
             {
                 cliente: nombreCliente,
                 periodos: periodos_api,

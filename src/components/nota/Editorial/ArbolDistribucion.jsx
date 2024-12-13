@@ -130,8 +130,8 @@ const ArbolDistribucion= () => {
             <ul className="dropdown-menu listaClientes" aria-labelledby="dropdownMenuButton1">
 
                 {/* Renderiza los clientes dinámicamente */}
-                {provincias.map((provincia) => (
-                    <li key={provincia.provincia_id}>
+                {provincias.map((provincia, index) => (
+                    <li key={`${provincia.provincia_id}-${index}`}>
                         <button 
                             className="dropdown-item" 
                             onClick={() => setProvincia(provincia)}

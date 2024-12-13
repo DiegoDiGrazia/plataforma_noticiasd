@@ -56,7 +56,7 @@ const Ubicacion = ({ indice }) => {
   }, [direccion, indice, dispatch, API_KEY]);
 
   return (
-    <div className="p-0">
+    <div className="p-0" style={{width: "810px"}}>
       <span className="spanContainer">
         <BotoneraContenido indice={indice} className="pr-2" />
         {!ubicacion &&

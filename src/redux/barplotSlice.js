@@ -49,10 +49,10 @@ const barplotSlice = createSlice({
       state.impresionesTotalesInstagram.push(action.payload);
     },
     setultimaFechaCargadaBarplot: (state,action) => {
-      state.ultimaFechaCargadaBarplot = (action.payload)
+      state.ultimaFechaCargadaBarplot = action.payload
     },
     setUltimoClienteCargadoBarplot: (state,action) => {
-      state.ultimoClienteCargadoBarplot = (action.payload)
+      state.ultimoClienteCargadoBarplot = action.payload
     }
   },
 });
@@ -60,5 +60,5 @@ const barplotSlice = createSlice({
 export const { setDesde, setHasta, setImpresiones,
               setUsuariosTotales,setImpresionesTotalesGoogle, setUsuariosTotalesMeta,
               setImpresionesTotalesInstagram, setImpresionesTotalesFacebook,setUsuariosTotalesGoogle, setFechas,
-            setultimaFechaCargadaBarplot } = barplotSlice.actions;
+            setultimaFechaCargadaBarplot, setUltimoClienteCargadoBarplot } = barplotSlice.actions;
 export default barplotSlice.reducer;

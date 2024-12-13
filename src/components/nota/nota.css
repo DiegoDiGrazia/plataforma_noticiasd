@@ -389,6 +389,9 @@ padding-top: 0px !important;
     padding-right: 10px;
     margin-left: 20px;
 }
+textarea.inputTituloNota {
+    width: 810px !important;
+}
 .marginTitulo{
     margin-left: 65px;
     margin-top: 10px;
@@ -795,5 +798,18 @@ padding-top: 0px !important;
     border-radius: 15px;
 
   }
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
 
 

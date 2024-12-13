@@ -56,7 +56,7 @@ const Sidebar = ({estadoActual}) => {
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Notas</span>
                                 </Button>
                             </li>
-
+{/* 
                             <li className={`${
                                             estadoActual === "reportes" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
                                         } ${
@@ -66,8 +66,8 @@ const Sidebar = ({estadoActual}) => {
                                     <img src="/images/reportes_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Reportes</span>
                                 </Button>
-                            </li>
-                            <li className={`${
+                            </li> */}
+                            {/* <li className={`${
                                             estadoActual === "encuestas" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
                                         } ${
                                             isOpen ? "openBoton" : "closedBoton"
@@ -76,9 +76,9 @@ const Sidebar = ({estadoActual}) => {
                                     <img src="/images/encuestas_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Encuestas</span>
                                 </Button>
-                            </li>
+                            </li> */}
 
-                            <li className={`${
+                            {/* <li className={`${
                                             estadoActual === "autoEntrevistas" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
                                         } ${
                                             isOpen ? "openBoton" : "closedBoton"
@@ -87,7 +87,7 @@ const Sidebar = ({estadoActual}) => {
                                     <img src="/images/auto_entrevistas_icon.png" alt="Icono 1" className="icon me-2" /> 
                                     <span className={`descripcion_boton ${isOpen ? 'open' : 'closed'}`}>Auto-entrevistas</span>
                                 </Button>
-                            </li>
+                            </li> */}
                             <li className={`${
                                             estadoActual === "notificaciones" ? "boton_sidebar_clickeado" : "boton_sidebar_Noclickeado"
                                         } ${

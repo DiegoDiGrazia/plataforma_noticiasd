@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: './src/main.jsx', // Cambia según tu archivo de entrada
@@ -52,5 +53,6 @@ module.exports = {
     ],
   },
   
-  mode: 'production', // Cambiar a 'production' para generar el bundle final
+  
+  mode: 'development', // Cambiar a 'production' para generar el bundle final development
 };

@@ -163,7 +163,7 @@ const Dashboard = () => {
                                     </li>
                                 </ul>
                             </div>
-                                <div className="dropdown">
+                                {/* <div className="dropdown">
                                     <button className="btn custom-dropdown-button dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                                         <img src="/images/share_icon.png" alt="Icono 1" className="icon me-2" />
                                         Compartir
@@ -171,7 +171,7 @@ const Dashboard = () => {
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                         <li><a className="dropdown-item" onClick={() => generarPDF()}>Descargar PDF</a></li>
                                     </ul>
-                                </div>
+                                </div> */}
                             </span>
                         </div>
 

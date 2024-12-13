@@ -12,6 +12,8 @@ import { setTodasLasNotas, setNotasEnRevision, setNotasBorrador, setNotasPublica
 import { Link, useNavigate } from 'react-router-dom';
 import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 import { formatearTitulo } from '../Dashboard/datosRelevantes/InteraccionPorNota';
+import { Spinner } from 'react-bootstrap';
+import { left } from '@popperjs/core';
 
 
 
@@ -26,7 +28,7 @@ const Notas = () => {
     const [verMasUltimo, setVerMasUltimo] = useState(2)
     const verMasCantidadPaginacion = 6
     const [traerNotas, setTraerNotas] = useState(true)
-
+    const [cargandoNotas, setCargandoNotas] = useState(true)
 
 
     let CantidadDeNotasPorPagina = 15;
@@ -48,7 +50,7 @@ const Notas = () => {
     
     const handleFiltroClick = (id, verMas = false) => {
         setFiltroSeleccionado(id); // Actualiza el filtro seleccionado
-        console.log(`Filtro seleccionado: ${id}`);
+        setCargandoNotas(true)
         
         const fecha = new Date();
         let categoria = "";
@@ -74,7 +76,8 @@ const Notas = () => {
             desdeLimite = verMasUltimo * verMasCantidadPaginacion; // Actualiza el inicio para traer las siguientes notas
             setVerMasUltimo((prev) => prev + 1); // Incrementa el contador de páginas
         }
-    
+        
+
         // Llamado a la API con los parámetros de paginación
         axios.post(
             id === 1 ? "app_obtener_noticias" : "app_obtener_noticias_abm",
@@ -121,6 +124,9 @@ const Notas = () => {
         })
         .catch((error) => {
             console.error('Error al hacer la solicitud:', error);
+        })
+        .finally(() => {
+            setCargandoNotas(false); // Asegúrate de desactivar el spinner al finalizar
         });
     };
     
@@ -169,24 +175,25 @@ const Notas = () => {
 
     let TodasLasNotass = [];
 
-switch (filtroSeleccionado) {
-    case 2:
-        TodasLasNotass = notasPublicadas || [];
-        break;
-    case 4:
-        TodasLasNotass = notasEnBorrador || [];
-        break;
-    case 3:
-        TodasLasNotass = notasEnRevision || [];
-        break;
-    case 5:
-        TodasLasNotass = notasEliminadas || [];
-        break;
-    default:
-        TodasLasNotass = todasLasNotas || [];
-        break;
-}
+    switch (filtroSeleccionado) {
+        case 2:
+            TodasLasNotass = notasPublicadas || [];
+            break;
+        case 4:
+            TodasLasNotass = notasEnBorrador || [];
+            break;
+        case 3:
+            TodasLasNotass = notasEnRevision || [];
+            break;
+        case 5:
+            TodasLasNotass = notasEliminadas || [];
+            break;
+        default:
+            TodasLasNotass = todasLasNotas || [];
+            break;
+    }
     
+        
 
         
     const notasFiltradas = TodasLasNotass.filter(nota =>
@@ -207,7 +214,8 @@ switch (filtroSeleccionado) {
         listaBotonesPagina.push(i);
       }
 
-
+    
+    console.log(notasEnPaginaActual)
     
 
     ///Chat gpt
@@ -277,52 +285,63 @@ switch (filtroSeleccionado) {
                                     </div>
                                 </div>
                                 <div className='row'>
-                                    <div className='col-5 categoriasNotas'>
-                                        titulo de la nota 
-                                    </div>
-                                    <div className='col-2 categoriasNotas'>
-                                        Estado <img src="/images/flechaEstado.png" alt="Icono 1" className="icon me-2 icono_Estado " />
-                                    </div>
-                                    <div className='col-3 categoriasNotas'>
-                                        Categorias
-                                    </div>
-                                    <div className='col categoriasNotas text-end'>
-                                        Interacciones
-                                    </div>
+                                    <div className='col-1 colImgNota'></div> {/* Imagen placeholder para alineación */}
+                                    <div className='col-4 columna_interaccion' style={{fontSize: "12px", color: "#667085", fontWeight: "bold"}}>Título de la Nota</div>
+                                    <div className='col-2 categoriasNotas'>Estado</div>
+                                    <div className='col categoriasNotas'>Categorías</div>
+                                    <div className='col categoriasNotas text-end'>Interacciones</div>
                                 </div>
                                 {/* aca va la nota */}
 
-                                {notasEnPaginaActual.map((nota) => (
-                                    <div key={nota.id_noti ? nota.id_noti : nota.term_id} className='row pt-1 borderNotas'>
-                                    <div className='col-1 colImgNota'>
-                                        {nota.imagen ? <img src={nota.imagen} alt="Icono Nota" className='imagenWidwetInteracciones2' /> : 
-                                        <img src={ "https://panel.serviciosd.com/img/" + nota.imagen_principal} alt="Icono Nota" className='imagenWidwetInteracciones2' /> }
-                                        
-                                    </div>
-                                    <div className='col-4 pt-1 columna_interaccion nuevoFont'>
-                                        <Link className = "link-sin-estilos" to ={`/verNota`} state={{ id: nota.id_noti ? nota.id_noti : nota.term_id, notaABM: nota }}>
-                                        <div className='row p-0 nombre_plataforma'>
-                                            {formatearTitulo(nota.titulo,45)}
+                                {notasEnPaginaActual.map((nota, index) => (
+    <div key={nota.id_noti || nota.term_id || `nota-${index}`} className='row pt-1 borderNotas'>
+                                        <div className='col-1 colImgNota'>
+                                            {nota.imagen ? (
+                                                <img src={nota.imagen} alt="Icono Nota" className='imagenWidwetInteracciones2' />
+                                            ) : (
+                                                <img src={"https://panel.serviciosd.com/img/" + nota.imagen_principal} alt="Icono Nota" className='imagenWidwetInteracciones2' />
+                                            )}
                                         </div>
-                                        </Link>
-                                        <div className='row p-0'>
-                                        <span className='FechaPubNota'>{nota.f_pub ?  formatearFecha(nota.f_pub): formatearFecha(nota.update_date) }</span>
+                                        <div className='col-4 pt-1 columna_interaccion nuevoFont'>
+                                            <Link className="link-sin-estilos" to={`/verNota`} state={{ id: nota.id_noti ? nota.id_noti : nota.term_id, notaABM: nota }}>
+                                                <div className='row p-0 nombre_plataforma'>
+                                                    {formatearTitulo(nota.titulo, 45)}
+                                                </div>
+                                            </Link>
+                                            <div className='row p-0'>
+                                                <span className='FechaPubNota'>{nota.f_pub ? formatearFecha(nota.f_pub) : formatearFecha(nota.update_date)}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='col-2 d-flex align-items-center'>
-                                    <span className="publicada">
-                                        <img src="./images/puntoVerde.png" alt="Icono Nota" className='' />
-                                        {nota.estado ?   "   " + nota.estado  :   "   Publicada" }
-                                    </span>
-                                    </div>
-                                    <div className='col '>
-                                        <span className="categoria_notas">{nota.categorias}</span>
-                                    </div>
-                                    <div className='col totales_widget'>
-                                        <p>{nota.total ? nota.total : "Sin interacciones"}</p>
-                                    </div>
+                                        <div className='col-2 d-flex align-items-center'>
+                                            <span className="publicada">
+                                                <img src="./images/puntoVerde.png" alt="Icono Nota" className='' />
+                                                {nota.estado ? " " + nota.estado : " Publicada"}
+                                            </span>
+                                        </div>
+                                        <div className='col'>
+                                            <span className="categoria_notas">{nota.categorias}</span>
+                                        </div>
+                                        <div className='col totales_widget'>
+                                            <p>{nota.total ? nota.total : "Sin interacciones"}</p>
+                                        </div>
                                     </div>
                                 ))}
+                                {cargandoNotas && 
+                                
+                                <div
+                                    className='totales'
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        margin: "20px",
+                                        marginLeft: "40px"
+                                    }}
+                                    >
+                                    <Spinner color='blue' />
+                                </div>
+
+                                }
+
 
                             {/* Botonera de paginación */}
                             <div className='row'>

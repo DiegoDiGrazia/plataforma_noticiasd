@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import "./Barplot.css";
 import { setImpresionesTotalesInstagram, setImpresionesTotalesGoogle, setImpresionesTotalesFacebook, 
     setUsuariosTotales, setUsuariosTotalesGoogle, setUsuariosTotalesMeta, setFechas, 
-    setultimaFechaCargadaBarplot} from '../../redux/barplotSlice.js';
+    setultimaFechaCargadaBarplot,
+    setUltimoClienteCargadoBarplot} from '../../redux/barplotSlice.js';
 import axios from 'axios';
 import { formatNumberMiles } from '../Dashboard/Dashboard.jsx';
 
@@ -51,8 +52,9 @@ const Barplot = () => {
     const fechas = useSelector((state) => state.barplot.fechas);
     const FiltroActual = useSelector((state) => state.dashboard.filtro);
     const nombreCliente = useSelector((state) => state.formulario.cliente);
-    const ultimaFechaCargada = useSelector((state) => state.cargado.fechaActual);
-    const ultimaFechaCargadaBarplot = useSelector((state) => state.barplot.ultimaFechaCargadaBarplot);
+    const ultimo_cliente_cargado = useSelector((state) => state.barplot.ultimoClienteCargadoBarplot);
+    const ultima_fecha_cargada = useSelector((state) => state.barplot.ultimaFechaCargadaBarplot);
+
 
     
     
@@ -65,7 +67,12 @@ const Barplot = () => {
     useEffect(() => {
         setLoading(true);
         const fecha = new Date();
-        if(true){
+        const diaMes = fecha.getDate();
+
+        if(nombreCliente != ultimo_cliente_cargado  || diaMes != ultima_fecha_cargada ){
+            dispatch(setultimaFechaCargadaBarplot(diaMes));
+            dispatch(setUltimoClienteCargadoBarplot(nombreCliente));
+
 
 
 

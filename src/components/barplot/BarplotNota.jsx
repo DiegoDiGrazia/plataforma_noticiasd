@@ -10,7 +10,8 @@ import Barplot_Carga from './Barplot_mejorado_carga.jsx';
 import { formatDate } from './Barplot.jsx';
 const RUTA = "http://localhost:4000/"
 
-function generarPeriodosDesde(f_pub, cantidadDeMesesAGenerar){
+ export function generarPeriodosDesde(f_pub, cantidadDeMesesAGenerar){
+    console.log(f_pub, "adentro de generar periodos")
     if(f_pub){
         const months = [];
         const currentDate = new Date(f_pub );
@@ -30,11 +31,12 @@ function generarPeriodosDesde(f_pub, cantidadDeMesesAGenerar){
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarplotNota = () => {
+const BarplotNota = ({id_noti, TOKEN, cliente, fpub}) => {
     const f_pub = "2024-05-31 20:03:22"
+    console.log(f_pub, "DISTINTOS", fpub)
+    console.log(f_pub === fpub, "Los valores son iguales pero no estrictamente.");
     const meses_a_ver = 6;
-    const token = useSelector((state) => state.formulario.token);
-    const nombreCliente = useSelector((state) => state.formulario.cliente);
+
 
     const [loading, setLoading] = useState(true); // Estado de carga
     const [usuariosImpresionesNota, setUsuariosImpresionesNota] = useState([]); // Estado de carga
@@ -43,10 +45,10 @@ const BarplotNota = () => {
         axios.post(
             RUTA+ "app_obtener_usuarios_impresiones_noticia",
             {
-                cliente: nombreCliente,
-                periodos: generarPeriodosDesde(f_pub, meses_a_ver),
-                token: token,
-                id_noti: "825061",
+                cliente: cliente,
+                periodos: generarPeriodosDesde(String(fpub), 6),
+                token: TOKEN,
+                id_noti: id_noti,
             },
             {
                 headers: {
@@ -68,7 +70,7 @@ const BarplotNota = () => {
         .finally(() => {
             setLoading(false);
         });
-    }, []);
+    }, [fpub, cliente, TOKEN, id_noti]);
 
 
     const usuariosPorMes = usuariosImpresionesNota.map(usuario => usuario.usuarios_total);

@@ -44,24 +44,12 @@ function reduceBykeyMedios(lista_medios) {
 
 
 
-const MediosMasRelevantesNotas = ({id}) => {
-    const nombreCliente = useSelector((state) => state.formulario.cliente);
-    const periodos_api = useSelector((state) => state.dashboard.periodos_api)
-    console.log(periodos_api)
-
-
-    ///api///
-    const dispatch = useDispatch();
-    const token = useSelector((state) => state.formulario.token);
-    const FiltroActual = useSelector((state) => state.dashboard.filtro);
-    let cantidad_meses = seleccionPorFiltro(FiltroActual)
-    const f_pub = "2024-05-31 20:03:22"
-    const fechaCompleta = new Date(f_pub);
+const MediosMasRelevantesNotas = ({id_noti, TOKEN, cliente, fpub}) => {
+    const fechaCompleta = new Date(fpub);
     fechaCompleta.setDate(1);
-    const desde = fechaCompleta.toISOString().split('T')[0];
+    const desde = fpub ? fechaCompleta.toISOString().split('T')[0] : null;
     fechaCompleta.setMonth(fechaCompleta.getMonth() + 6);
-    const hasta = fechaCompleta.toISOString().split('T')[0];
-    const id_noti = "825061"
+    const hasta = fpub ? fechaCompleta.toISOString().split('T')[0] : null;
 
 
     const [mediosNota, setMediosNota] = useState([])
@@ -69,13 +57,13 @@ const MediosMasRelevantesNotas = ({id}) => {
     useEffect(() => {
         // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
         axios.post(
-            RUTA + "app_obtener_medios_noticia",
+            "https://panel.serviciosd.com/app_obtener_medios_noticia",
             {
-                cliente: nombreCliente,
+                cliente: cliente,
                 desde: desde,
                 hasta: hasta,
-                token: token,
-                id_noti: "825061",
+                token: TOKEN,
+                id_noti: id_noti,
             },
             {
                 headers: {
@@ -96,7 +84,7 @@ const MediosMasRelevantesNotas = ({id}) => {
         .catch((error) => {
             console.error('Error al hacer la solicitud:', error);
         });
-    },[]); // Dependencias del useEffect
+    },[desde, hasta, TOKEN, id_noti, cliente]); // Dependencias del useEffect
 
     let todas_los_medios = mediosNota
     const todos_los_medios_sin_repetir = Object.values(reduceBykeyMedios(todas_los_medios));

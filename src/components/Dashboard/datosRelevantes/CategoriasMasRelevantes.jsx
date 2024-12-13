@@ -55,7 +55,7 @@ const CategoriasMasRelevantes = () => {
     
             // Hacer la solicitud cuando el componente se monta o 'desde'/'hasta' cambian
             axios.post(
-                "app_obtener_categorias",
+                "https://panel.serviciosd.com/app_obtener_categorias",
                 {
                     cliente: nombreCliente,
                     periodos: periodos_api,

@@ -22,6 +22,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
     if (strong && br) {
       textoParrafo = textoParrafo.replace(`<strong>${strong.textContent}</strong><br>`, "").trim();
+    } else if (strong) {
+      textoParrafo = textoParrafo.replace(`<strong>${strong.textContent}</strong>`, "").trim();
     }
 
     if (textoParrafo) {

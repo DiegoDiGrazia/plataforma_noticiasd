@@ -13,11 +13,13 @@ import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota'
 import { formatearTitulo } from '../Dashboard/datosRelevantes/InteraccionPorNota';
 import "./miPerfil.css";
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CantidadDeNotasPorPagina = 6;
 
 const Perfil = () => {
     const fileInputRef = useRef(null);
+    const navigate = useNavigate()
 
     const [filtroSeleccionado, setFiltroSeleccionado] = useState(1); /// botones TODAS LAS NOTAS; EN PROGRESO; FINALIZADAS
     const [numeroDePagina, setNumeroDePagina] = useState(1); /// para los botones de la paginacion
@@ -162,7 +164,7 @@ const Perfil = () => {
                             <h4 className='infoCuenta'>Nombre de la cuenta</h4>
                         </div>
                         <div className='col textAreaContainer'>
-                            <textarea placeholder='Municipalidad de Villa Maria' className='textAreaComentarios col-auto ms-auto'>
+                            <textarea placeholder='Municipalidad de Lanus' className='textAreaComentarios col-auto ms-auto'>
                             </textarea>
                         </div>
                     </div>
@@ -171,7 +173,7 @@ const Perfil = () => {
                             <h4 className='infoCuenta'>Email de la cuenta</h4>
                         </div>
                         <div className='col textAreaContainer'>
-                            <textarea placeholder='muniVillaMaria@gmail.com ' className='textAreaComentarios col-auto ms-auto'>
+                            <textarea placeholder='Lanus@gmail.com ' className='textAreaComentarios col-auto ms-auto'>
                             </textarea>
                         </div>
                         
@@ -181,7 +183,7 @@ const Perfil = () => {
                             <h4 className='infoCuenta'>Whatssap de la cuenta</h4>
                         </div>
                         <div className='col textAreaContainer'>
-                            <textarea placeholder='11-6785-4783' className='textAreaComentarios col-auto ms-auto'>
+                            <textarea placeholder='11-5122-1574' className='textAreaComentarios col-auto ms-auto'>
                             </textarea>
                         </div>
                     </div>
@@ -256,7 +258,7 @@ const Perfil = () => {
                             </div>
                         </div>
                         <div className='col textAreaContainer col-auto ms-auto'>
-                            <Button onClick = {()=> navigate('/publicarNota') } id="" variant="none" className='botonCerrarSesion'>
+                            <Button onClick = {()=> navigate('/') } id="" variant="none" className='botonCerrarSesion'>
                                     {"Cerrar Sesión"}
                             </Button>
                         </div>
