@@ -80,7 +80,7 @@ const Notas = () => {
 
         // Llamado a la API con los parámetros de paginación
         axios.post(
-            id === 1 ? "app_obtener_noticias" : "app_obtener_noticias_abm",
+            id === 1 ? "https://panel.serviciosd.com/app_obtener_noticias" : "https://panel.serviciosd.com/app_obtener_noticias_abm",
             {
                 cliente: CLIENTE,
                 desde: `${DESDE}`,

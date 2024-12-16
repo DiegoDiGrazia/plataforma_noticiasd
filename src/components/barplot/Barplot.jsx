@@ -77,7 +77,7 @@ const Barplot = () => {
 
 
         axios.post(
-            "app_obtener_usuarios",
+            "https://panel.serviciosd.com/app_obtener_usuarios",
             {
                 cliente: nombreCliente,
                 periodos: periodoUltimoAño(),

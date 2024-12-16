@@ -1,139 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Button } from 'react-bootstrap';
 import Sidebar from '../sidebar/Sidebar'; // Importa el Sidebar
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { setTodasLasNotas, setNotasEnProgreso, setNotasFinalizadas } from '../../redux/notasSlice';
-import { Link } from 'react-router-dom';
-import { formatearFecha } from '../Dashboard/datosRelevantes/InteraccionPorNota';
-import { formatearTitulo } from '../Dashboard/datosRelevantes/InteraccionPorNota';
+
 import "./miPerfil.css";
-import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-const CantidadDeNotasPorPagina = 6;
-
 const Perfil = () => {
-    const fileInputRef = useRef(null);
-    const navigate = useNavigate()
+    const [nombre, setNombre] = useState('')
+    const [email, setEmail] = useState('')
+    const [idClienten, setIdCliente] = useState('')
+    const [conReporteWSP, setConReporteWSP] = useState('0')
+    const [conReporteEmail, setConReporteEmail] = useState('0')
 
-    const [filtroSeleccionado, setFiltroSeleccionado] = useState(1); /// botones TODAS LAS NOTAS; EN PROGRESO; FINALIZADAS
-    const [numeroDePagina, setNumeroDePagina] = useState(1); /// para los botones de la paginacion
-    
-    const botones = [
-        { id: 1, nombre: 'Todas las notas' },
-        { id: 2, nombre: 'En Progreso' },
-        { id: 3, nombre: 'Finalizadas' },
-        // { id: 4, nombre: 'En revisión' },
-    ];
-    const handleClickFiltro = (nuevoFiltro)=>{
-        console.log(nuevoFiltro)
-    } 
 
-    
-    const handleFiltroClick = (id) => {
-        setFiltroSeleccionado(id);
-        console.log(`Filtro seleccionado: ${id}`);
-        // Aquí puedes agregar lógica para filtrar los datos
-    };
 
-    const handleBotonPaginaClick = (id) => {
-        setNumeroDePagina(id);
-
-    };
-
-    const handleDragOver = (event) => {
-        event.preventDefault(); // Previene el comportamiento por defecto
-        event.dataTransfer.dropEffect = "copy"; // Cambia el icono a "copiar"
-    };
-    const handleDrop = (event) => {
-        event.preventDefault();
-        const file = event.dataTransfer.files[0]; // Obtiene el archivo arrastrado
-        if (file && file.type.startsWith("image/")) {
-            handleFileChange({ target: { files: [file] } }); // Llama a la función de cambio de archivo
-        }
-    };
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setImage(e.target.result);
-                setShowModal(true); // Abre el modal cuando se carga la imagen
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    
-    const [searchQuery, setSearchQuery] = useState('');
-    
-    const handleInputChange = (e) => {
-        setSearchQuery(e.target.value);
-        setNumeroDePagina(1);
-    };
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        // Aquí puedes manejar la búsqueda, por ejemplo, enviar el query a una API
-        console.log('Buscando:', searchQuery);
-        };
-    
-    /// Te devuelve la fecha actual con el formato "YYYY-MM-DD"
-    const obtenerFechaActual = () => {
-        const fecha = new Date();
-        const año = fecha.getFullYear();
-        const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // getMonth() devuelve de 0 a 11, por lo que se suma 1
-        const dia = String(fecha.getDate()).padStart(2, '0');
-        
-        return `${año}-${mes}-${dia}`;
-        }
-
-    const dispatch = useDispatch();
-    ///api///
-    const DESDE = "2024-09-01"
-    const HASTA = "2024-09-29"
-    const TOKEN = useSelector((state) => state.formulario.token);
-    const CLIENTE = useSelector((state) => state.formulario.cliente);
     useEffect(() => {
-        
-    })
+        axios.post(
+            "https://panel.serviciosd.com/app_editar_usuario",
+            {
+                nombre : "nombre completo",
+                email : "email para el login", 
+                id : "id del usuario a editar",
+                cliente : "nombre del cliente que tiene el usuario",
+                reporte_whatsapp : "0 o 1 si recibe los reportes por whatsapp",
+                reporte_email :  "0 o 1 si recibe los reportes por whatsapp",
+                recibe_solo_notas :"",
+                celular_reporte : '',
+                email_reporte : '',
+                frecuencia : '',
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        )
+        .then((response) => {
+            if (response.data.status === "true") {
+                setUsuariosImpresionesNota(response.data.item);
+                console.log(response.data.item)
+            } else {
+                console.error('Error en la respuesta de la API:', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al hacer la solicitud:', error);
+        })
+    }, []);
 
-    const todasLasNotas = useSelector((state) => state.notas.todasLasNotas);
-    const notasEnProgreso = useSelector((state) => state.notas.notasEnProgreso);
-    const notasFinalizadas = useSelector((state) => state.notas.notasFinalizadas);
-    
-    let TodasLasNotas = todasLasNotas;
-    if (filtroSeleccionado === 2) {
-        TodasLasNotas = notasEnProgreso;
-    } else if (filtroSeleccionado === 3) {
-        TodasLasNotas = notasFinalizadas;
-    }
-
-        
-    const notasFiltradas = TodasLasNotas.filter(nota =>
-        nota.titulo.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const totalPaginas = Math.ceil(notasFiltradas.length / CantidadDeNotasPorPagina);
-    const notasEnPaginaActual = notasFiltradas.slice(
-        (numeroDePagina - 1) * CantidadDeNotasPorPagina,
-        numeroDePagina * CantidadDeNotasPorPagina
-    );
-
-    const listaBotonesPagina = [];
-    for (let i = 1; i <= totalPaginas; i++) {
-        listaBotonesPagina.push(i);
-      }
-
-
-    
-
-    ///Chat gpt
-    
     return (
         <div className="container-fluid sinPadding crearNotaGlobal">
             <div className="d-flex h-100">
@@ -150,7 +66,7 @@ const Perfil = () => {
                         <div className='col boton col-auto ms-auto'>
 
                         <Button onClick = {()=> navigate('/publicarNota') } id="" variant="none" className='botonCerrarSesion'>
-                                    {"Cancelar"}
+                                {"Cancelar"}
                         </Button>
 
                         <Button onClick = {()=> navigate('/publicarNota') } id="" variant="none" className='botonCerrarSesion guardar'>

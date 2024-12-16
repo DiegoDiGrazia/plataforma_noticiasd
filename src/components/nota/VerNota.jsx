@@ -85,7 +85,7 @@ const VerNota = () => {
 
         ///TRAER NOTA
         axios.post(
-            RUTA+"app_obtener_noticia",
+            "https://panel.serviciosd.com/app_obtener_noticia",
             {
                 token: TOKEN,          
                 id_noti: id_para_api,

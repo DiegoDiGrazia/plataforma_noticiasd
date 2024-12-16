@@ -43,7 +43,7 @@ const BarplotNota = ({id_noti, TOKEN, cliente, fpub}) => {
 
     useEffect(() => {
         axios.post(
-            RUTA+ "app_obtener_usuarios_impresiones_noticia",
+            "https://panel.serviciosd.com/app_obtener_usuarios_impresiones_noticia",
             {
                 cliente: cliente,
                 periodos: generarPeriodosDesde(String(fpub), 6),

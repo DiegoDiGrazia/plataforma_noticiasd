@@ -90,7 +90,7 @@ const PublicarNota = () => {
         const contenidoHTMLSTR = transformarContenidoAHTML(contenidoNota);
     
         axios.post(
-            "app_subir_nota",
+            "https://panel.serviciosd.com/app_subir_nota",
             {
                 token: TOKEN,
                 id: "0",
