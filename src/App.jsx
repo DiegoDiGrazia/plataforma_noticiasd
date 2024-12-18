@@ -34,9 +34,6 @@ function App() {
         <Route path="/mi-perfil/" element={<Perfil/>} />
         <Route path="/soporte-y-ayuda/" element={<Soporte/>} />
         <Route path="/notificaciones/" element={<Notificaciones/>} />
-
-
-
         <Route path="/verNota/:id_ruta?" element={<VerNota/>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/notas" element={<Notas/>} />
